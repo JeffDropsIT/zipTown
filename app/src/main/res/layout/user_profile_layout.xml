@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="#000">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_profile"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_user"
+            android:layout_centerInParent="true"
+            app:civ_circle_background_color="#FFFF"
+            />
+        <TextView
+            android:id="@+id/ttv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:paddingTop="5dp"
+            android:layout_below="@+id/img_profile"
+            android:text="Phindile Sthah Ngobese"
+            />
+        <TextView
+            android:id="@+id/ttv_tittle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:paddingTop="5dp"
+            android:layout_below="@+id/ttv_user_city"
+            android:text="Driver"
+            />
+        <TextView
+            android:id="@+id/ttv_user_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:paddingTop="5dp"
+            android:layout_below="@+id/ttv_username"
+            android:text="Pretoria"
+            />
+
+        <TextView
+            android:id="@+id/ttv_user_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFF"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:paddingTop="5dp"
+            android:layout_below="@+id/ttv_tittle"
+            android:text="+22710084798"
+            />
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Offers"
+            android:gravity="center"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Requests"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="#000"
+            android:layout_weight="1"/>
+    </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpg_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v4.view.ViewPager>
+</LinearLayout>
