@@ -96,12 +96,27 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(requests);
         viewPager.setAdapter(adapter);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            Intent intent = new Intent(this, currentUserActivity.class);
+            Log.i("WSX", "onClick: swithced activities");
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setToolBar(String title){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(false);
-        actionbar.setHomeButtonEnabled(false);
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeButtonEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_user_profile);
         actionbar.setTitle(title);
     }
     private void setStatusBar(int color){
