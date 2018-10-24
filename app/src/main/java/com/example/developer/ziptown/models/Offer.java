@@ -1,8 +1,10 @@
 package com.example.developer.ziptown.models;
 
-public class Offer {
-    private String publisher, contact, created, days, time, city, destination, origin;
+import java.io.Serializable;
 
+public class Offer implements Serializable{
+    private String publisher, contact, created, days, time, city, destination, origin;
+    private Publisher publisherObj;
 
 
     public Offer(String origin, String destination, String time, String days, String city, String created, Publisher publisher){
@@ -14,6 +16,7 @@ public class Offer {
         this.created = created;
         this.publisher = publisher.getName();
         this.contact = publisher.getContact();
+        this.publisherObj = publisher;
     }
 
 
@@ -44,6 +47,7 @@ public class Offer {
     public String getPublisher() {
         return publisher;
     }
+    public int getPublisherId(){return publisherObj.getId();}
 
     public String getTime() {
         return time;

@@ -1,11 +1,23 @@
 package com.example.developer.ziptown.models;
 
-public class Publisher {
-    private  String name, contact;
+import java.io.Serializable;
 
-    public Publisher(String name, String contact){
+public class Publisher implements Serializable {
+    private  String name, contact;
+    private  int id;
+
+    public Publisher(String name, String contact, int id){
         this.name = name;
         this.contact = contact;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
