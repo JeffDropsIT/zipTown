@@ -6,6 +6,7 @@
         <item name="colorPrimary">#FFF</item>
         <item name="colorPrimaryDark">#000</item>
         <item name="colorAccent">#000</item>
+        <item name="android:timePickerDialogTheme">@style/CustomSpinnerStyle</item>
     </style>
 
 
@@ -16,6 +17,12 @@
     <style name="CustomStyle">
         <item name="android:background">#0a0808</item>
         <item name="colorControlNormal">#FFFF</item>
+    </style>
+
+    <style name="CustomSpinnerStyle">
+        <item name="android:numbersTextColor">#de0808</item>
+        <item name="android:numbersSelectorColor">#88f20808</item>
+        <item name="android:numbersBackgroundColor">#fff</item>
     </style>
 
 </resources>
