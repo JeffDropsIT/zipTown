@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,40 +34,102 @@
                 android:paddingTop="8dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:src="@drawable/ic_location"
+
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/ic_clock"
                 />
+
+
+
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="0dp">
+                <EditText
+                    android:id="@+id/edt_depart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="departure time"
+                    android:textSize="15sp"
+                    android:paddingLeft="5sp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorGrey"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" - "/>
+                <EditText
+                    android:id="@+id/edt_pickup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="return time"
+                    android:textSize="15sp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorGrey"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:cardBackgroundColor="#ffffff"
+        app:cardCornerRadius="5dp"
+
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+
+               android:layout_marginBottom="5dp"
+                android:src="@drawable/ic_calendar"
+                />
+
+
+
+            <TextView
+                android:id="@+id/ttv_selected_days"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:orientation="vertical">
-                <EditText
-                    android:id="@+id/ttv_days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="#57646c"
-
-                    android:hint="Enter days here "/>
-                <EditText
-                    android:id="@+id/ttv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#57646c"
-                    android:textSize="15sp"
-                    android:hint="Enter time here "/>
-
-            </LinearLayout>
+                android:paddingTop="8dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:hint="add days here"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+
+        android:layout_margin="10dp"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -188,31 +249,34 @@
                 android:paddingTop="8dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:src="@drawable/ic_clock"
+                android:src="@drawable/ic_location"
                 />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:paddingLeft="5dp"
+                android:paddingBottom="5dp"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/ttv_origin"
-                    android:layout_width="wrap_content"
+                <AutoCompleteTextView
+                    android:id="@+id/edt_origin"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:textColor="#57646c"
                     android:textSize="15sp"
                     android:hint="Enter origin here"/>
-                <EditText
-                    android:id="@+id/ttv_destination"
-                    android:layout_width="wrap_content"
+
+
+                <AutoCompleteTextView
+                    android:id="@+id/edt_destination"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:textColor="#57646c"
                     android:textSize="15sp"
                     android:hint="Enter destination here"/>
-                <EditText
-                    android:id="@+id/ttv_city"
-                    android:layout_width="wrap_content"
+                <AutoCompleteTextView
+                    android:id="@+id/edt_city"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:textColor="#57646c"
                     android:textSize="15sp"
@@ -270,13 +334,15 @@
                     android:textColor="#57646c"
                     android:text="Contact: "/>
                 <Button
-                    android:id="@+id/btn_done"
+                    android:id="@+id/btn_finished"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:text="DONE"
-                    android:textColor="#fff"
-                    android:background="@drawable/shape"/>
+                    android:text="done"
+                    android:background="@drawable/shape"
+                    android:textColor="#ffff"
+
+                    />
             </LinearLayout>
 
 

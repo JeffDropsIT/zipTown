@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">ZipTown</string>
+    <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
+    <string name="hide_alert">Click here to hide password reset</string>
+    <string name="show_alert">Click here to renew your current password</string>
+    <string-array name="states_array">
+        <item>Driver</item>
+        <item>Passenger</item>
+        <item>Both</item>
+    </string-array>
 </resources>
+

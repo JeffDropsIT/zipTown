@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.developer.ziptown.adapters.ViewPagerAdapter;
 import com.example.developer.ziptown.fragments.currentUserFragments.OffersFragment;
@@ -49,11 +50,18 @@ public class currentUserActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
+        switch(id){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.settings:
+                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
         }
-        return super.onOptionsItemSelected(item);
+
+        return true;
     }
 
     @Override

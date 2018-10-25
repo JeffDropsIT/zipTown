@@ -3,32 +3,77 @@ package com.example.developer.ziptown;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.TimePickerDialog;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.developer.ziptown.adapters.PlaceAutocompleteAdapter;
 import com.example.developer.ziptown.fragments.TimePickerFragment;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBufferResponse;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.RuntimeRemoteException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AddGenericPostActivity extends AppCompatActivity implements View.OnClickListener, TimePickerFragment.TimePickedListener {
+public class AddGenericPostActivity extends AppCompatActivity implements View.OnClickListener, TimePickerFragment.TimePickedListener, GoogleApiClient.OnConnectionFailedListener {
+    private static final String TAG = "WSX";
     private TextView ttvMon, ttvTue, ttvWed, ttvThur, ttvFri, ttvSat, ttvSun;
     private List<TextView> textViewArrayList = new ArrayList<>();
     private List<String> daysSelected = new ArrayList<>();
     private TextView ttvSelectedDays;
+    private AutoCompleteTextView mSearchOrigin, mSearchDestination, mSearchCity;
+    private PlaceAutocompleteAdapter placeAutocompleteAdapter;
+    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
+            new LatLng(-40, -168), new LatLng(71, 136));
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.data_entry_layout);
+        setContentView(R.layout.activity_add_generic_post);
 
+
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
+
+        placeAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient,
+                LAT_LNG_BOUNDS, null);
+
+
+        mSearchOrigin = findViewById(R.id.edt_origin);
+        mSearchDestination = findViewById(R.id.edt_destination);
+        mSearchCity = findViewById(R.id.edt_city);
+        mSearchOrigin.setAdapter(placeAutocompleteAdapter);
+        mSearchCity.setAdapter(placeAutocompleteAdapter);
+        mSearchDestination.setAdapter(placeAutocompleteAdapter);
 
         ttvSelectedDays = findViewById(R.id.ttv_selected_days);
         ttvMon = findViewById(R.id.ttv_mon);
@@ -51,6 +96,8 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
         findViewById(R.id.edt_pickup).setOnClickListener(this);
         findViewById(R.id.edt_pickup).setFocusable(false);
         findViewById(R.id.edt_depart).setFocusable(false);
+
+
     }
 
     @Override
@@ -95,6 +142,9 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
         FragmentManager fm = getFragmentManager();
         newFragment.show(fm, "timePicker");
     }
+
+
+
     private void setSelected(TextView textView, String day){
 
         if(textViewArrayList.contains(textView)){
@@ -138,14 +188,23 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
         if(id == 0){
             EditText editText = findViewById(R.id.edt_depart);
             String AM_PM = String.valueOf(time.get(Calendar.AM_PM)).contains("0") ? "AM" : "PM";
-            String pickedTime = time.get(Calendar.HOUR_OF_DAY) +" : "+time.get(Calendar.MINUTE)+ " " +AM_PM  ;
+            String minutes = String.valueOf(time.get(Calendar.MINUTE)).length() == 1 ? "0"+time.get(Calendar.MINUTE) : String.valueOf(time.get(Calendar.MINUTE));
+            String pickedTime = time.get(Calendar.HOUR_OF_DAY) +" : "+minutes+ " " +AM_PM;
             editText.setText(pickedTime);
+            editText.setHint("");
         }else {
             EditText editText = findViewById(R.id.edt_pickup);
             String AM_PM = String.valueOf(time.get(Calendar.AM_PM)).contains("0") ? "AM" : "PM";
-            String pickedTime = time.get(Calendar.HOUR_OF_DAY) +" : "+time.get(Calendar.MINUTE)+ " " +AM_PM;
+            String minutes = String.valueOf(time.get(Calendar.MINUTE)).length() == 1 ? "0"+time.get(Calendar.MINUTE) : String.valueOf(time.get(Calendar.MINUTE));
+            String pickedTime = time.get(Calendar.HOUR_OF_DAY) +" : "+minutes+ " " +AM_PM;
             editText.setText(pickedTime);
+            editText.setHint("");
         }
         Toast.makeText(this, id+" id "+time.getTime(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
