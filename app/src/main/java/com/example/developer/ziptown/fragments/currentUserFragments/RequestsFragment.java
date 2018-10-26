@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.developer.ziptown.AddGenericPostActivity;
+import com.example.developer.ziptown.activities.AddGenericPostActivity;
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.currentUserAdpt.OfferAdapter;
 import com.example.developer.ziptown.models.Offer;

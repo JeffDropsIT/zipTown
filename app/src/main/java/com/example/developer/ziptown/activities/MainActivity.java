@@ -1,6 +1,7 @@
-package com.example.developer.ziptown;
+package com.example.developer.ziptown.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
@@ -9,79 +10,37 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.Window;
+import android.view.WindowManager;
 
+import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.ViewPagerAdapter;
-import com.example.developer.ziptown.fragments.currentUserFragments.OffersFragment;
-import com.example.developer.ziptown.fragments.currentUserFragments.RequestsFragment;
+import com.example.developer.ziptown.fragments.OffersFragment;
+import com.example.developer.ziptown.fragments.RequestsFragment;
+
+public class MainActivity extends AppCompatActivity {
 
 
-public class currentUserActivity extends AppCompatActivity {
     MenuItem prevMenuItem;
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_current_user);
-        Log.i("WSX", "UserProfileActivity: received");
-        viewPager =  findViewById(R.id.vpg_viewpager);
+        setContentView(R.layout.activity_main);
+
+
+        viewPager =  findViewById(R.id.viewpager);
         //Initializing the bottomNavigationView
+
         setOnNavigationItemSelectedListener();
         addOnPageChangeListener(viewPager);
         setupViewPager(viewPager);
-        setToolBar();
+        setToolBar("Offers");
 
     }
 
-    private void setToolBar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayShowTitleEnabled(false);
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeButtonEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch(id){
-            case android.R.id.home:
-                goHomeActivity();
-                break;
-            case R.id.settings:
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                break;
-        }
-
-        return true;
-    }
-
-    private void goHomeActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.tool_bar_menu, menu);
-        return true;
-    }
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        OffersFragment offers = new OffersFragment();
-        RequestsFragment requests = new RequestsFragment();
-        adapter.addFragment(offers);
-        adapter.addFragment(requests);
-        viewPager.setAdapter(adapter);
-    }
     private void addOnPageChangeListener(ViewPager viewPager){
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -98,6 +57,11 @@ public class currentUserActivity extends AppCompatActivity {
                 {
                     bottomNavigationView.getMenu().getItem(0).setChecked(false);
                 }
+                if(position == 0){
+                    setToolBar("Offers");
+                }else {
+                    setToolBar("Requests");
+                }
                 Log.d("page", "onPageSelected: "+position);
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
                 prevMenuItem = bottomNavigationView.getMenu().getItem(position);
@@ -106,9 +70,52 @@ public class currentUserActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+
             }
         });
     }
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        OffersFragment offers = new OffersFragment();
+        offers.setClickable(true);
+        RequestsFragment requests = new RequestsFragment();
+        requests.setClickable(true);
+        adapter.addFragment(offers);
+        adapter.addFragment(requests);
+        viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            Intent intent = new Intent(this, CurrentUserActivity.class);
+            Log.i("WSX", "onClick: swithced activities");
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setToolBar(String title){
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeButtonEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_user_profile);
+        actionbar.setTitle(title);
+    }
+    private void setStatusBar(int color){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getResources().getColor(color));
+        }
+    }
+
+
     public void setOnNavigationItemSelectedListener() {
         bottomNavigationView = findViewById(R.id.nav_temp);
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -118,10 +125,16 @@ public class currentUserActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.offers:
                                 viewPager.setCurrentItem(0);
+                                setToolBar("Offers");
+                                Log.i("WSX", "onCreateView: offers");
                                 break;
                             case R.id.requests:
                                 viewPager.setCurrentItem(1);
+                                setToolBar("Requests");
+                                Log.i("WSX", "onCreateView: request");
                                 break;
+
+
                         }
                         return false;
                     }

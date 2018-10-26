@@ -1,58 +1,56 @@
-package com.example.developer.ziptown;
+package com.example.developer.ziptown.activities;
 
 import android.content.Intent;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.example.developer.ziptown.adapters.OfferAdapter;
+import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.ViewPagerAdapter;
 import com.example.developer.ziptown.fragments.OffersFragment;
 import com.example.developer.ziptown.fragments.RequestsFragment;
 import com.example.developer.ziptown.models.Offer;
-import com.example.developer.ziptown.models.Publisher;
-import com.example.developer.ziptown.recylcler.RecyclerTouchListener;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
 
 
+public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener {
     MenuItem prevMenuItem;
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_user_profile);
+        Log.i("WSX", "UserProfileActivity: received");
+        viewPager =  findViewById(R.id.vpg_viewpager);
 
 
-        viewPager =  findViewById(R.id.viewpager);
+        findViewById(R.id.img_profile).setOnClickListener(this);
         //Initializing the bottomNavigationView
-
         setOnNavigationItemSelectedListener();
         addOnPageChangeListener(viewPager);
         setupViewPager(viewPager);
-        setToolBar("Offers");
+        Intent data = getIntent();
+        Offer offer = (Offer) data.getExtras().getSerializable("user");
+        Toast.makeText(this, " user  " + offer.getPublisher(), Toast.LENGTH_SHORT).show();
 
     }
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        OffersFragment offers = new OffersFragment();
+        offers.setClickable(false);
+        RequestsFragment requests = new RequestsFragment();
+        requests.setClickable(false);
 
+        adapter.addFragment(offers);
+        adapter.addFragment(requests);
+        viewPager.setAdapter(adapter);
+    }
     private void addOnPageChangeListener(ViewPager viewPager){
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -69,11 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 {
                     bottomNavigationView.getMenu().getItem(0).setChecked(false);
                 }
-                if(position == 0){
-                    setToolBar("Offers");
-                }else {
-                    setToolBar("Requests");
-                }
                 Log.d("page", "onPageSelected: "+position);
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
                 prevMenuItem = bottomNavigationView.getMenu().getItem(position);
@@ -82,52 +75,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        OffersFragment offers = new OffersFragment();
-        offers.setClickable(true);
-        RequestsFragment requests = new RequestsFragment();
-        requests.setClickable(true);
-        adapter.addFragment(offers);
-        adapter.addFragment(requests);
-        viewPager.setAdapter(adapter);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
-            Intent intent = new Intent(this, currentUserActivity.class);
-            Log.i("WSX", "onClick: swithced activities");
-            startActivity(intent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void setToolBar(String title){
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeButtonEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_user_profile);
-        actionbar.setTitle(title);
-    }
-    private void setStatusBar(int color){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(color));
-        }
-    }
-
-
     public void setOnNavigationItemSelectedListener() {
         bottomNavigationView = findViewById(R.id.nav_temp);
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -137,19 +87,24 @@ public class MainActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.offers:
                                 viewPager.setCurrentItem(0);
-                                setToolBar("Offers");
-                                Log.i("WSX", "onCreateView: offers");
                                 break;
                             case R.id.requests:
                                 viewPager.setCurrentItem(1);
-                                setToolBar("Requests");
-                                Log.i("WSX", "onCreateView: request");
                                 break;
-
-
                         }
                         return false;
                     }
                 });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.img_profile:
+                Intent intent = new Intent(this, CurrentUserActivity.class);
+                Log.i("WSX", "onClick: swithced activities");
+                startActivity(intent);
+                break;
+        }
     }
 }

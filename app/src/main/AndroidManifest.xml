@@ -16,16 +16,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyChzL_RETVgMiVI4poAZDP9OUDltyyweKU" />
 
-        <activity android:launchMode="singleTask" android:name=".MainActivity">
+        <activity android:launchMode="singleTask" android:name=".activities.MainActivity">
 
         </activity>
-        <activity android:name=".UserProfileActivity" />
-        <activity android:name=".currentUserActivity" />
-        <activity android:name=".AddGenericPostActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".LandingPageActivity">
+        <activity android:name=".activities.UserProfileActivity" />
+        <activity android:name=".activities.CurrentUserActivity" />
+        <activity android:name=".activities.AddGenericPostActivity" />
+        <activity android:name=".activities.SettingsActivity" />
+        <activity android:name=".activities.SignUpActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.LandingPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

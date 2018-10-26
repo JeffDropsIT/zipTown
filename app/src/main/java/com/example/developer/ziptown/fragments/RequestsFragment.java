@@ -14,9 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.developer.ziptown.MainActivity;
 import com.example.developer.ziptown.R;
-import com.example.developer.ziptown.UserProfileActivity;
+import com.example.developer.ziptown.activities.UserProfileActivity;
 import com.example.developer.ziptown.adapters.OfferAdapter;
 import com.example.developer.ziptown.models.Offer;
 import com.example.developer.ziptown.models.Publisher;

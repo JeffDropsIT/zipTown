@@ -1,5 +1,6 @@
-package com.example.developer.ziptown;
+package com.example.developer.ziptown.activities;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -16,14 +17,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.PlaceAutocompleteAdapter;
 import com.example.developer.ziptown.models.SignUpUser;
-import com.example.developer.ziptown.models.UserProfileObject;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 
-import static com.example.developer.ziptown.AddGenericPostActivity.LAT_LNG_BOUNDS;
+import static com.example.developer.ziptown.activities.AddGenericPostActivity.LAT_LNG_BOUNDS;
 
 public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     private AutoCompleteTextView mSearchCity;
@@ -61,6 +62,8 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
     }
+
+
     private void getCitySuggestions(){
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)

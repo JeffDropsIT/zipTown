@@ -1,4 +1,4 @@
-package com.example.developer.ziptown;
+package com.example.developer.ziptown.activities;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.developer.ziptown.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btnLogin;
@@ -44,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
     private void goToMyProfile(){
-        Intent intent = new Intent(this, currentUserActivity.class);
+        Intent intent = new Intent(this, CurrentUserActivity.class);
         startActivity(intent);
         finish();
     }

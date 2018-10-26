@@ -1,4 +1,4 @@
-package com.example.developer.ziptown;
+package com.example.developer.ziptown.activities;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.PlaceAutocompleteAdapter;
 import com.example.developer.ziptown.fragments.TimePickerFragment;
 import com.google.android.gms.common.ConnectionResult;
