@@ -11,12 +11,13 @@ import com.example.developer.ziptown.R;
 
 public class SearchFragment  extends DialogFragment implements View.OnClickListener {
     private LinearLayout linFilters;
+    private boolean visible;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        visible = false;
     }
 
     @Override
@@ -38,8 +39,19 @@ public class SearchFragment  extends DialogFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.lin_dropdown:
-                linFilters.setVisibility(View.VISIBLE);
+                toggleVisibility();
                 break;
+        }
+    }
+
+    private void toggleVisibility(){
+        if(!visible){
+            linFilters.setVisibility(View.VISIBLE);
+            visible = true;
+        }else {
+            linFilters.setVisibility(View.GONE);
+            visible = false;
+            dismiss();
         }
     }
 }

@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.search:
-                Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
                 SearchFragment dialogFragment = new SearchFragment();
                 dialogFragment.show(getFragmentManager(), "SearchDialog");
                 break;
