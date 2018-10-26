@@ -10,14 +10,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.ViewPagerAdapter;
 import com.example.developer.ziptown.fragments.OffersFragment;
 import com.example.developer.ziptown.fragments.RequestsFragment;
+import com.example.developer.ziptown.fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,13 +92,19 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == android.R.id.home) {
-            Intent intent = new Intent(this, CurrentUserActivity.class);
-            Log.i("WSX", "onClick: swithced activities");
-            startActivity(intent);
-            return true;
+        switch(id){
+            case android.R.id.home:
+                Intent intent = new Intent(this, CurrentUserActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.search:
+                Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
+                SearchFragment dialogFragment = new SearchFragment();
+                dialogFragment.show(getFragmentManager(), "SearchDialog");
+                break;
         }
-        return super.onOptionsItemSelected(item);
+
+        return true;
     }
 
     private void setToolBar(String title){
@@ -115,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_main_search, menu);
+        return true;
+    }
 
     public void setOnNavigationItemSelectedListener() {
         bottomNavigationView = findViewById(R.id.nav_temp);

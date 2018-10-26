@@ -1,0 +1,351 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/lin_filters"
+    android:layout_marginBottom="10dp"
+    android:visibility="gone">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:cardBackgroundColor="#ffffff"
+        app:cardCornerRadius="5dp"
+
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/ic_clock"
+                />
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="0dp">
+                <EditText
+                    android:id="@+id/edt_depart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="departure (default)"
+                    android:textSize="15sp"
+                    android:paddingLeft="5sp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorGrey"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" - "/>
+                <EditText
+                    android:id="@+id/edt_pickup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="return (default)"
+                    android:textSize="15sp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorGrey"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:cardBackgroundColor="#ffffff"
+        app:cardCornerRadius="5dp"
+
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/ic_calendar"
+                />
+
+
+
+            <TextView
+                android:id="@+id/ttv_selected_days"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:hint="add days here (default everyday)"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center_horizontal"
+
+        android:layout_margin="10dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/ttv_sun"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:text="S"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:background="@drawable/shape_text"
+                android:textColor="@color/colorGrey"
+                android:layout_marginRight="10dp"
+                />
+            <TextView
+                android:id="@+id/ttv_mon"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:text="M"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape_text"
+                android:textColor="@color/colorGrey"
+                />
+            <TextView
+                android:id="@+id/ttv_tue"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:text="T"
+                android:textStyle="bold"
+                android:background="@drawable/shape_text"
+                android:textColor="@color/colorGrey"
+                />
+            <TextView
+                android:id="@+id/ttv_wed"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:text="W"
+                android:textStyle="bold"
+                android:background="@drawable/shape_text"
+                android:textColor="@color/colorGrey"
+                />
+            <TextView
+                android:id="@+id/ttv_thur"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:text="T"
+                android:textStyle="bold"
+                android:background="@drawable/shape_text"
+                android:textColor="@color/colorGrey"
+                />
+            <TextView
+                android:id="@+id/ttv_fri"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:text="F"
+                android:textStyle="bold"
+                android:background="@drawable/shape_text"
+                android:textColor="@color/colorGrey"
+                />
+            <TextView
+                android:id="@+id/ttv_sat"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:text="S"
+                android:textStyle="bold"
+                android:background="@drawable/shape_text"
+                android:textColor="@color/colorGrey"
+                />
+        </LinearLayout>
+    </HorizontalScrollView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardBackgroundColor="#ffffff"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_location"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingBottom="5dp"
+                android:orientation="vertical">
+
+                <AutoCompleteTextView
+                    android:id="@+id/edt_origin"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="#57646c"
+                    android:textSize="15sp"
+                    android:hint="Enter origin here (default any)"/>
+
+
+                <AutoCompleteTextView
+                    android:id="@+id/edt_destination"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="#57646c"
+                    android:textSize="15sp"
+                    android:hint="Enter destination here (default any)"/>
+                <AutoCompleteTextView
+                    android:id="@+id/edt_city"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="#57646c"
+                    android:textSize="15sp"
+                    android:hint="Enter city here (default any)"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardBackgroundColor="#ffffff"
+        android:layout_marginBottom="5dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_user"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#57646c"
+                    android:textSize="20sp"
+
+                    android:text="Type: "/>
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="wrap_content"
+                    android:theme="@style/AppTheme"
+                    android:layout_height="wrap_content">
+                </Spinner>
+                <Button
+                    android:id="@+id/btn_apply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="apply"
+                    android:background="@drawable/shape"
+                    android:textColor="#ffff"
+
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+</LinearLayout>
