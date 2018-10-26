@@ -2,38 +2,23 @@ package com.example.developer.ziptown;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
-import android.app.TimePickerDialog;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spanned;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.developer.ziptown.adapters.PlaceAutocompleteAdapter;
 import com.example.developer.ziptown.fragments.TimePickerFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.AutocompletePrediction;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.RuntimeRemoteException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,7 +32,7 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
     private TextView ttvSelectedDays;
     private AutoCompleteTextView mSearchOrigin, mSearchDestination, mSearchCity;
     private PlaceAutocompleteAdapter placeAutocompleteAdapter;
-    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
+    public static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
             new LatLng(-40, -168), new LatLng(71, 136));
     private GoogleApiClient mGoogleApiClient;
 
@@ -57,23 +42,7 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_add_generic_post);
 
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
-
-        placeAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient,
-                LAT_LNG_BOUNDS, null);
-
-
-        mSearchOrigin = findViewById(R.id.edt_origin);
-        mSearchDestination = findViewById(R.id.edt_destination);
-        mSearchCity = findViewById(R.id.edt_city);
-        mSearchOrigin.setAdapter(placeAutocompleteAdapter);
-        mSearchCity.setAdapter(placeAutocompleteAdapter);
-        mSearchDestination.setAdapter(placeAutocompleteAdapter);
+        getCitySuggestions();
 
         ttvSelectedDays = findViewById(R.id.ttv_selected_days);
         ttvMon = findViewById(R.id.ttv_mon);
@@ -84,46 +53,41 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
         ttvSat = findViewById(R.id.ttv_sat);
         ttvSun = findViewById(R.id.ttv_sun);
 
-        ttvSun.setOnClickListener(this);
-        ttvSat.setOnClickListener(this);
-        ttvFri.setOnClickListener(this);
-        ttvThur.setOnClickListener(this);
-        ttvWed.setOnClickListener(this);
-        ttvTue.setOnClickListener(this);
-        ttvMon.setOnClickListener(this);
-        findViewById(R.id.btn_finished).setOnClickListener(this);
-        findViewById(R.id.edt_depart).setOnClickListener(this);
-        findViewById(R.id.edt_pickup).setOnClickListener(this);
-        findViewById(R.id.edt_pickup).setFocusable(false);
-        findViewById(R.id.edt_depart).setFocusable(false);
+        setOnClickListeners();
+        disableFocus(false);
 
 
+    }
+
+    private void disableFocus(boolean b){
+        findViewById(R.id.edt_pickup).setFocusable(b);
+        findViewById(R.id.edt_depart).setFocusable(b);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ttv_mon:
-                setSelected(ttvMon, "Mon");
+                setSelectedDays(ttvMon, "Mon");
 
                 break;
             case R.id.ttv_tue:
-                setSelected(ttvTue, "Tue");
+                setSelectedDays(ttvTue, "Tue");
                 break;
             case R.id.ttv_wed:
-                setSelected(ttvWed, "Wed");
+                setSelectedDays(ttvWed, "Wed");
                 break;
             case R.id.ttv_thur:
-                setSelected(ttvThur, "Thu");
+                setSelectedDays(ttvThur, "Thu");
                 break;
             case R.id.ttv_fri:
-                setSelected(ttvFri, "Fri");
+                setSelectedDays(ttvFri, "Fri");
                 break;
             case R.id.ttv_sat:
-                setSelected(ttvSat, "Sat");
+                setSelectedDays(ttvSat, "Sat");
                 break;
             case R.id.ttv_sun:
-                setSelected(ttvSun, "Sun");
+                setSelectedDays(ttvSun, "Sun");
                 break;
             case R.id.btn_finished:
                 break;
@@ -144,8 +108,19 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
     }
 
 
-
-    private void setSelected(TextView textView, String day){
+    private void setOnClickListeners(){
+        ttvSun.setOnClickListener(this);
+        ttvSat.setOnClickListener(this);
+        ttvFri.setOnClickListener(this);
+        ttvThur.setOnClickListener(this);
+        ttvWed.setOnClickListener(this);
+        ttvTue.setOnClickListener(this);
+        ttvMon.setOnClickListener(this);
+        findViewById(R.id.btn_finished).setOnClickListener(this);
+        findViewById(R.id.edt_depart).setOnClickListener(this);
+        findViewById(R.id.edt_pickup).setOnClickListener(this);
+    }
+    private void setSelectedDays(TextView textView, String day){
 
         if(textViewArrayList.contains(textView)){
             textView.setTextColor(getResources().getColor(R.color.colorGrey));
@@ -206,5 +181,25 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    public void getCitySuggestions() {
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
+
+        placeAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient,
+                LAT_LNG_BOUNDS, null);
+
+
+        mSearchOrigin = findViewById(R.id.edt_origin);
+        mSearchDestination = findViewById(R.id.edt_destination);
+        mSearchCity = findViewById(R.id.edt_city);
+        mSearchOrigin.setAdapter(placeAutocompleteAdapter);
+        mSearchCity.setAdapter(placeAutocompleteAdapter);
+        mSearchDestination.setAdapter(placeAutocompleteAdapter);
     }
 }

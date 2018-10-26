@@ -52,7 +52,7 @@ public class currentUserActivity extends AppCompatActivity {
 
         switch(id){
             case android.R.id.home:
-                onBackPressed();
+                goHomeActivity();
                 break;
             case R.id.settings:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
@@ -64,6 +64,10 @@ public class currentUserActivity extends AppCompatActivity {
         return true;
     }
 
+    private void goHomeActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
