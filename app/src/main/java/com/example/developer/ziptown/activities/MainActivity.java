@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
         Map<String, Object> map = new HashMap<>();
         CreateUser user = new CreateUser("password123", "S'mangele Pearl Ntuli", "Passenger", "eMpangeni", "276321664554");
         map.put("createUser", user);
-        new ServerRequest(this).execute(map);
+        //new ServerRequest(this).execute(map);
     }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
