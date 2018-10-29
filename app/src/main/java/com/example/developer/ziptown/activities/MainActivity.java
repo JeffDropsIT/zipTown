@@ -18,11 +18,16 @@ import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.ViewPagerAdapter;
+import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.fragments.OffersFragment;
 import com.example.developer.ziptown.fragments.RequestsFragment;
 import com.example.developer.ziptown.fragments.SearchFragment;
+import com.example.developer.ziptown.models.CreateUser;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Map;
+
+public class MainActivity extends AppCompatActivity implements ServerRequest.OnTaskCompleted {
 
 
     MenuItem prevMenuItem;
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         addOnPageChangeListener(viewPager);
         setupViewPager(viewPager);
         setToolBar("Offers");
+        postUser();
 
     }
 
@@ -76,6 +82,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void postUser(){
+        Map<String, Object> map = new HashMap<>();
+        CreateUser user = new CreateUser("password123", "S'mangele Pearl Ntuli", "Passenger", "eMpangeni", "276321664554");
+        map.put("createUser", user);
+        new ServerRequest(this).execute(map);
     }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -152,5 +165,15 @@ public class MainActivity extends AppCompatActivity {
                         return false;
                     }
                 });
+    }
+
+    @Override
+    public void onTaskCompleted() {
+        Log.i("node", "onTaskCompleted: completes");
+    }
+
+    @Override
+    public void onTaskFailed() {
+
     }
 }

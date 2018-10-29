@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ttv_app_title"
         android:gravity="center"
-        android:text="A Smart Way To Travel, with lift clubs."
+        android:text="A Smart Way To Travel, With Lift Clubs."
         android:textColor="#fff"
         android:textSize="20sp"
         android:textStyle="bold" />

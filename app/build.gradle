@@ -32,4 +32,6 @@ dependencies {
     api 'com.android.support:recyclerview-v7:27.0.0'
     api 'de.hdodenhof:circleimageview:2.2.0'
     api 'com.google.android.gms:play-services-places:16.0.0'
+    api 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+    api 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
 }
