@@ -17,8 +17,8 @@ import android.widget.Toast;
 import com.example.developer.ziptown.activities.AddGenericPostActivity;
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.currentUserAdpt.OfferAdapter;
-import com.example.developer.ziptown.models.Offer;
-import com.example.developer.ziptown.models.Publisher;
+import com.example.developer.ziptown.models.mockerClasses.Offer;
+import com.example.developer.ziptown.models.mockerClasses.Publisher;
 
 import java.util.ArrayList;
 import java.util.List;

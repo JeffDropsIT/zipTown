@@ -17,8 +17,8 @@ import android.widget.Toast;
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.activities.UserProfileActivity;
 import com.example.developer.ziptown.adapters.OfferAdapter;
-import com.example.developer.ziptown.models.Offer;
-import com.example.developer.ziptown.models.Publisher;
+import com.example.developer.ziptown.models.mockerClasses.Offer;
+import com.example.developer.ziptown.models.mockerClasses.Publisher;
 import com.example.developer.ziptown.recylcler.RecyclerTouchListener;
 
 import java.util.ArrayList;

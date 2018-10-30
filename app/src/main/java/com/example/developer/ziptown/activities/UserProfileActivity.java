@@ -15,7 +15,7 @@ import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.ViewPagerAdapter;
 import com.example.developer.ziptown.fragments.OffersFragment;
 import com.example.developer.ziptown.fragments.RequestsFragment;
-import com.example.developer.ziptown.models.Offer;
+import com.example.developer.ziptown.models.mockerClasses.Offer;
 
 
 public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener {

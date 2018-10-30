@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
-import com.example.developer.ziptown.models.Offer;
+import com.example.developer.ziptown.models.mockerClasses.Offer;
 
 import java.util.List;
 

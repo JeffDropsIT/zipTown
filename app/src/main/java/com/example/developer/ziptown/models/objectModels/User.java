@@ -1,4 +1,4 @@
-package com.example.developer.ziptown.models;
+package com.example.developer.ziptown.models.objectModels;
 
 
 
