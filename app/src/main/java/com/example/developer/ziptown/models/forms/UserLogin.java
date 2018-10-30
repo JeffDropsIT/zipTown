@@ -1,4 +1,4 @@
-package com.example.developer.ziptown.models;
+package com.example.developer.ziptown.models.forms;
 
 public class UserLogin {
     private String contact, password;

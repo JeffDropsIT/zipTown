@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.PlaceAutocompleteAdapter;
 import com.example.developer.ziptown.connection.ServerRequest;
-import com.example.developer.ziptown.models.CreateUser;
+import com.example.developer.ziptown.models.forms.CreateUser;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;

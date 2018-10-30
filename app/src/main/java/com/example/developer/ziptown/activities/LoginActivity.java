@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.connection.ServerRequest;
-import com.example.developer.ziptown.models.UserLogin;
+import com.example.developer.ziptown.models.forms.UserLogin;
 
 import java.util.HashMap;
 import java.util.Map;

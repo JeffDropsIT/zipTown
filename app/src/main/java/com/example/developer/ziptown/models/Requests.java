@@ -1,6 +1,8 @@
 package com.example.developer.ziptown.models;
 
-class Requests  extends BasePost{
+import com.example.developer.ziptown.models.baseClasses.BasePost;
+
+public class Requests  extends BasePost {
 
 
     public Requests() {

@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.ViewPagerAdapter;
@@ -22,7 +21,7 @@ import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.fragments.OffersFragment;
 import com.example.developer.ziptown.fragments.RequestsFragment;
 import com.example.developer.ziptown.fragments.SearchFragment;
-import com.example.developer.ziptown.models.CreateUser;
+import com.example.developer.ziptown.models.forms.CreateUser;
 
 import java.util.HashMap;
 import java.util.Map;

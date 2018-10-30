@@ -3,10 +3,10 @@ package com.example.developer.ziptown.connection;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.developer.ziptown.models.CreateUser;
-import com.example.developer.ziptown.models.GenericErrorResponse;
-import com.example.developer.ziptown.models.UserLogin;
-import com.example.developer.ziptown.models.UserSignInAndLoginResponse;
+import com.example.developer.ziptown.models.forms.CreateUser;
+import com.example.developer.ziptown.models.responses.GenericErrorResponse;
+import com.example.developer.ziptown.models.forms.UserLogin;
+import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse;
 
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;

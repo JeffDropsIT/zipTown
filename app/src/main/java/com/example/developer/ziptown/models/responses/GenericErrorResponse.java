@@ -1,4 +1,4 @@
-package com.example.developer.ziptown.models;
+package com.example.developer.ziptown.models.responses;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

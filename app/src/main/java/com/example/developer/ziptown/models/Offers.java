@@ -1,5 +1,7 @@
 package com.example.developer.ziptown.models;
 
+import com.example.developer.ziptown.models.baseClasses.BasePost;
+
 public class Offers extends BasePost {
     public Offers() {
         super();

@@ -1,11 +1,24 @@
-package com.example.developer.ziptown.models;
+package com.example.developer.ziptown.models.baseClasses;
 
-abstract class BasePost {
+public abstract class BasePost {
     private String _id, city, contact, created, postType, publisher, publisherId, depatureTime, returnTime, origin, destination, days;
     private int id;
 
     public BasePost() {
 
+    }
+    public BasePost(String city, String contact, String postType, String publisherId, String publisher,
+                    String returnTime, String destination, String days, String origin, String depatureTime ){
+        this.city = city;
+        this.contact = contact;
+        this.postType = postType;
+        this.days = days;
+        this.publisher = publisher;
+        this.publisherId = publisherId;
+        this.returnTime = returnTime;
+        this.depatureTime = depatureTime;
+        this.origin = origin;
+        this.destination = destination;
     }
 
     public void set_id(String _id) {
