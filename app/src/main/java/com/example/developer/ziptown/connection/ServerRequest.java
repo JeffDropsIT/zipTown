@@ -3,21 +3,14 @@ package com.example.developer.ziptown.connection;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.developer.ziptown.activities.MainActivity;
 import com.example.developer.ziptown.models.CreateUser;
-import com.example.developer.ziptown.models.CreateUserResponse;
-import com.example.developer.ziptown.models.CreateUserResponseError;
+import com.example.developer.ziptown.models.GenericErrorResponse;
 import com.example.developer.ziptown.models.UserLogin;
-import com.example.developer.ziptown.models.UserLoginResponse;
+import com.example.developer.ziptown.models.UserSignInAndLoginResponse;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -38,43 +31,60 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
                 new MappingJackson2HttpMessageConverter());
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-        if(maps[0].get("type").equals(new String("createUSer"))){
-            return createUser(maps[0], restTemplate);
-        }
+        chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
 
-        return null;
+
+
+        return  chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
     }
 
+    private Object chooseMethod(String type, Map<String, Object> map, RestTemplate restTemplate){
+
+        Log.i("WSX", "chooseMethod: type: "+type);
+        switch (type){
+            case "CreateUser":
+                Log.i("WSX", "1 chooseMethod: createUser");
+                return createUser(map, restTemplate);
+            case "UserLogin":
+                Log.i("WSX", "2 chooseMethod: userLogin");
+                return userLogin(map, restTemplate);
+            default:
+                Log.i("WSX", "last chooseMethod: " + new GenericErrorResponse("Ops Something went wrong", 500).toString());
+                return new GenericErrorResponse("Ops Something went wrong", 500);
+        }
+    }
 
     private Object createUser(Map<String, Object> map, RestTemplate restTemplate){
 
-        CreateUser user = (CreateUser) map.get("createUser");
+        CreateUser user = (CreateUser) map.get("model");
         Log.i("WSX", "name: "+user.getFullName());
         String url = BASE_PATH + user.getURL();
         Log.i("WSX", "URL: "+url);
 
-        CreateUserResponse response = restTemplate.postForObject(url, user, CreateUserResponse.class);
-        if (response.getMessage() == null){
-            CreateUserResponseError responseError = restTemplate.postForObject(url, user, CreateUserResponseError.class);
-            Log.i("WSX", "doInBackground: message: "+responseError.getError()+" response "+responseError.getResponse());
+        UserSignInAndLoginResponse response = restTemplate.postForObject(url, user, UserSignInAndLoginResponse.class);
+        if (response.getUser() == null){
+            GenericErrorResponse responseError = restTemplate.postForObject(url, user, GenericErrorResponse.class);
+            Log.i("WSX", "doInBackground: message: "+responseError.toString());
+        }else {
+            Log.i("WSX", "doInBackground: message: "+response.toString());
         }
-        Log.i("WSX", "doInBackground: message: "+response.getMessage()+" response "+response.getResponse()+" data: "+response.getData());
+
 
         return response;
     }
     private Object userLogin(Map<String, Object> map, RestTemplate restTemplate){
-        UserLogin user = (UserLogin) map.get("userLogin");
+        UserLogin user = (UserLogin) map.get("model");
         Log.i("WSX", "name: "+user.getContact());
         String url = BASE_PATH + user.getURL();
         Log.i("WSX", "URL: "+url);
 
-        UserLoginResponse response = restTemplate.postForObject(url, user, UserLoginResponse.class);
-        if (response.getMessage() == null){
-            CreateUserResponseError responseError = restTemplate.postForObject(url, user, CreateUserResponseError.class);
-            Log.i("WSX", "doInBackground: message: "+responseError.getError()+" response "+responseError.getResponse());
+        UserSignInAndLoginResponse response = restTemplate.postForObject(url, user, UserSignInAndLoginResponse.class);
+        if (response.getUser() == null){
+            GenericErrorResponse responseError = restTemplate.postForObject(url, user, GenericErrorResponse.class);
+            Log.i("WSX", "doInBackground: message: "+responseError.toString());
+        }else {
+            Log.i("WSX", "doInBackground: message: "+response.toString());
         }
-        Log.i("WSX", "doInBackground: message: "+response.getMessage()+" response "+response.getResponse()+" data: "+response.getData());
-
         return response;
     }
     private void createOffer(){

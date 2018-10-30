@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
+import com.example.developer.ziptown.connection.ServerRequest;
+import com.example.developer.ziptown.models.UserLogin;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.HashMap;
+import java.util.Map;
+
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ServerRequest.OnTaskCompleted {
     private Button btnLogin;
     private EditText edtPassword, edtContact;
     @Override
@@ -40,7 +46,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             edtContact.setError("Contact number required");
         }else {
             //call api to verify password
-            goToMyProfile();
+            UserLogin userLogin = new UserLogin(contact, password);
+            Map<String, Object> map = new HashMap<>();
+            map.put("type", new String("UserLogin"));
+            map.put("model", userLogin);
+
+            new ServerRequest(this).execute(map);
+            //goToMyProfile();
             Toast.makeText(this, "Logging in", Toast.LENGTH_SHORT).show();
         }
 
@@ -81,5 +93,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 verifyPasswordAndContact();
                 break;
         }
+    }
+
+    @Override
+    public void onTaskCompleted() {
+        Log.i("WSX", "onTaskCompleted: logged in");
+    }
+
+    @Override
+    public void onTaskFailed() {
+
     }
 }

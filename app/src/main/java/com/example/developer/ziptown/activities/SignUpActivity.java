@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,14 +20,20 @@ import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.PlaceAutocompleteAdapter;
+import com.example.developer.ziptown.connection.ServerRequest;
+import com.example.developer.ziptown.models.CreateUser;
 import com.example.developer.ziptown.models.SignUpUser;
+import com.example.developer.ziptown.models.UserLogin;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.example.developer.ziptown.activities.AddGenericPostActivity.LAT_LNG_BOUNDS;
 
-public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, ServerRequest.OnTaskCompleted {
     private AutoCompleteTextView mSearchCity;
     private PlaceAutocompleteAdapter placeAutocompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
@@ -120,11 +127,11 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         }
     }
     private void validateInputs(){
-        String password = edtPassword.getText().toString().replace(" ", "");
-        String passwordConfirm = edtPasswordConfirm.getText().toString().replace(" ", "");
+        String password = edtPassword.getText().toString().trim();
+        String passwordConfirm = edtPasswordConfirm.getText().toString().trim();
         String contact = edtContact.getText().toString().replace(" ", "");
-        String name = edtUsername.getText().toString().replace(" ", "");
-        String city = mSearchCity.getText().toString().replace(" ", "");
+        String name = edtUsername.getText().toString().trim();
+        String city = mSearchCity.getText().toString().trim();
         if(password.isEmpty()){
             edtPassword.setError("Password required");
 
@@ -142,9 +149,14 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
 
         }else {
             if(checkPasswordMatch(password, passwordConfirm)){
-                SignUpUser signUpUser = new SignUpUser(password, name, selectedItem, city, contact);
+                CreateUser createUser = new CreateUser(password, name, selectedItem, city, contact);
+                Map<String, Object> map = new HashMap<>();
+                map.put("type", new String("CreateUser"));
+                map.put("model", createUser);
+
+                new ServerRequest(this).execute(map);
                 //submit to api
-                goHomeActivity();
+                //goHomeActivity();
                 Toast.makeText(this, "Logging in as "+selectedItem, Toast.LENGTH_SHORT).show();
                 //su
             }else{
@@ -173,5 +185,15 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
 
     private void collectAndVerify() {
         validateInputs();
+    }
+
+    @Override
+    public void onTaskCompleted() {
+        Log.i("WSX", "onTaskCompleted: created user");
+    }
+
+    @Override
+    public void onTaskFailed() {
+
     }
 }

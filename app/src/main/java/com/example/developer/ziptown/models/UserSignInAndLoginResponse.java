@@ -1,20 +1,19 @@
 package com.example.developer.ziptown.models;
 
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateUserResponse {
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class UserSignInAndLoginResponse {
     private User user;
     private ArrayList<Offers> offers;
     private ArrayList<Requests> requests;
     @JsonCreator
-    public CreateUserResponse(@JsonProperty("user") User user,@JsonProperty("offers") ArrayList<Offers> offers,@JsonProperty("requests")  ArrayList<Requests> requests){
+    public UserSignInAndLoginResponse(@JsonProperty("user")User user, @JsonProperty("offers") ArrayList<Offers> offers, @JsonProperty("requests") ArrayList<Requests> requests) {
 
         this.user = user;
         this.offers = offers;
