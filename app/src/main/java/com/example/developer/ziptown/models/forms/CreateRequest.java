@@ -4,7 +4,7 @@ import com.example.developer.ziptown.models.baseClasses.BasePost;
 
 public class CreateRequest extends BasePost{
 
-    private String URL = "";
+    private String URL = "/account/user/request";
     public CreateRequest(String city, String contact, String postType, String publisherId, String publisher,
                          String returnTime, String destination, String days, String origin, String depatureTime ){
         super(city, contact, postType, publisherId, publisher, returnTime, destination, days, origin, depatureTime);

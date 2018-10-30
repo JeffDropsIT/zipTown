@@ -3,9 +3,12 @@ package com.example.developer.ziptown.connection;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.developer.ziptown.models.forms.CreateOffer;
+import com.example.developer.ziptown.models.forms.CreateRequest;
 import com.example.developer.ziptown.models.forms.CreateUser;
 import com.example.developer.ziptown.models.responses.GenericErrorResponse;
 import com.example.developer.ziptown.models.forms.UserLogin;
+import com.example.developer.ziptown.models.responses.GenericSuccessResponse;
 import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse;
 
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -48,6 +51,12 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
             case "UserLogin":
                 Log.i("WSX", "2 chooseMethod: userLogin");
                 return userLogin(map, restTemplate);
+            case "CreateOffer":
+                Log.i("WSX", "3 chooseMethod: CreateOffer");
+                return createOffer(map, restTemplate);
+            case "CreateRequest":
+                Log.i("WSX", "4 chooseMethod: CreateRequest");
+                return createRequest(map, restTemplate);
             default:
                 Log.i("WSX", "last chooseMethod: " + new GenericErrorResponse("Ops Something went wrong", 500).toString());
                 return new GenericErrorResponse("Ops Something went wrong", 500);
@@ -88,11 +97,35 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         }
         return response;
     }
-    private void createOffer(){
+    private Object createOffer(Map<String, Object> map, RestTemplate restTemplate){
+        CreateOffer offer = (CreateOffer) map.get("model");
+        Log.i("WSX", "name: "+offer.getContact());
+        String url = BASE_PATH + offer.getURL();
+        Log.i("WSX", "URL: "+url);
 
+        GenericSuccessResponse response = restTemplate.postForObject(url, offer, GenericSuccessResponse.class);
+        if (response.getResponse() != 200){
+            GenericErrorResponse responseError = restTemplate.postForObject(url, offer, GenericErrorResponse.class);
+            Log.i("WSX", "doInBackground: message: "+responseError.toString());
+        }else {
+            Log.i("WSX", "doInBackground: message: "+response.toString());
+        }
+        return response;
     }
-    private void createRequest(){
+    private Object createRequest(Map<String, Object> map, RestTemplate restTemplate){
+        CreateRequest req = (CreateRequest) map.get("model");
+        Log.i("WSX", "name: "+req.getContact());
+        String url = BASE_PATH + req.getURL();
+        Log.i("WSX", "URL: "+url);
 
+        GenericSuccessResponse response = restTemplate.postForObject(url, req, GenericSuccessResponse.class);
+        if (response.getResponse() != 200){
+            GenericErrorResponse responseError = restTemplate.postForObject(url, req, GenericErrorResponse.class);
+            Log.i("WSX", "doInBackground: message: "+responseError.toString());
+        }else {
+            Log.i("WSX", "doInBackground: message: "+response.toString());
+        }
+        return response;
     }
 
     @Override
