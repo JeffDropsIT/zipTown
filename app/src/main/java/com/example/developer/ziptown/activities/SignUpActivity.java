@@ -1,6 +1,5 @@
 package com.example.developer.ziptown.activities;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -22,8 +21,6 @@ import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.PlaceAutocompleteAdapter;
 import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.models.CreateUser;
-import com.example.developer.ziptown.models.SignUpUser;
-import com.example.developer.ziptown.models.UserLogin;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;

@@ -31,11 +31,11 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
                 new MappingJackson2HttpMessageConverter());
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-        chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
+        Object response = chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
 
 
 
-        return  chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
+        return  response;
     }
 
     private Object chooseMethod(String type, Map<String, Object> map, RestTemplate restTemplate){
@@ -62,6 +62,7 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         Log.i("WSX", "URL: "+url);
 
         UserSignInAndLoginResponse response = restTemplate.postForObject(url, user, UserSignInAndLoginResponse.class);
+        Log.i("WSX", "createUser: user: "+response.getUser());
         if (response.getUser() == null){
             GenericErrorResponse responseError = restTemplate.postForObject(url, user, GenericErrorResponse.class);
             Log.i("WSX", "doInBackground: message: "+responseError.toString());
