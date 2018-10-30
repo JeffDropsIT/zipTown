@@ -187,6 +187,7 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onTaskCompleted() {
         Log.i("WSX", "onTaskCompleted: created user");
+        goHomeActivity();
     }
 
     @Override

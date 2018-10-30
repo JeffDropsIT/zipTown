@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             map.put("model", userLogin);
 
             new ServerRequest(this).execute(map);
-            //goToMyProfile();
+
             Toast.makeText(this, "Logging in", Toast.LENGTH_SHORT).show();
         }
 
@@ -98,6 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onTaskCompleted() {
         Log.i("WSX", "onTaskCompleted: logged in");
+        goToMyProfile();
     }
 
     @Override
