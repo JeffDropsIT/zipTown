@@ -140,7 +140,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:orientation="vertical">
 
 
@@ -150,18 +149,45 @@
                     android:textColor="#57646c"
                     android:textSize="20sp"
                     android:text="Contact number: "/>
-                <EditText
-                    android:id="@+id/edt_contact"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="#57646c"
-                    android:background="@android:color/transparent"
-                    android:paddingBottom="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="10dp"
-                    android:inputType="number"
-                    android:hint="Enter phone number here "/>
+                    android:orientation="horizontal">
+                    <com.rilixtech.CountryCodePicker
+                        android:id="@+id/ccp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ccp_hideNameCode="true"
+                        android:paddingBottom="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="10dp"
+                        />
+                    <EditText
+                        android:id="@+id/edt_contact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="#57646c"
+                        android:background="@android:color/transparent"
+                        android:paddingBottom="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="10dp"
+                        android:inputType="number"
+                        android:hint="Enter number"/>
+
+                    <Button
+                        android:id="@+id/btn_verify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:background="#000"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="VERIFY"
+                        android:textColor="#fcfafa" />
+                </LinearLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -214,7 +240,6 @@
                     android:layout_gravity="end"
                     android:text="SUBMIT"
                     android:textColor="#fff"
-
                     android:clickable="false"
                     android:background="@drawable/shape"/>
             </LinearLayout>

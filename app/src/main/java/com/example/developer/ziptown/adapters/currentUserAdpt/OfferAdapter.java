@@ -11,11 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
+import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.models.mockerClasses.Offer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHolder> {
+public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHolder> implements ServerRequest.OnTaskCompleted {
     private final Context context;
     private List<Offer> offersList;
     @NonNull
@@ -27,7 +30,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
 
     @Override
     public void onBindViewHolder(@NonNull OfferViewHolder holder, final int position) {
-        Offer offer = offersList.get(position);
+        final Offer offer = offersList.get(position);
         holder.ttvCity.setText("City: "+offer.getCity());
         holder.ttvContact.setText("Contact: "+offer.getContact());
         holder.ttvCreated.setText("Posted on: "+offer.getCreated());
@@ -40,6 +43,12 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
             @Override
             public void onClick(View v) {
                 offersList.remove(position);
+                Map<String, Object> map =  new HashMap<>();
+                map.put("type", "DeletePost");
+                map.put("postType", offer.getPostType());
+                map.put("id", offer.getPostId());
+
+                new ServerRequest(OfferAdapter.this).execute(map);
                 Toast.makeText(context, "Post Deleted", Toast.LENGTH_SHORT).show();
                 notifyDataSetChanged();
             }
@@ -50,6 +59,21 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
     @Override
     public int getItemCount() {
         return offersList.size();
+    }
+
+    @Override
+    public void onTaskCompleted() {
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDataFetched(Map<String, Object> object) {
+
+    }
+
+    @Override
+    public void onTaskFailed() {
+
     }
 
     public class OfferViewHolder extends RecyclerView.ViewHolder {

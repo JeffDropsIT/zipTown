@@ -34,4 +34,7 @@ dependencies {
     api 'com.google.android.gms:play-services-places:16.0.0'
     api 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     api 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
+
+    api 'io.michaelrocks:libphonenumber-android:8.8.5'
+    api 'com.github.joielechong:countrycodepicker:2.1.8'
 }

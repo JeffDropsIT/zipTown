@@ -7,6 +7,7 @@ import com.example.developer.ziptown.models.forms.CreateOffer;
 import com.example.developer.ziptown.models.forms.CreateRequest;
 import com.example.developer.ziptown.models.forms.CreateUser;
 import com.example.developer.ziptown.models.objectModels.Offers;
+import com.example.developer.ziptown.models.responses.ContactVerificationSuccessResponse;
 import com.example.developer.ziptown.models.responses.GenericErrorResponse;
 import com.example.developer.ziptown.models.forms.UserLogin;
 import com.example.developer.ziptown.models.responses.GenericSuccessResponse;
@@ -20,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
 
@@ -41,8 +41,6 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
         Object response = chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
-
-
         return  response;
     }
 
@@ -65,10 +63,35 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
             case "GetPost":
                 Log.i("WSX", "5 chooseMethod: GetPost");
                 return getPost(map, restTemplate);
+            case "DeletePost":
+                Log.i("WSX", "6 chooseMethod: DeletePost");
+                deletePost(map, restTemplate);
+                return new GenericSuccessResponse("success", 200);
+            case "VerifyContact":
+                Log.i("WSX", "6 chooseMethod: VerifyContact");
+                return verifyContact(map, restTemplate);
             default:
                 Log.i("WSX", "last chooseMethod: " + new GenericErrorResponse("Ops Something went wrong", 500).toString());
                 return new GenericErrorResponse("Ops Something went wrong", 500);
         }
+    }
+    private Object verifyContact(Map<String, Object> map, RestTemplate restTemplate){
+
+        String url = BASE_PATH + "/account/verify?contact="+map.get("contact").toString();
+        Log.i("WSX", "URL: "+url);
+        ContactVerificationSuccessResponse response = restTemplate.getForObject(url, ContactVerificationSuccessResponse.class);
+        if(response.getCode() == null){
+            GenericErrorResponse responseError = new GenericErrorResponse("error sending verification", 500);
+            sendResponseToActivity(responseError, "error");
+        }else {
+            sendResponseToActivity(response, "code");
+        }
+        return response;
+    }
+    private void deletePost(Map<String, Object> map, RestTemplate restTemplate) {
+        String url = BASE_PATH + "/account/user/"+map.get("postType").toString()+"/"+map.get("id").toString()+"/";
+        Log.i("WSX", "URL: "+url);
+        restTemplate.delete(url);
     }
 
     private Object createUser(Map<String, Object> map, RestTemplate restTemplate){

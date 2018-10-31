@@ -78,6 +78,8 @@ public class OffersFragment extends Fragment implements View.OnClickListener {
         for (String key : offers.keySet()) {
             Map<String, Object> offerTmp = offers.get(key);
             offer = new Offer(offerTmp.get("origin").toString(), offerTmp.get("destination").toString(), offerTmp.get("depatureTime").toString()+" To "+offerTmp.get("returnTime").toString(), offerTmp.get("days").toString(), offerTmp.get("city").toString(), offerTmp.get("created").toString(), publisher);
+            offer.setPostType("offer");
+            offer.setPostId(offerTmp.get("id").toString());
             offersList.add(offer);
         }
 

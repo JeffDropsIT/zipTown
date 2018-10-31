@@ -3,8 +3,9 @@ package com.example.developer.ziptown.models.mockerClasses;
 import java.io.Serializable;
 
 public class Offer implements Serializable{
-    private String publisher, contact, created, days, time, city, destination, origin;
+    private String publisher, contact, created, days, time, city, destination, origin, postType;
     private Publisher publisherObj;
+    private String postId;
 
 
     public Offer(String origin, String destination, String time, String days, String city, String created, Publisher publisher){
@@ -19,6 +20,13 @@ public class Offer implements Serializable{
         this.publisherObj = publisher;
     }
 
+    public void setPostType(String postType) {
+        this.postType = postType;
+    }
+
+    public String getPostType() {
+        return postType;
+    }
 
     public String getContact() {
         return contact;
@@ -84,5 +92,11 @@ public class Offer implements Serializable{
 
     public void setTime(String time) {
         this.time = time;
+    }
+    public String getPostId(){
+        return postId;
+    }
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 }
