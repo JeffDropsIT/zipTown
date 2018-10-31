@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.models.forms.UserLogin;
+import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,8 +58,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
-    private void goToMyProfile(){
+    private void goToMyProfile(UserSignInAndLoginResponse user){
         Intent intent = new Intent(this, CurrentUserActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", user);
+        intent.putExtras(bundle);
         startActivity(intent);
         finish();
     }
@@ -98,8 +102,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onTaskCompleted() {
         Log.i("WSX", "onTaskCompleted: logged in");
-        goToMyProfile();
+
     }
+
+    @Override
+    public void onDataFetched(Map<String, Object> object) {
+
+        if(object.get("response").toString().contains("error")){
+            Log.i("WSX", "onDataFetched: error "+object.get("response"));
+        }else {
+            UserSignInAndLoginResponse res = (UserSignInAndLoginResponse) object.get("object");
+            Log.i("WSX", "onDataFetched: res: "+res+" resType: "+object.get("response"));
+            goToMyProfile(res);
+            Log.i("WSX", "onDataFetched: success "+object.get("response")+" user "+res.getUser().getFullName());
+        }
+    }
+
 
     @Override
     public void onTaskFailed() {

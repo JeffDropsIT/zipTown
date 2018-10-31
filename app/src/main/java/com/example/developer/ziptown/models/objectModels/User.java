@@ -1,8 +1,9 @@
 package com.example.developer.ziptown.models.objectModels;
 
 
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
     private String _id, fullName, city, contact, created, userType;
     private int id;
 

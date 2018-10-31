@@ -29,10 +29,19 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private AutoCompleteTextView mSearchCity;
     private PlaceAutocompleteAdapter placeAutocompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
+
+
+    private EditText  edtContact, edtFullName, edtCity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+
+
+
+
+
         visibility = false;
         renewPasswrd = findViewById(R.id.ttv_renew_password);
         edtCurrentPasswrd = findViewById(R.id.edt_password);

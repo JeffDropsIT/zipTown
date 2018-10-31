@@ -1,6 +1,8 @@
 package com.example.developer.ziptown.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,12 +11,13 @@ import android.widget.Button;
 import com.example.developer.ziptown.R;
 
 public class LandingPageActivity extends AppCompatActivity implements View.OnClickListener {
+    public static SharedPreferences preferences;
     private Button btnSignUp, btnSignIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         btnSignIn = findViewById(R.id.btn_sign_in);
         btnSignUp = findViewById(R.id.btn_sign_up);

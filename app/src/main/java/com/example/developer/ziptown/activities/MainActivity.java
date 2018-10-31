@@ -1,7 +1,9 @@
 package com.example.developer.ziptown.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
@@ -26,6 +28,8 @@ import com.example.developer.ziptown.models.forms.CreateUser;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.developer.ziptown.activities.LandingPageActivity.preferences;
+
 public class MainActivity extends AppCompatActivity implements ServerRequest.OnTaskCompleted {
 
 
@@ -48,6 +52,22 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
         postUser();
 
     }
+
+
+    public boolean getBoolean(String key) {
+        return preferences.getBoolean(key, false);
+    }
+
+    public static void putBoolean(String key, boolean value) {
+        preferences.edit().putBoolean(key, value).apply();
+    }
+    public static String getString(String key) {
+        return preferences.getString(key, "0");
+    }
+    public static void putString(String key, String value) {
+        preferences.edit().putString(key, value).apply();
+    }
+
 
     private void addOnPageChangeListener(ViewPager viewPager){
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -169,6 +189,11 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
     @Override
     public void onTaskCompleted() {
         Log.i("node", "onTaskCompleted: completes");
+    }
+
+    @Override
+    public void onDataFetched(Map<String, Object> object) {
+
     }
 
     @Override

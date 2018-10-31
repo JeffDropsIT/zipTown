@@ -1,8 +1,6 @@
 package com.example.developer.ziptown.models.forms;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateUser {
     String password, fullName, city, userType, contact;
     final String URL = "/account/create";

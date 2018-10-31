@@ -16,6 +16,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >{
@@ -74,8 +75,10 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         Log.i("WSX", "createUser: user: "+response.getUser());
         if (response.getUser() == null){
             GenericErrorResponse responseError = restTemplate.postForObject(url, user, GenericErrorResponse.class);
+            sendResponseToActivity(responseError, "error");
             Log.i("WSX", "doInBackground: message: "+responseError.toString());
         }else {
+            sendResponseToActivity(response, "user");
             Log.i("WSX", "doInBackground: message: "+response.toString());
         }
 
@@ -91,8 +94,10 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         UserSignInAndLoginResponse response = restTemplate.postForObject(url, user, UserSignInAndLoginResponse.class);
         if (response.getUser() == null){
             GenericErrorResponse responseError = restTemplate.postForObject(url, user, GenericErrorResponse.class);
+            sendResponseToActivity(responseError, "error");
             Log.i("WSX", "doInBackground: message: "+responseError.toString());
         }else {
+            sendResponseToActivity(response, "user");
             Log.i("WSX", "doInBackground: message: "+response.toString());
         }
         return response;
@@ -106,8 +111,10 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         GenericSuccessResponse response = restTemplate.postForObject(url, offer, GenericSuccessResponse.class);
         if (response.getResponse() != 200){
             GenericErrorResponse responseError = restTemplate.postForObject(url, offer, GenericErrorResponse.class);
+            sendResponseToActivity(responseError, "error");
             Log.i("WSX", "doInBackground: message: "+responseError.toString());
         }else {
+            sendResponseToActivity(response, "success");
             Log.i("WSX", "doInBackground: message: "+response.toString());
         }
         return response;
@@ -121,13 +128,23 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         GenericSuccessResponse response = restTemplate.postForObject(url, req, GenericSuccessResponse.class);
         if (response.getResponse() != 200){
             GenericErrorResponse responseError = restTemplate.postForObject(url, req, GenericErrorResponse.class);
+            sendResponseToActivity(responseError, "error");
             Log.i("WSX", "doInBackground: message: "+responseError.toString());
         }else {
+            sendResponseToActivity(response, "success");
             Log.i("WSX", "doInBackground: message: "+response.toString());
         }
         return response;
     }
 
+    private void sendResponseToActivity(Object object, String resType){
+        Map<String, Object> map = new HashMap<>();
+        map.put("object", object);
+        map.put("response", resType);
+        if(!isOnTaskListenerNull()){
+            listener.onDataFetched(map);
+        }
+    }
     @Override
     protected void onPostExecute(Object o) {
         if(!isOnTaskListenerNull()){
@@ -141,6 +158,7 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
 
     public interface OnTaskCompleted{
         void onTaskCompleted();
+        void onDataFetched(Map<String, Object> object);
         void onTaskFailed();
     }
 }

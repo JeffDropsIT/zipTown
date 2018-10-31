@@ -53,7 +53,7 @@ public class Offers extends BasePost {
     }
 
     @Override
-    public String getPublisherId() {
+    public int getPublisherId() {
         return super.getPublisherId();
     }
 
@@ -128,7 +128,7 @@ public class Offers extends BasePost {
     }
 
     @Override
-    public void setPublisherId(String publisherId) {
+    public void setPublisherId(int publisherId) {
         super.setPublisherId(publisherId);
     }
 

@@ -71,6 +71,7 @@ public class RequestsFragment extends Fragment implements View.OnClickListener {
             case R.id.fab_booking:
                 Toast.makeText(getContext(), "add request", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), AddGenericPostActivity.class);
+                intent.putExtra("type", "request");
                 startActivity(intent);
                 break;
 

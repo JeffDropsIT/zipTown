@@ -5,7 +5,7 @@ import com.example.developer.ziptown.models.baseClasses.BasePost;
 public class CreateRequest extends BasePost{
 
     private String URL = "/account/user/request";
-    public CreateRequest(String city, String contact, String postType, String publisherId, String publisher,
+    public CreateRequest(String city, String contact, String postType, int publisherId, String publisher,
                          String returnTime, String destination, String days, String origin, String depatureTime ){
         super(city, contact, postType, publisherId, publisher, returnTime, destination, days, origin, depatureTime);
     }
@@ -26,7 +26,7 @@ public class CreateRequest extends BasePost{
     }
 
     @Override
-    public String getPublisherId() {
+    public int getPublisherId() {
         return super.getPublisherId();
     }
 
@@ -70,8 +70,13 @@ public class CreateRequest extends BasePost{
     }
 
     @Override
-    public void setPublisherId(String publisherId) {
+    public void setPublisherId(int publisherId) {
         super.setPublisherId(publisherId);
+    }
+
+    @Override
+    public String getCreated() {
+        return super.getCreated();
     }
 
     @Override

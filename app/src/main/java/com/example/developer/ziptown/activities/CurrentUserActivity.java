@@ -11,22 +11,48 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.ViewPagerAdapter;
 import com.example.developer.ziptown.fragments.currentUserFragments.OffersFragment;
 import com.example.developer.ziptown.fragments.currentUserFragments.RequestsFragment;
+import com.example.developer.ziptown.models.mockerClasses.Offer;
+import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse;
 
 
 public class CurrentUserActivity extends AppCompatActivity {
     MenuItem prevMenuItem;
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
+    private TextView ttvUsername, ttvUserType, ttvCity, ttvContact;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_user);
+
+        ttvUsername = findViewById(R.id.ttv_username);
+        ttvUserType = findViewById(R.id.ttv_tittle);
+        ttvCity = findViewById(R.id.ttv_user_city);
+        ttvContact = findViewById(R.id.ttv_user_contact);
+
+        Intent data = getIntent();
+        if(data != null){
+            UserSignInAndLoginResponse user = (UserSignInAndLoginResponse) data.getExtras().getSerializable("user");
+            MainActivity.putString("username",titleCase(user.getUser().getFullName()));
+            MainActivity.putString("city",(titleCase(user.getUser().getCity())));
+            MainActivity.putString("contact",titleCase(user.getUser().getContact()));
+            MainActivity.putString("userType",titleCase(user.getUser().getUserType()));
+            MainActivity.putString("userId",titleCase(String.valueOf(user.getUser().getId())));
+            ttvUsername.setText(titleCase(user.getUser().getFullName()));
+            ttvUserType.setText(titleCase(user.getUser().getUserType()));
+            ttvCity.setText(titleCase(user.getUser().getCity()));
+            ttvContact.setText(user.getUser().getContact());
+            Toast.makeText(this, " user  " + user.getUser().getFullName(), Toast.LENGTH_SHORT).show();
+
+        }
+
         Log.i("WSX", "UserProfileActivity: received");
         viewPager =  findViewById(R.id.vpg_viewpager);
         //Initializing the bottomNavigationView
@@ -35,6 +61,18 @@ public class CurrentUserActivity extends AppCompatActivity {
         setupViewPager(viewPager);
         setToolBar();
 
+    }
+
+    public static String titleCase(String string){
+        String[] charArr = string.split(" ");
+        for (int i = 0; i < charArr.length; i++){
+            charArr[i] = Character.toUpperCase(charArr[i].charAt(0)) + charArr[i].substring(1);
+        }
+        String out = "";
+        for(int i = 0; i<charArr.length; i++){
+            out += charArr[i] + " ";
+        }
+        return out;
     }
 
     private void setToolBar() {

@@ -322,12 +322,6 @@
                     android:textColor="#57646c"
                     android:text="Published by: "/>
                 <TextView
-                    android:id="@+id/ttv_created"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#57646c"
-                    android:text="Posted on: "/>
-                <TextView
                     android:id="@+id/ttv_contact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

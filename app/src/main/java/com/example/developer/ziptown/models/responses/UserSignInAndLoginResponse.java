@@ -7,11 +7,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserSignInAndLoginResponse {
+public class UserSignInAndLoginResponse implements Serializable {
     private User user;
     private ArrayList<Offers> offers;
     private ArrayList<Requests> requests;

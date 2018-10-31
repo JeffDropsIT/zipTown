@@ -191,6 +191,11 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
     }
 
     @Override
+    public void onDataFetched(Map<String, Object> object) {
+
+    }
+
+    @Override
     public void onTaskFailed() {
 
     }

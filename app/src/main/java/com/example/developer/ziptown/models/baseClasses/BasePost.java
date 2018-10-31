@@ -1,13 +1,26 @@
 package com.example.developer.ziptown.models.baseClasses;
 
-public abstract class BasePost {
-    private String _id, city, contact, created, postType, publisher, publisherId, depatureTime, returnTime, origin, destination, days;
+import java.io.Serializable;
+
+public abstract class BasePost implements Serializable {
+    private String _id;
+    private String city;
+    private String contact;
+    private String created;
+    private String postType;
+    private String publisher;
+    private int publisherId;
+    private String depatureTime;
+    private String returnTime;
+    private String origin;
+    private String destination;
+    private String days;
     private int id;
 
     public BasePost() {
 
     }
-    public BasePost(String city, String contact, String postType, String publisherId, String publisher,
+    public BasePost(String city, String contact, String postType, int publisherId, String publisher,
                     String returnTime, String destination, String days, String origin, String depatureTime ){
         this.city = city;
         this.contact = contact;
@@ -53,7 +66,7 @@ public abstract class BasePost {
         return returnTime;
     }
 
-    public String getPublisherId() {
+    public int getPublisherId() {
         return publisherId;
     }
 
@@ -85,7 +98,7 @@ public abstract class BasePost {
         return id;
     }
 
-    public void setPublisherId(String publisherId) {
+    public void setPublisherId(int publisherId) {
         this.publisherId = publisherId;
     }
 
