@@ -9,16 +9,20 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.developer.ziptown.R;
+import com.example.developer.ziptown.cache.ZipCache;
 
 public class LandingPageActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String DATABASE_NAME = "ZipTownDB";
     public static SharedPreferences preferences;
     private Button btnSignUp, btnSignIn;
+    public static ZipCache zipCache;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
+        zipCache = ZipCache.getInstance();
+        zipCache.init(openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null));
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
         btnSignIn = findViewById(R.id.btn_sign_in);
         btnSignUp = findViewById(R.id.btn_sign_up);
 

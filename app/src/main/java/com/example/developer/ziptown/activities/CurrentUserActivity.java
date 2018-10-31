@@ -21,6 +21,10 @@ import com.example.developer.ziptown.fragments.currentUserFragments.RequestsFrag
 import com.example.developer.ziptown.models.mockerClasses.Offer;
 import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse;
 
+import java.util.Map;
+
+import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
+
 
 public class CurrentUserActivity extends AppCompatActivity {
     MenuItem prevMenuItem;
@@ -37,19 +41,22 @@ public class CurrentUserActivity extends AppCompatActivity {
         ttvCity = findViewById(R.id.ttv_user_city);
         ttvContact = findViewById(R.id.ttv_user_contact);
 
-        Intent data = getIntent();
-        if(data != null){
-            UserSignInAndLoginResponse user = (UserSignInAndLoginResponse) data.getExtras().getSerializable("user");
-            MainActivity.putString("username",titleCase(user.getUser().getFullName()));
-            MainActivity.putString("city",(titleCase(user.getUser().getCity())));
-            MainActivity.putString("contact",titleCase(user.getUser().getContact()));
-            MainActivity.putString("userType",titleCase(user.getUser().getUserType()));
-            MainActivity.putString("userId",titleCase(String.valueOf(user.getUser().getId())));
-            ttvUsername.setText(titleCase(user.getUser().getFullName()));
-            ttvUserType.setText(titleCase(user.getUser().getUserType()));
-            ttvCity.setText(titleCase(user.getUser().getCity()));
-            ttvContact.setText(user.getUser().getContact());
-            Toast.makeText(this, " user  " + user.getUser().getFullName(), Toast.LENGTH_SHORT).show();
+        Map<String, Object> user = zipCache.getLocalUserData();
+        if(user != null){
+
+            MainActivity.putString("username",titleCase(user.get("fullName").toString()));
+            MainActivity.putString("city",(titleCase(user.get("city").toString())));
+            MainActivity.putString("contact",user.get("contact").toString());
+            MainActivity.putString("userType",titleCase(user.get("userType").toString()));
+            MainActivity.putString("userId",user.get("id").toString());
+            ttvUsername.setText(titleCase(user.get("fullName").toString()));
+            ttvUserType.setText(titleCase(user.get("userType").toString()));
+            ttvCity.setText(titleCase(user.get("city").toString()));
+            ttvContact.setText(user.get("contact").toString());
+            Toast.makeText(this, " user  " +user.get("contact").toString(), Toast.LENGTH_SHORT).show();
+
+        }else {
+            //get data from the cache
 
         }
 

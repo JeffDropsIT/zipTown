@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
         });
     }
 
+
+
     private void postUser(){
         Map<String, Object> map = new HashMap<>();
         CreateUser user = new CreateUser("password123", "S'mangele Pearl Ntuli", "Passenger", "eMpangeni", "276321664554");

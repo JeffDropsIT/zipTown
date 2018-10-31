@@ -1,9 +1,14 @@
 package com.example.developer.ziptown.models.baseClasses;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+import java.util.Map;
+
+import static com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse.oMapper;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class BasePost implements Serializable {
-    private String _id;
+
     private String city;
     private String contact;
     private String created;
@@ -33,13 +38,9 @@ public abstract class BasePost implements Serializable {
         this.origin = origin;
         this.destination = destination;
     }
-
-    public void set_id(String _id) {
-        this._id = _id;
-    }
-
-    public String get_id() {
-        return _id;
+    public Map<String, Object> ObjectToMap(Object object){
+        Map<String, Object> map = oMapper.convertValue(object, Map.class);
+        return map;
     }
 
     public void setCreated(String created) {

@@ -1,10 +1,15 @@
 package com.example.developer.ziptown.models.objectModels;
 
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+import java.util.Map;
+
+import static com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse.oMapper;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable {
-    private String _id, fullName, city, contact, created, userType;
+    private String  fullName, city, contact, created, userType;
     private int id;
 
     public User(){
@@ -28,17 +33,11 @@ public class User implements Serializable {
         return created;
     }
 
-    public String get_id() {
-        return _id;
-    }
 
     public int getId() {
         return id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
-    }
 
     public void setCreated(String created) {
         this.created = created;
@@ -66,5 +65,10 @@ public class User implements Serializable {
 
     public String getCity() {
         return city;
+    }
+
+    public Map<String, Object> ObjectToMap(Object object){
+        Map<String, Object> map = oMapper.convertValue(object, Map.class);
+        return map;
     }
 }

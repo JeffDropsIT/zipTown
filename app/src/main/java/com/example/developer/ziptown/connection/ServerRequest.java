@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.developer.ziptown.models.forms.CreateOffer;
 import com.example.developer.ziptown.models.forms.CreateRequest;
 import com.example.developer.ziptown.models.forms.CreateUser;
+import com.example.developer.ziptown.models.objectModels.Offers;
 import com.example.developer.ziptown.models.responses.GenericErrorResponse;
 import com.example.developer.ziptown.models.forms.UserLogin;
 import com.example.developer.ziptown.models.responses.GenericSuccessResponse;
@@ -16,8 +17,12 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
+import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
 
 public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >{
     private final String BASE_PATH = "http://18.188.245.160/ziptown";
@@ -36,7 +41,6 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
         Object response = chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
-
 
 
         return  response;
@@ -58,6 +62,9 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
             case "CreateRequest":
                 Log.i("WSX", "4 chooseMethod: CreateRequest");
                 return createRequest(map, restTemplate);
+            case "GetPost":
+                Log.i("WSX", "5 chooseMethod: GetPost");
+                return getPost(map, restTemplate);
             default:
                 Log.i("WSX", "last chooseMethod: " + new GenericErrorResponse("Ops Something went wrong", 500).toString());
                 return new GenericErrorResponse("Ops Something went wrong", 500);
@@ -78,8 +85,12 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
             sendResponseToActivity(responseError, "error");
             Log.i("WSX", "doInBackground: message: "+responseError.toString());
         }else {
+
+            cacheUserData(response);
+            cacheUserOffers(response);
+            cacheUserRequests(response);
             sendResponseToActivity(response, "user");
-            Log.i("WSX", "doInBackground: message: "+response.toString());
+            Log.i("WSX", "doInBackground: message: "+response.ObjectToMap(response));
         }
 
 
@@ -97,11 +108,43 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
             sendResponseToActivity(responseError, "error");
             Log.i("WSX", "doInBackground: message: "+responseError.toString());
         }else {
+
+            cacheUserData(response);
+            cacheUserOffers(response);
+            cacheUserRequests(response);
             sendResponseToActivity(response, "user");
-            Log.i("WSX", "doInBackground: message: "+response.toString());
+
+
+
         }
         return response;
     }
+
+    private void cacheUserData(UserSignInAndLoginResponse response) {
+        zipCache.addUserData(zipCache.toContentValues(response.getUserMap()));
+    }
+
+    private void cacheUserOffers(UserSignInAndLoginResponse response) {
+        Map<String, Object> offersMap = response.getOffersMap();
+        ArrayList<Integer> idList = response.getOffersIdSet();
+
+        for(int i = 0; i < idList.size(); i++){
+            Log.i("WSX", "userLogin: offers keyset "+response.ObjectToMap(offersMap.get(idList.get(i).toString())));
+            zipCache.addUserOffers(zipCache.toContentValues(response.ObjectToMap(offersMap.get(idList.get(i).toString()))));
+        }
+
+    }
+    private void cacheUserRequests(UserSignInAndLoginResponse response) {
+        Map<String, Object> requestsMap = response.getRequestsMap();
+        ArrayList<Integer> idList = response.getRequestIdSet();
+
+        for(int i = 0; i < idList.size(); i++){
+            Log.i("WSX", "userLogin: requests keyset "+response.ObjectToMap(requestsMap.get(idList.get(i).toString())));
+            zipCache.addUserRequests(zipCache.toContentValues(response.ObjectToMap(requestsMap.get(idList.get(i).toString()))));
+        }
+
+    }
+
     private Object createOffer(Map<String, Object> map, RestTemplate restTemplate){
         CreateOffer offer = (CreateOffer) map.get("model");
         Log.i("WSX", "name: "+offer.getContact());
@@ -136,7 +179,31 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         }
         return response;
     }
+    private Object[] getPost(Map<String, Object> map, RestTemplate restTemplate){
 
+        String url = BASE_PATH + "/app/"+map.get("postType").toString()+"?city="+map.get("city").toString();
+        Log.i("WSX", "URL: "+url);
+        Offers[] response = restTemplate.getForObject(url, Offers[].class);
+        if (response.length == 0){
+
+            sendResponseToActivity(new GenericErrorResponse("No data Found", 404), "error");
+            Log.i("WSX", "doInBackground: message: "+"error on getPost");
+        }else {
+            //sendResponseToActivity(response, "success");
+            Log.i("WSX", "doInBackground: message: "+response.length);
+            for (int i = 0; i < response.length; i ++){
+                Log.i("WSX", "type "+map.get("postType").toString()+" getPost: "+response[i].ObjectToMap(response[i]));
+                if(map.get("postType").toString().equals("offers")){
+                    zipCache.addOffers(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
+                }else {
+                    zipCache.addRequests(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
+                }
+
+            }
+        }
+        return response;
+
+    }
     private void sendResponseToActivity(Object object, String resType){
         Map<String, Object> map = new HashMap<>();
         map.put("object", object);

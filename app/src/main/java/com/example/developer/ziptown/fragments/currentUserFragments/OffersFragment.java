@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,15 @@ import android.widget.Toast;
 import com.example.developer.ziptown.activities.AddGenericPostActivity;
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.currentUserAdpt.OfferAdapter;
+import com.example.developer.ziptown.cache.ZipCache;
 import com.example.developer.ziptown.models.mockerClasses.Offer;
 import com.example.developer.ziptown.models.mockerClasses.Publisher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
 
 public class OffersFragment extends Fragment implements View.OnClickListener {
     private List<Offer> offersList = new ArrayList<>();
@@ -62,16 +67,20 @@ public class OffersFragment extends Fragment implements View.OnClickListener {
     }
 
     private void prepareOffersData() {
-        Publisher publisher = new Publisher("Phindile Sthah Ngobese", "+27710081789", 1);
+        Map<String, Object> user = zipCache.getLocalUserData();
+        Map<String,  Map<String, Object>> offers = zipCache.getLocalPost(ZipCache.USER_OFFERS);
+        Publisher publisher = new Publisher(user.get("fullName").toString(), user.get("contact").toString(), Integer.valueOf(user.get("id").toString()));
+        Offer offer;
 
-        Offer offer = new Offer("Sowetho", "Randburg", "8 PM To 16 PM", "Monday To Friday", "Pretoria", "2018/10/23", publisher);
-        offersList.add(offer);
+        Log.i("WSX", "prepareOffersData: offers: "+offers);
+        Log.i("WSX", "prepareOffersData: user: "+user);
 
-        for(int i = 0; i < 8 ; i++){
-            publisher = new Publisher("Phindile Sthah Ngobese", "+27710081789", i);
-            offer = new Offer("Sowetho", "Randburg", "8 PM To 16 PM", "Monday To Friday", "Pretoria", "2018/10/23", publisher);
+        for (String key : offers.keySet()) {
+            Map<String, Object> offerTmp = offers.get(key);
+            offer = new Offer(offerTmp.get("origin").toString(), offerTmp.get("destination").toString(), offerTmp.get("depatureTime").toString()+" To "+offerTmp.get("returnTime").toString(), offerTmp.get("days").toString(), offerTmp.get("city").toString(), offerTmp.get("created").toString(), publisher);
             offersList.add(offer);
         }
+
         mOfferAdapter.notifyDataSetChanged();
     }
 }

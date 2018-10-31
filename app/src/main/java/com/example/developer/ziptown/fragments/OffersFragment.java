@@ -17,14 +17,20 @@ import android.widget.Toast;
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.activities.UserProfileActivity;
 import com.example.developer.ziptown.adapters.OfferAdapter;
+import com.example.developer.ziptown.cache.ZipCache;
+import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.models.mockerClasses.Offer;
 import com.example.developer.ziptown.models.mockerClasses.Publisher;
 import com.example.developer.ziptown.recylcler.RecyclerTouchListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class OffersFragment extends Fragment{
+import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
+
+public class OffersFragment extends Fragment implements ServerRequest.OnTaskCompleted {
     private List<Offer> offersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private OfferAdapter mOfferAdapter;
@@ -48,11 +54,12 @@ public class OffersFragment extends Fragment{
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mOfferAdapter);
-
+        getPosts();
         if(isClickable){
             onItemClickRecycler();
         }
         prepareOffersData();
+
         return view;
     }
 
@@ -82,16 +89,51 @@ public class OffersFragment extends Fragment{
         }));
     }
     private void prepareOffersData() {
-        Publisher publisher = new Publisher("Phindile Sthah Ngobese", "+27710081789", 1);
 
-        Offer offer = new Offer("Sowetho", "Randburg", "8 PM To 16 PM", "Monday To Friday", "Pretoria", "2018/10/23", publisher);
-        offersList.add(offer);
 
-        for(int i = 0; i < 100 ; i++){
-            publisher = new Publisher("Phindile Sthah Ngobese", "+27710081789", i);
-            offer = new Offer("Sowetho", "Randburg", "8 PM To 16 PM", "Monday To Friday", "Pretoria", "2018/10/23", publisher);
+
+        Map<String, Object> user = zipCache.getLocalUserData();
+        Map<String,  Map<String, Object>> offers = zipCache.getLocalPost(ZipCache.OFFERS);
+        Publisher publisher = new Publisher(user.get("fullName").toString(), user.get("contact").toString(), Integer.valueOf(user.get("id").toString()));
+        Offer offer;
+
+
+        Log.i("WSX", "prepareOffersData: offers: "+offers);
+        Log.i("WSX", "prepareOffersData: user: "+user);
+
+        for (String key : offers.keySet()) {
+            Map<String, Object> offerTmp = offers.get(key);
+            offer = new Offer(offerTmp.get("origin").toString(), offerTmp.get("destination").toString(), offerTmp.get("depatureTime").toString()+" To "+offerTmp.get("returnTime").toString(), offerTmp.get("days").toString(), offerTmp.get("city").toString(), offerTmp.get("created").toString(), publisher);
             offersList.add(offer);
         }
+
         mOfferAdapter.notifyDataSetChanged();
+
+    }
+
+
+    private void getPosts(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("postType", "offers");
+        map.put("type", "GetPost");
+        map.put("city", "Pretoria");
+
+        new ServerRequest(this).execute(map);
+
+    }
+
+    @Override
+    public void onTaskCompleted() {
+        prepareOffersData();
+    }
+
+    @Override
+    public void onDataFetched(Map<String, Object> object) {
+
+    }
+
+    @Override
+    public void onTaskFailed() {
+
     }
 }

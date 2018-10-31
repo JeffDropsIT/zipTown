@@ -1,7 +1,10 @@
 package com.example.developer.ziptown.models.objectModels;
 
 import com.example.developer.ziptown.models.baseClasses.BasePost;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Map;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Offers extends BasePost {
     public Offers() {
         super();
@@ -12,10 +15,6 @@ public class Offers extends BasePost {
         return super.getId();
     }
 
-    @Override
-    public String get_id() {
-        return super.get_id();
-    }
 
     @Override
     public String getCity() {
@@ -70,11 +69,6 @@ public class Offers extends BasePost {
     @Override
     public String getOrigin() {
         return super.getOrigin();
-    }
-
-    @Override
-    public void set_id(String _id) {
-        super.set_id(_id);
     }
 
     @Override
@@ -135,5 +129,9 @@ public class Offers extends BasePost {
     @Override
     public void setReturnTime(String returnTime) {
         super.setReturnTime(returnTime);
+    }
+    @Override
+    public Map<String, Object> ObjectToMap(Object object) {
+        return super.ObjectToMap(object);
     }
 }
