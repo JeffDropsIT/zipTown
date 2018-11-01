@@ -159,7 +159,7 @@
                     android:textColor="#57646c"
                     android:text="Contact: "/>
                 <Button
-                    android:id="@+id/btn_attend"
+                    android:id="@+id/btn_call"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="end"

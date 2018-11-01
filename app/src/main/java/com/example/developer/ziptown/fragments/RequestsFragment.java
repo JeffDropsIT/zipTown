@@ -50,43 +50,19 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
         View view = inflater.inflate(R.layout.request_fragment_layout, container, false);
         // Inflate the layout for this fragment
         recyclerView = view.findViewById(R.id.rcl_offers);
-        mOfferAdapter = new OfferAdapter(offersList);
+        mOfferAdapter = new OfferAdapter(offersList, getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mOfferAdapter);
         Log.i("WSX", "onCreateView: request");
         getPosts();
-        if(isClickable){
-            onItemClickRecycler();
-        }
+
         prepareOffersData();
         return view;
     }
 
-    private void onItemClickRecycler(){
-        recyclerView.addOnItemTouchListener( new RecyclerTouchListener(getContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Log.i("WSX", "onClick: preseed");
-                Offer offer = offersList.get(position);
-                Bundle bundle = new Bundle();
-                Intent intent = new Intent(getContext(), UserProfileActivity.class);
 
-                bundle.putSerializable("user", offer);
-                intent.putExtras(bundle);
-
-                startActivity(intent);
-
-                Toast.makeText(getContext(), offer.getPublisherId()+" "+offer.getPublisher(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-                Log.i("WSX", "onClick: preseed");
-            }
-        }));
-    }
     private void prepareOffersData() {
 
 

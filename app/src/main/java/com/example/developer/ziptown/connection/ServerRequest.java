@@ -3,9 +3,13 @@ package com.example.developer.ziptown.connection;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.developer.ziptown.activities.MainActivity;
+import com.example.developer.ziptown.models.forms.CreateCustomSearch;
 import com.example.developer.ziptown.models.forms.CreateOffer;
 import com.example.developer.ziptown.models.forms.CreateRequest;
 import com.example.developer.ziptown.models.forms.CreateUser;
+import com.example.developer.ziptown.models.forms.UpdateUser;
+import com.example.developer.ziptown.models.mockerClasses.Offer;
 import com.example.developer.ziptown.models.objectModels.Offers;
 import com.example.developer.ziptown.models.responses.ContactVerificationSuccessResponse;
 import com.example.developer.ziptown.models.responses.GenericErrorResponse;
@@ -13,6 +17,8 @@ import com.example.developer.ziptown.models.forms.UserLogin;
 import com.example.developer.ziptown.models.responses.GenericSuccessResponse;
 import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse;
 
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -63,17 +69,89 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
             case "GetPost":
                 Log.i("WSX", "5 chooseMethod: GetPost");
                 return getPost(map, restTemplate);
+            case "CreateOfferSearch":
+                Log.i("WSX", "5 chooseMethod: CreateOfferSearch");
+                return createOfferSearch(map, restTemplate);
+            case "CreateRequestSearch":
+                Log.i("WSX", "5 chooseMethod: GetPost");
+                return createRequestSearch(map, restTemplate);
             case "DeletePost":
                 Log.i("WSX", "6 chooseMethod: DeletePost");
                 deletePost(map, restTemplate);
                 return new GenericSuccessResponse("success", 200);
+            case "UpdateUser":
+                Log.i("WSX", "6 chooseMethod: UpdateUser");
+
+                return updateUser(map, restTemplate);
             case "VerifyContact":
                 Log.i("WSX", "6 chooseMethod: VerifyContact");
                 return verifyContact(map, restTemplate);
+            case "GetUser":
+                Log.i("WSX", "6 chooseMethod: GetUser");
+                return getUser(restTemplate);
             default:
                 Log.i("WSX", "last chooseMethod: " + new GenericErrorResponse("Ops Something went wrong", 500).toString());
                 return new GenericErrorResponse("Ops Something went wrong", 500);
         }
+    }
+
+    private Object updateUser(Map<String, Object> map, RestTemplate restTemplate){
+        UpdateUser user = (UpdateUser) map.get("model");
+        String url = BASE_PATH + user.getURL();
+        Log.i("WSX", "URL: "+url);
+
+        GenericSuccessResponse response = restTemplate.postForObject(url, user, GenericSuccessResponse.class);
+        if (response.getResponse() != 200){
+            GenericErrorResponse responseError = restTemplate.postForObject(url, user, GenericErrorResponse.class);
+            sendResponseToActivity(responseError, "error");
+            Log.i("WSX", "doInBackground: message: "+responseError.toString());
+        }else {
+            sendResponseToActivity(response, "success");
+            Log.i("WSX", "doInBackground: message: "+response.toString());
+        }
+        return response;
+    }
+    private Object[] createOfferSearch(Map<String, Object> map, RestTemplate restTemplate){
+        CreateCustomSearch search = (CreateCustomSearch) map.get("model");
+        String url = BASE_PATH + "/app/search/offers";
+        Log.i("WSX", "URL: "+url);
+
+        Offers[] response = restTemplate.postForObject(url, search, Offers[].class);
+
+        if (response.length == 0){
+            sendResponseToActivity(new GenericSuccessResponse("No data Found", 404), "success");
+            Log.i("WSX", "doInBackground: message: "+"error on getPost");
+        }else {
+            //sendResponseToActivity(response, "success");
+            Log.i("WSX", "doInBackground: message: "+response.length);
+            for (int i = 0; i < response.length; i ++){
+               zipCache.addOffers(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
+
+
+            }
+        }
+        return response;
+    }
+    private Object[] createRequestSearch(Map<String, Object> map, RestTemplate restTemplate){
+        CreateCustomSearch search = (CreateCustomSearch) map.get("model");
+        String url = BASE_PATH + "/app/search/requests";
+        Log.i("WSX", "URL: "+url);
+
+        Offers[] response = restTemplate.postForObject(url, search, Offers[].class);
+
+        if (response.length == 0){
+            sendResponseToActivity(new GenericSuccessResponse("No data Found", 404), "success");
+            Log.i("WSX", "doInBackground: message: "+"error on getPost");
+        }else {
+            //sendResponseToActivity(response, "success");
+            Log.i("WSX", "doInBackground: message: "+response.length);
+            for (int i = 0; i < response.length; i ++){
+                zipCache.addRequests(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
+
+            }
+        }
+        return response;
+
     }
     private Object verifyContact(Map<String, Object> map, RestTemplate restTemplate){
 
@@ -93,7 +171,29 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         Log.i("WSX", "URL: "+url);
         restTemplate.delete(url);
     }
+    private Object getUser(RestTemplate restTemplate){
 
+        String url = BASE_PATH + "/account/user/"+ MainActivity.getString("userId");
+        Log.i("WSX", "URL: "+url);
+
+        UserSignInAndLoginResponse response = restTemplate.getForObject(url, UserSignInAndLoginResponse.class);
+        Log.i("WSX", "createUser: user: "+response.getUser());
+        if (response.getUser() == null){
+            GenericErrorResponse responseError = new GenericErrorResponse("failed to get user", 404);
+            sendResponseToActivity(responseError, "error");
+            Log.i("WSX", "doInBackground: message: "+responseError.toString());
+        }else {
+
+            cacheUserData(response);
+            cacheUserOffers(response);
+            cacheUserRequests(response);
+            sendResponseToActivity(response, "user");
+            Log.i("WSX", "doInBackground: message: "+response.ObjectToMap(response));
+        }
+
+
+        return response;
+    }
     private Object createUser(Map<String, Object> map, RestTemplate restTemplate){
 
         CreateUser user = (CreateUser) map.get("model");

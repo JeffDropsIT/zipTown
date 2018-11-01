@@ -38,6 +38,15 @@ public abstract class BasePost implements Serializable {
         this.origin = origin;
         this.destination = destination;
     }
+    public BasePost(String city,
+                    String returnTime, String destination, String days, String origin, String depatureTime ){
+        this.city = city;
+        this.days = days;
+        this.returnTime = returnTime;
+        this.depatureTime = depatureTime;
+        this.origin = origin;
+        this.destination = destination;
+    }
     public Map<String, Object> ObjectToMap(Object object){
         Map<String, Object> map = oMapper.convertValue(object, Map.class);
         return map;

@@ -35,9 +35,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         setOnNavigationItemSelectedListener();
         addOnPageChangeListener(viewPager);
         setupViewPager(viewPager);
-        Intent data = getIntent();
-        Offer offer = (Offer) data.getExtras().getSerializable("user");
-        Toast.makeText(this, " user  " + offer.getPublisher(), Toast.LENGTH_SHORT).show();
+        //Intent data = getIntent();
+        //Offer offer = (Offer) data.getExtras().getSerializable("user");
+        //Toast.makeText(this, " user  " + offer.getPublisher(), Toast.LENGTH_SHORT).show();
 
     }
     private void setupViewPager(ViewPager viewPager) {

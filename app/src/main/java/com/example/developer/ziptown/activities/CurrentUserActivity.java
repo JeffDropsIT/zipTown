@@ -16,17 +16,19 @@ import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.ViewPagerAdapter;
+import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.fragments.currentUserFragments.OffersFragment;
 import com.example.developer.ziptown.fragments.currentUserFragments.RequestsFragment;
 import com.example.developer.ziptown.models.mockerClasses.Offer;
 import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
 
 
-public class CurrentUserActivity extends AppCompatActivity {
+public class CurrentUserActivity extends AppCompatActivity implements ServerRequest.OnTaskCompleted {
     MenuItem prevMenuItem;
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
@@ -41,6 +43,27 @@ public class CurrentUserActivity extends AppCompatActivity {
         ttvCity = findViewById(R.id.ttv_user_city);
         ttvContact = findViewById(R.id.ttv_user_contact);
 
+        updateUserData();
+
+        Log.i("WSX", "UserProfileActivity: received");
+        viewPager =  findViewById(R.id.vpg_viewpager);
+        //Initializing the bottomNavigationView
+        setOnNavigationItemSelectedListener();
+        addOnPageChangeListener(viewPager);
+        setupViewPager(viewPager);
+        setToolBar();
+
+    }
+
+    @Override
+    protected void onResume() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("type", "GetUser");
+        new ServerRequest(this).execute(map);
+        super.onResume();
+    }
+
+    private void updateUserData(){
         Map<String, Object> user = zipCache.getLocalUserData();
         if(user != null){
 
@@ -59,17 +82,7 @@ public class CurrentUserActivity extends AppCompatActivity {
             //get data from the cache
 
         }
-
-        Log.i("WSX", "UserProfileActivity: received");
-        viewPager =  findViewById(R.id.vpg_viewpager);
-        //Initializing the bottomNavigationView
-        setOnNavigationItemSelectedListener();
-        addOnPageChangeListener(viewPager);
-        setupViewPager(viewPager);
-        setToolBar();
-
     }
-
     public static String titleCase(String string){
         String[] charArr = string.split(" ");
         for (int i = 0; i < charArr.length; i++){
@@ -172,5 +185,28 @@ public class CurrentUserActivity extends AppCompatActivity {
                         return false;
                     }
                 });
+    }
+
+
+    @Override
+    public void onTaskCompleted() {
+
+    }
+
+    @Override
+    public void onDataFetched(Map<String, Object> object) {
+
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                updateUserData();
+                Toast.makeText(getApplicationContext(), "refreshing...", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    @Override
+    public void onTaskFailed() {
+
     }
 }

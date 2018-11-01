@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.ViewPagerAdapter;
@@ -23,19 +25,22 @@ import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.fragments.OffersFragment;
 import com.example.developer.ziptown.fragments.RequestsFragment;
 import com.example.developer.ziptown.fragments.SearchFragment;
+import com.example.developer.ziptown.fragments.TimePickerFragment;
 import com.example.developer.ziptown.models.forms.CreateUser;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.developer.ziptown.activities.LandingPageActivity.preferences;
 
-public class MainActivity extends AppCompatActivity implements ServerRequest.OnTaskCompleted {
+public class MainActivity extends AppCompatActivity implements ServerRequest.OnTaskCompleted, TimePickerFragment.TimePickedListener,SearchFragment.DialogFragmentInteface {
 
 
     MenuItem prevMenuItem;
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
+    SearchFragment dialogFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
         addOnPageChangeListener(viewPager);
         setupViewPager(viewPager);
         setToolBar("Offers");
-        postUser();
+
 
     }
 
@@ -104,13 +109,6 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
     }
 
 
-
-    private void postUser(){
-        Map<String, Object> map = new HashMap<>();
-        CreateUser user = new CreateUser("password123", "S'mangele Pearl Ntuli", "Passenger", "eMpangeni", "276321664554");
-        map.put("createUser", user);
-        //new ServerRequest(this).execute(map);
-    }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         OffersFragment offers = new OffersFragment();
@@ -132,14 +130,21 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
                 startActivity(intent);
                 break;
             case R.id.search:
-                SearchFragment dialogFragment = new SearchFragment();
+                dialogFragment = new SearchFragment();
+                dialogFragment.setContextListener(getApplicationContext(), this);
+                dialogFragment.setSelectedItem(viewPager.getCurrentItem());
+                Log.i("WSX", "onOptionsItemSelected: "+ viewPager.getCurrentItem());
+                dialogFragment.setActivity(this);
                 dialogFragment.show(getFragmentManager(), "SearchDialog");
                 break;
         }
 
         return true;
     }
-
+    @Override
+    public void onTimePicked(Calendar time, int id) {
+        dialogFragment.setTimesOnSearchFragment(time, id);
+    }
     private void setToolBar(String title){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -200,6 +205,13 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
 
     @Override
     public void onTaskFailed() {
+
+    }
+
+    @Override
+    public void onCompleteListener() {
+        Log.i("WSX", "onCompleteListener: ");
+        //start search results activity
 
     }
 }

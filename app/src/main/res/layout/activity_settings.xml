@@ -161,8 +161,8 @@
                     android:paddingRight="10dp"
                     android:paddingTop="10dp"
                     android:inputType="number"
-                    android:clickable="false"
-                    android:hint="+27710084798"/>
+                    android:enabled="false"
+                    android:clickable="false"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -182,6 +182,7 @@
                     android:textColor="#57646c"
                     android:textSize="20sp"
 
+                    android:visibility="gone"
                     android:text="Change Password: "/>
                 <TextView
                     android:id="@+id/ttv_renew_password"
@@ -191,6 +192,7 @@
                     android:paddingRight="10dp"
                     android:paddingTop="10dp"
                     android:textColor="#57646c"
+                    android:visibility="gone"
                     android:layout_marginLeft="5dp"
                     android:text="@string/show_alert"/>
                 <EditText

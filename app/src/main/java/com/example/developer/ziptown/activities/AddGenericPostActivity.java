@@ -257,12 +257,12 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
         }else {
             Map<String, Object> map = new HashMap<>();
             if(type.contains("offer")){
-                CreateOffer offer = new CreateOffer(city, ttvContact.getText().toString(),type, Integer.parseInt(MainActivity.getString("userId").trim()), ttvPublisher.getText().toString(),
+                CreateOffer offer = new CreateOffer(city, MainActivity.getString("contact").toString(),type, Integer.parseInt(MainActivity.getString("userId").trim()), MainActivity.getString("username").toString(),
                         pickedPickUpTime,destination, allSelectedDays,origin, pickedDepartTime );
                 map.put("model",offer);
                 map.put("type","CreateOffer");
             }else {
-                CreateRequest request = new CreateRequest(city, ttvContact.getText().toString(),type, Integer.parseInt(MainActivity.getString("userId").trim()), ttvPublisher.getText().toString(),
+                CreateRequest request = new CreateRequest(city, MainActivity.getString("contact").toString(),type, Integer.parseInt(MainActivity.getString("userId").trim()),MainActivity.getString("username"),
                         pickedPickUpTime,destination, allSelectedDays,origin, pickedDepartTime );
                 map.put("model",request);
                 map.put("type","CreateRequest");
