@@ -100,12 +100,12 @@ public class SearchFragment  extends DialogFragment implements View.OnClickListe
 
         if(textViewArrayList.contains(textView)){
             textView.setTextColor(getResources().getColor(R.color.colorGrey));
-            textView.setBackground(context.getDrawable(R.drawable.shape_text));
+            textView.setBackground(context.getResources().getDrawable(R.drawable.shape_text));
             textViewArrayList.remove(textView);
             daysSelected.remove(day);
         }else {
             textView.setTextColor(Color.WHITE);
-            textView.setBackground(context.getDrawable(R.drawable.shape_text_selected));
+            textView.setBackground(context.getResources().getDrawable(R.drawable.shape_text_selected));
             textViewArrayList.add(textView);
             daysSelected.add(day);
         }

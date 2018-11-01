@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -149,12 +150,12 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
 
         if(textViewArrayList.contains(textView)){
             textView.setTextColor(getResources().getColor(R.color.colorGrey));
-            textView.setBackground(getDrawable(R.drawable.shape_text));
+            textView.setBackground(getResources().getDrawable(R.drawable.shape_text));
             textViewArrayList.remove(textView);
             daysSelected.remove(day);
         }else {
             textView.setTextColor(Color.WHITE);
-            textView.setBackground(getDrawable(R.drawable.shape_text_selected));
+            textView.setBackground(getResources().getDrawable(R.drawable.shape_text_selected));
             textViewArrayList.add(textView);
             daysSelected.add(day);
         }

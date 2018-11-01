@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/lin_dropdown"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="10dp"
         android:orientation="horizontal">
 
@@ -29,7 +29,11 @@
             android:src="@drawable/ic_dropdown"/>
     </LinearLayout>
 
-    <include layout="@layout/filters_layout"/>
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <include layout="@layout/filters_layout"/>
+   </ScrollView>
 
 
 
