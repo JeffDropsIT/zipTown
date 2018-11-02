@@ -171,6 +171,11 @@ public class SearchFragment  extends DialogFragment implements View.OnClickListe
             new ServerRequest(this).execute(map);
         }
     }
+
+    public int getSelectedItem() {
+        return selectedItem;
+    }
+
     private void setOnClickListeners(View view){
         ttvSun.setOnClickListener(this);
         ttvSat.setOnClickListener(this);
@@ -205,7 +210,8 @@ public class SearchFragment  extends DialogFragment implements View.OnClickListe
 
     @Override
     public void onDataFetched(Map<String, Object> object) {
-        Log.i("WSX", "onDataFetched: "+object);
+        Log.i("WSX", "onDataFetched: "+object.get("object"));
+        Log.i("WSX", "onDataFetched: "+object.get("response"));
         listener.onCompleteListener();
     }
 

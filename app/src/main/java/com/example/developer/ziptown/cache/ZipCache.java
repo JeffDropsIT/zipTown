@@ -18,6 +18,8 @@ public class ZipCache {
     public static final String REQUESTS = "Requests";
     public static final String USER_OFFERS = "UserOffers";
     public static final String USER_REQUESTS = "UserRequests";
+    public static final String REQUESTS_SEARCH = "RequestsSearch";
+    public static final String OFFERS_SEARCH = "OffersSearch";
     private static ZipCache instance;
     private static SQLiteDatabase mDatabase;
     private ArrayList<String> postKeys;
@@ -129,6 +131,52 @@ public class ZipCache {
         createOffersTable();
         mDatabase.insertWithOnConflict(OFFERS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
+    public  void addRequestsSearch(ContentValues values){
+        createRequestsSearchTable();
+        mDatabase.insertWithOnConflict(REQUESTS_SEARCH, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    private void createRequestsSearchTable() {
+        String sqlSite = "CREATE TABLE IF NOT EXISTS RequestsSearch (\n" +
+                "\tid int  PRIMARY KEY,\n" +
+                "\tpublisherId int , \n" +
+                "\tcity  varchar(200),\n" +
+                "\tdays  varchar(200),\n" +
+                "\tdepatureTime  varchar(200), \n" +
+                "\treturnTime  varchar(200), \n" +
+                "\tcontact varchar(200), \n" +
+                "\torigin varchar(200), \n" +
+                "\tdestination varchar(200), \n" +
+                "\tpublisher varchar(200), \n" +
+                "\tcreated varchar(200), \n" +
+                "\tpostType varchar(200)  \n" +
+                ");";
+        mDatabase.execSQL(sqlSite);
+    }
+
+    public  void addOffersSearch(ContentValues values){
+        createOffersSearchTable();
+        mDatabase.insertWithOnConflict(OFFERS_SEARCH, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    private void createOffersSearchTable() {
+        String sqlSite = "CREATE TABLE IF NOT EXISTS OffersSearch (\n" +
+                "\tid int  PRIMARY KEY,\n" +
+                "\tpublisherId int , \n" +
+                "\tcity  varchar(200),\n" +
+                "\tdays  varchar(200),\n" +
+                "\tdepatureTime  varchar(200), \n" +
+                "\treturnTime  varchar(200), \n" +
+                "\tcontact varchar(200), \n" +
+                "\torigin varchar(200), \n" +
+                "\tdestination varchar(200), \n" +
+                "\tpublisher varchar(200), \n" +
+                "\tcreated varchar(200), \n" +
+                "\tpostType varchar(200)  \n" +
+                ");";
+        mDatabase.execSQL(sqlSite);
+    }
+
     public  void addUserOffers(ContentValues values){
         createUserOffersTable();
         mDatabase.insertWithOnConflict(USER_OFFERS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -150,6 +198,16 @@ public class ZipCache {
     private Cursor getRequestsTable(){
         createRequestsTable();
         String select = "SELECT * FROM  " + REQUESTS;
+        return  mDatabase.rawQuery(select, null);
+    }
+    private Cursor getOffersSearchTable(){
+        createOffersSearchTable();
+        String select = "SELECT * FROM  " + OFFERS_SEARCH;
+        return  mDatabase.rawQuery(select, null);
+    }
+    private Cursor getRequestsSearchTable(){
+        createRequestsSearchTable();
+        String select = "SELECT * FROM  " + REQUESTS_SEARCH;
         return  mDatabase.rawQuery(select, null);
     }
     private Cursor getUserTable(){
@@ -241,7 +299,13 @@ public class ZipCache {
         } else if (table.equals(USER_OFFERS)) {
             Log.i("WSX", "getLocalPost: USER_OFFERS");
             dataCursor = getUserOffersTable(); //return all data on table
-        } else {
+        } else if (table.equals(REQUESTS_SEARCH)) {
+            Log.i("WSX", "getLocalPost: REQUESTS_SEARCH");
+            dataCursor = getRequestsSearchTable(); //return all data on table
+        } else if (table.equals(OFFERS_SEARCH)) {
+            Log.i("WSX", "getLocalPost: OFFERS_SEARCH");
+            dataCursor = getOffersSearchTable(); //return all data on table
+        }else {
             Log.i("WSX", "getLocalPost: USER_REQUESTS");
             dataCursor = getUserRequestsTable(); //return all data on table
         }

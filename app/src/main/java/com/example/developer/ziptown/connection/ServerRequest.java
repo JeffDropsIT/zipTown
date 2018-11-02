@@ -125,10 +125,11 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
             //sendResponseToActivity(response, "success");
             Log.i("WSX", "doInBackground: message: "+response.length);
             for (int i = 0; i < response.length; i ++){
-               zipCache.addOffers(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
+               zipCache.addOffersSearch(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
 
 
             }
+            sendResponseToActivity(response, "search");
         }
         return response;
     }
@@ -146,9 +147,10 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
             //sendResponseToActivity(response, "success");
             Log.i("WSX", "doInBackground: message: "+response.length);
             for (int i = 0; i < response.length; i ++){
-                zipCache.addRequests(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
+                zipCache.addRequestsSearch(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
 
             }
+            sendResponseToActivity(response, "search");
         }
         return response;
 

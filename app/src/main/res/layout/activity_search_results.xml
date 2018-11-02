@@ -1,0 +1,21 @@
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <include
+        android:id="@+id/toolbar_container"
+        layout="@layout/toolbar">
+
+    </include>
+    <android.support.v7.widget.RecyclerView android:id="@+id/rcl_offers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <include android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_centerInParent="true" layout="@layout/nopost_layout"></include>
+
+
+</RelativeLayout>

@@ -70,6 +70,8 @@ public class OffersFragment extends Fragment implements ServerRequest.OnTaskComp
         super.onResume();
     }
 
+
+
     private void prepareOffersData() {
 
 

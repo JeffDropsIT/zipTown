@@ -213,5 +213,9 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
         Log.i("WSX", "onCompleteListener: ");
         //start search results activity
 
+        Intent intent = new Intent(MainActivity.this, SearchResults.class);
+        intent.putExtra("table", dialogFragment.getSelectedItem());
+        startActivity(intent);
+
     }
 }
