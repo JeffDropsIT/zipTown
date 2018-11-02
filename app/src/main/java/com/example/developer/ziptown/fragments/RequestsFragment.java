@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
@@ -35,6 +36,7 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
     private RecyclerView recyclerView;
     private OfferAdapter mOfferAdapter;
     private boolean isClickable;
+    TextView ttvNoPosts;
 
     public RequestsFragment(){
 
@@ -57,7 +59,7 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
         recyclerView.setAdapter(mOfferAdapter);
         Log.i("WSX", "onCreateView: request");
         getPosts();
-
+        ttvNoPosts = view.findViewById(R.id.ttv_no_post);
         prepareOffersData();
         return view;
     }
@@ -81,7 +83,13 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
             offer = new Offer(offerTmp.get("origin").toString(), offerTmp.get("destination").toString(), offerTmp.get("depatureTime").toString()+" To "+offerTmp.get("returnTime").toString(), offerTmp.get("days").toString(), offerTmp.get("city").toString(), offerTmp.get("created").toString(), publisher);
             offersList.add(offer);
         }
+        if(offers.keySet().size() == 0){
+            Log.i("WSX", "prepareOffersData: empty data");
+            ttvNoPosts.setVisibility(View.VISIBLE);
 
+        }else {
+            ttvNoPosts.setVisibility(View.GONE);
+        }
         mOfferAdapter.notifyDataSetChanged();
     }
 
@@ -96,13 +104,24 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
     }
 
     @Override
+    public void onResume() {
+        getPosts();
+        super.onResume();
+    }
+
+    @Override
     public void onTaskCompleted() {
         prepareOffersData();
     }
 
     @Override
     public void onDataFetched(Map<String, Object> object) {
-
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                prepareOffersData();
+            }
+        });
     }
 
     @Override

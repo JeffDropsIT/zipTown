@@ -12,26 +12,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.developer.ziptown.activities.AddGenericPostActivity;
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.currentUserAdpt.OfferAdapter;
 import com.example.developer.ziptown.cache.ZipCache;
+import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.models.mockerClasses.Offer;
 import com.example.developer.ziptown.models.mockerClasses.Publisher;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
 
-public class RequestsFragment extends Fragment implements View.OnClickListener {
+public class RequestsFragment extends Fragment implements View.OnClickListener, ServerRequest.OnTaskCompleted {
     private List<Offer> offersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private OfferAdapter mOfferAdapter;
-
+    TextView ttvNoPosts;
     public RequestsFragment(){
 
     }
@@ -48,7 +51,7 @@ public class RequestsFragment extends Fragment implements View.OnClickListener {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mOfferAdapter);
         Log.i("WSX", "onCreateView: request");
-
+        ttvNoPosts = view.findViewById(R.id.ttv_no_post);
         view.findViewById(R.id.fab_booking).setOnClickListener(this);
 
         prepareOffersData();
@@ -71,7 +74,13 @@ public class RequestsFragment extends Fragment implements View.OnClickListener {
             offer.setPostId(offerTmp.get("id").toString());
             offersList.add(offer);
         }
+        if(offers.keySet().size() == 0){
+            Log.i("WSX", "prepareOffersData: empty data");
+            ttvNoPosts.setVisibility(View.VISIBLE);
 
+        }else {
+            ttvNoPosts.setVisibility(View.GONE);
+        }
         mOfferAdapter.notifyDataSetChanged();
     }
 
@@ -86,5 +95,33 @@ public class RequestsFragment extends Fragment implements View.OnClickListener {
                 break;
 
         }
+    }
+
+    @Override
+    public void onResume() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("type", "GetUser");
+        new ServerRequest(this).execute(map);
+        super.onResume();
+    }
+
+    @Override
+    public void onTaskCompleted() {
+
+    }
+
+    @Override
+    public void onDataFetched(Map<String, Object> object) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                prepareOffersData();
+            }
+        });
+    }
+
+    @Override
+    public void onTaskFailed() {
+
     }
 }

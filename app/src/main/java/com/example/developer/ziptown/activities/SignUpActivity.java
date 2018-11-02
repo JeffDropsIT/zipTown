@@ -24,8 +24,10 @@ import android.widget.Toast;
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.PlaceAutocompleteAdapter;
 import com.example.developer.ziptown.connection.ServerRequest;
+import com.example.developer.ziptown.fragments.VerificationCodeFragment;
 import com.example.developer.ziptown.models.forms.CreateUser;
 import com.example.developer.ziptown.models.responses.ContactVerificationSuccessResponse;
+import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -36,17 +38,20 @@ import java.util.Map;
 
 import static com.example.developer.ziptown.activities.AddGenericPostActivity.LAT_LNG_BOUNDS;
 
-public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, ServerRequest.OnTaskCompleted {
+public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, ServerRequest.OnTaskCompleted, VerificationCodeFragment.DialogCompleteListener {
     private AutoCompleteTextView mSearchCity;
     private PlaceAutocompleteAdapter placeAutocompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
 
     String selectedItem;
-    private Button btnSubmit;
+    private Button btnSubmit, btnVerify;
     private EditText edtPassword, edtPasswordConfirm;
     private EditText edtContact, edtUsername;
     private CountryCodePicker ccp;
     private String code;
+    String msgBody;
+    VerificationCodeFragment verificationCodeFragment;
+    boolean verified = false;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -63,8 +68,20 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
                         msgs = new SmsMessage[pdus.length];
                         for (int i = 0; i < msgs.length; i++) {
                             msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                            String msgBody = msgs[i].getMessageBody();
+                            msgBody = msgs[i].getMessageBody();
                             if(code != null){
+                                if(msgBody.contains(code)){
+                                    verificationCodeFragment.close();
+                                    btnVerify.setEnabled(false);
+                                    verified = true;
+                                    Log.i("WSX", "onReceive: received on main: bool: " + msgBody.contains(code)+" message: "+msgBody+" code: "+code);
+                                    Toast.makeText(context, "Verified", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    btnVerify.setEnabled(true);
+                                    verified = false;
+                                    Log.i("WSX", "onReceive: received on main: bool: " + msgBody.contains(code)+" message: "+msgBody+" code: "+code);
+                                    Toast.makeText(context, "incorrect OTP entered", Toast.LENGTH_SHORT).show();
+                                }
                                 Log.i("WSX", "onReceive: received on main: bool: " + msgBody.contains(code)+" message: "+msgBody+" code: "+code);
                             }else {
                                 Log.i("WSX", "onReceive: received no code: " + msgBody.contains(code)+" message: "+msgBody+" code: "+code);
@@ -94,7 +111,8 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         edtContact = findViewById(R.id.edt_contact);
         btnSubmit = findViewById(R.id.btn_submit);
         btnSubmit.setOnClickListener(this);
-        findViewById(R.id.btn_verify).setOnClickListener(this);
+        btnVerify = findViewById(R.id.btn_verify);
+        btnVerify.setOnClickListener(this);
         ccp =  findViewById(R.id.ccp);
         setDefaultCountry();
         getCitySuggestions();
@@ -191,7 +209,7 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         if(contact.isEmpty()){
             edtContact.setError("number required");
         }else {
-
+            btnVerify.setEnabled(false);
             number = ccp.getSelectedCountryCode();
             number += contact;
             Map<String, Object> map = new HashMap<>();
@@ -225,14 +243,14 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
 
         }else {
             if(checkPasswordMatch(password, passwordConfirm)){
-                CreateUser createUser = new CreateUser(password, name, selectedItem, city, contact);
+                CreateUser createUser = new CreateUser(password, name, selectedItem, city, ccp.getSelectedCountryCode()+contact);
                 Map<String, Object> map = new HashMap<>();
                 map.put("type", new String("CreateUser"));
                 map.put("model", createUser);
 
                 new ServerRequest(this).execute(map);
                 //submit to api
-                //goHomeActivity();
+
                 Toast.makeText(this, "Logging in as "+selectedItem, Toast.LENGTH_SHORT).show();
                 //su
             }else{
@@ -246,13 +264,20 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
     }
 
     private void goHomeActivity(){
-        // UserProfileObject userProfileObject
-        Intent intent = new Intent(this, MainActivity.class);
-        // Bundle bundle = new Bundle();
-        // bundle.putSerializable("user", userProfileObject);
-        //intent.putExtras(bundle);
-        startActivity(intent);
-        finish();
+
+
+        if(verified){
+            Intent intent = new Intent(this, CurrentUserActivity.class);
+            startActivity(intent);
+            finish();
+        }else {
+            if(verificationCodeFragment == null){
+                verificationCodeFragment = new VerificationCodeFragment();
+                verificationCodeFragment.setContextListener(getApplicationContext(), SignUpActivity.this);
+                verificationCodeFragment.show(getFragmentManager(), "verificationCodeFragment");
+            }
+        }
+
     }
 
     private boolean checkPasswordMatch(String password, String passwordConfirm) {
@@ -277,10 +302,20 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
             this.runOnUiThread(new Runnable() {
                 public void run() {
                     code = codeObj.getCode();
+                    verificationCodeFragment = new VerificationCodeFragment();
+                    verificationCodeFragment.setContextListener(getApplicationContext(), SignUpActivity.this);
+                    verificationCodeFragment.show(getFragmentManager(), "verificationCodeFragment");
                     Toast.makeText(getApplicationContext(), "Code: "+codeObj.getCode(), Toast.LENGTH_SHORT).show();
 
                 }
             });
+        }else if(object.get("response").equals("user")){
+
+            UserSignInAndLoginResponse res = (UserSignInAndLoginResponse) object.get("object");
+            Log.i("WSX", "onDataFetched: res: "+res+" resType: "+object.get("response"));
+            goHomeActivity();
+            Log.i("WSX", "onDataFetched: success "+object.get("response")+" user "+res.getUser().getFullName());
+
         }else {
             this.runOnUiThread(new Runnable() {
                 public void run() {
@@ -288,7 +323,6 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
 
                 }
             });
-
         }
 
     }
@@ -304,5 +338,30 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onTaskFailed() {
 
+    }
+
+    @Override
+    public void onCodeReceived(final String pcode) {
+
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(code != null){
+                    if(pcode.contains(code)){
+                        verificationCodeFragment.close();
+                        btnVerify.setEnabled(false);
+                        verified = true;
+                        Toast.makeText(getApplicationContext(), "Verified", Toast.LENGTH_SHORT).show();
+                    }else {
+                        btnVerify.setEnabled(true);
+                        verified = false;
+                        Toast.makeText(getApplicationContext(), "incorrect OTP entered", Toast.LENGTH_SHORT).show();
+                    }
+                    Log.i("WSX", "onReceive: received on main: bool: " + pcode.contains(code)+" message: "+msgBody+" code: "+code);
+                }else {
+                    Log.i("WSX", "onReceive: received no code: " + pcode.contains(code)+" message: "+msgBody+" code: "+code);
+                }
+            }
+        });
     }
 }

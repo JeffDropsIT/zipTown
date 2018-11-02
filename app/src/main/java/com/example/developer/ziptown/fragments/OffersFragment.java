@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
@@ -34,6 +35,7 @@ public class OffersFragment extends Fragment implements ServerRequest.OnTaskComp
     private List<Offer> offersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private OfferAdapter mOfferAdapter;
+    TextView ttvNoPosts;
     private boolean isClickable;
     public OffersFragment(){
 
@@ -54,6 +56,7 @@ public class OffersFragment extends Fragment implements ServerRequest.OnTaskComp
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mOfferAdapter);
+        ttvNoPosts = view.findViewById(R.id.ttv_no_post);
         getPosts();
         prepareOffersData();
 
@@ -61,7 +64,11 @@ public class OffersFragment extends Fragment implements ServerRequest.OnTaskComp
     }
 
 
-
+    @Override
+    public void onResume() {
+        getPosts();
+        super.onResume();
+    }
 
     private void prepareOffersData() {
 
@@ -81,7 +88,13 @@ public class OffersFragment extends Fragment implements ServerRequest.OnTaskComp
             offer = new Offer(offerTmp.get("origin").toString(), offerTmp.get("destination").toString(), offerTmp.get("depatureTime").toString()+" To "+offerTmp.get("returnTime").toString(), offerTmp.get("days").toString(), offerTmp.get("city").toString(), offerTmp.get("created").toString(), publisher);
             offersList.add(offer);
         }
+        if(offers.keySet().size() == 0){
+            Log.i("WSX", "prepareOffersData: empty data");
+            ttvNoPosts.setVisibility(View.VISIBLE);
 
+        }else {
+            ttvNoPosts.setVisibility(View.GONE);
+        }
         mOfferAdapter.notifyDataSetChanged();
 
     }
@@ -104,7 +117,12 @@ public class OffersFragment extends Fragment implements ServerRequest.OnTaskComp
 
     @Override
     public void onDataFetched(Map<String, Object> object) {
-
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                prepareOffersData();
+            }
+        });
     }
 
     @Override
