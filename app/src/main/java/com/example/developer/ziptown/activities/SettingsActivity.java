@@ -1,5 +1,6 @@
 package com.example.developer.ziptown.activities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -219,6 +220,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onTaskFailed() {
-
+        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        startActivity(intent);
     }
 }

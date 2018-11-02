@@ -26,6 +26,7 @@ import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
 
 
@@ -39,6 +40,9 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_user);
+        if (!isNetworkAvailable() ) {
+            startErrorActivity();
+        }
 
         ttvUsername = findViewById(R.id.ttv_username);
         ttvUserType = findViewById(R.id.ttv_tittle);
@@ -57,11 +61,23 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
 
     }
 
+    private void startErrorActivity() {
+        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onResume() {
         Map<String, Object> map = new HashMap<>();
         map.put("type", "GetUser");
-        serverRequest = new ServerRequest(this).execute(map);
+
+
+        if(isNetworkAvailable()){
+            serverRequest = new ServerRequest(this).execute(map);
+        }else {
+            Intent intent = new Intent(this, NetworkIssuesActivity.class);
+            startActivity(intent);
+        }
         super.onResume();
     }
 
@@ -121,6 +137,9 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
                 startActivity(intent);
                 break;
             case R.id.signout:
+                if(serverRequest == null){
+                    break;
+                }
                 serverRequest.cancel(true);
                 this.finishAffinity();
                 break;
@@ -213,6 +232,7 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
 
     @Override
     public void onTaskFailed() {
-
+        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        startActivity(intent);
     }
 }

@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
+
 public class AddGenericPostActivity extends AppCompatActivity implements View.OnClickListener, TimePickerFragment.TimePickedListener, GoogleApiClient.OnConnectionFailedListener, ServerRequest.OnTaskCompleted {
     private static final String TAG = "WSX";
     private TextView ttvMon, ttvTue, ttvWed, ttvThur, ttvFri, ttvSat, ttvSun, ttvPublisher, ttvContact;
@@ -52,6 +54,11 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_generic_post);
 
+
+        if(isNetworkAvailable()){
+            Intent intent = new Intent(this, NetworkIssuesActivity.class);
+            startActivity(intent);
+        }
 
         type = getIntent().getStringExtra("type");
 
@@ -269,7 +276,12 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
                 map.put("type","CreateRequest");
             }
 
-            new ServerRequest(this).execute(map);
+            if(isNetworkAvailable()){
+                new ServerRequest(this).execute(map);
+            }else {
+                Intent intent = new Intent(this, NetworkIssuesActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
@@ -290,7 +302,8 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onTaskFailed() {
-
+        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        startActivity(intent);
     }
 
 }

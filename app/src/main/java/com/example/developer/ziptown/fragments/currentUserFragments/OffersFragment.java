@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.developer.ziptown.activities.AddGenericPostActivity;
 import com.example.developer.ziptown.R;
+import com.example.developer.ziptown.activities.NetworkIssuesActivity;
 import com.example.developer.ziptown.adapters.currentUserAdpt.OfferAdapter;
 import com.example.developer.ziptown.cache.ZipCache;
 import com.example.developer.ziptown.connection.ServerRequest;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
 
 public class OffersFragment extends Fragment implements View.OnClickListener, ServerRequest.OnTaskCompleted {
@@ -101,7 +103,12 @@ public class OffersFragment extends Fragment implements View.OnClickListener, Se
     public void onResume() {
         Map<String, Object> map = new HashMap<>();
         map.put("type", "GetUser");
-        new ServerRequest(this).execute(map);
+        if(isNetworkAvailable()){
+            new ServerRequest(this).execute(map);
+        }else {
+            Intent intent = new Intent(getContext(), NetworkIssuesActivity.class);
+            startActivity(intent);
+        }
         super.onResume();
     }
 

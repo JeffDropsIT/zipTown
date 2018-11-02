@@ -1,7 +1,10 @@
 package com.example.developer.ziptown.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import com.example.developer.ziptown.cache.ZipCache;
 public class LandingPageActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String DATABASE_NAME = "ZipTownDB";
     public static SharedPreferences preferences;
+    private static ConnectivityManager connectivityManager;
     private Button btnSignUp, btnSignIn;
     public static ZipCache zipCache;
     @Override
@@ -22,6 +26,8 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_landing_page);
         zipCache = ZipCache.getInstance();
         zipCache.init(openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null));
+        connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         btnSignIn = findViewById(R.id.btn_sign_in);
         btnSignUp = findViewById(R.id.btn_sign_up);
@@ -29,7 +35,10 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
         btnSignIn.setOnClickListener(this);
         btnSignUp.setOnClickListener(this);
     }
-
+    public static boolean isNetworkAvailable() {
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){

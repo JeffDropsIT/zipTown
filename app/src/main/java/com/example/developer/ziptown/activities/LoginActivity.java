@@ -21,6 +21,8 @@ import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ServerRequest.OnTaskCompleted {
     private Button btnLogin;
     private EditText edtPassword, edtContact;
@@ -29,12 +31,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+        if (!isNetworkAvailable() ) {
+            startErrorActivity();
+        }
+
         btnLogin = findViewById(R.id.btn_login);
         edtContact = findViewById(R.id.edt_contact);
         edtPassword = findViewById(R.id.edt_password);
         btnLogin.setOnClickListener(this);
         setToolBar();
 
+    }
+
+    private void startErrorActivity() {
+        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        startActivity(intent);
     }
 
 
@@ -52,7 +64,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             map.put("type", new String("UserLogin"));
             map.put("model", userLogin);
 
-            new ServerRequest(this).execute(map);
+            if(isNetworkAvailable()){
+                new ServerRequest(this).execute(map);
+            }else {
+                Intent intent = new Intent(this, NetworkIssuesActivity.class);
+                startActivity(intent);
+            }
+
 
             Toast.makeText(this, "Logging in", Toast.LENGTH_SHORT).show();
         }
@@ -121,6 +139,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onTaskFailed() {
-
+        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        startActivity(intent);
     }
 }

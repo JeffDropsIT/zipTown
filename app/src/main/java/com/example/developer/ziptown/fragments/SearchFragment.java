@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.activities.MainActivity;
+import com.example.developer.ziptown.activities.NetworkIssuesActivity;
 import com.example.developer.ziptown.adapters.PlaceAutocompleteAdapter;
 import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.models.forms.CreateCustomSearch;
@@ -36,6 +38,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 
 public class SearchFragment  extends DialogFragment implements View.OnClickListener,TimePickerFragment.TimePickedListener, GoogleApiClient.OnConnectionFailedListener, ServerRequest.OnTaskCompleted {
     private LinearLayout linFilters;
@@ -168,7 +172,14 @@ public class SearchFragment  extends DialogFragment implements View.OnClickListe
                 Log.i("WSX", "validateLocationData: search on search");
             }
 
-            new ServerRequest(this).execute(map);
+
+
+            if(isNetworkAvailable()){
+                new ServerRequest(this).execute(map);
+            }else {
+                Intent intent = new Intent(context, NetworkIssuesActivity.class);
+                startActivity(intent);
+            }
         }
     }
 

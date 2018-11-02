@@ -46,8 +46,13 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         restTemplate.getMessageConverters().add(
                 new MappingJackson2HttpMessageConverter());
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-
-        Object response = chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
+        Object response;
+        try {
+            response = chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
+        }catch (Exception e){
+            response = new GenericErrorResponse("Something went wrong", 500);
+            listener.onTaskFailed();
+        }
         return  response;
     }
 

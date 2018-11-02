@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.developer.ziptown.activities.AddGenericPostActivity.LAT_LNG_BOUNDS;
+import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 
 public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, ServerRequest.OnTaskCompleted, VerificationCodeFragment.DialogCompleteListener {
     private AutoCompleteTextView mSearchCity;
@@ -100,6 +101,9 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        if (!isNetworkAvailable() ) {
+            startErrorActivity();
+        }
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.provider.Telephony.SMS_RECEIVED");
@@ -118,6 +122,11 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         getCitySuggestions();
         setToolBar();
         setSpinner();
+    }
+
+    private void startErrorActivity() {
+        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        startActivity(intent);
     }
 
     private void verifyContact(){
@@ -215,7 +224,12 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
             Map<String, Object> map = new HashMap<>();
             map.put("contact", number);
             map.put("type", "VerifyContact");
-            new ServerRequest(this).execute(map);
+            if(isNetworkAvailable()){
+                new ServerRequest(this).execute(map);
+            }else {
+                Intent intent = new Intent(this, NetworkIssuesActivity.class);
+                startActivity(intent);
+            }
             Log.i("WSX", "validateContact: contact: "+number);
         }
     }
@@ -248,7 +262,13 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
                 map.put("type", new String("CreateUser"));
                 map.put("model", createUser);
 
-                new ServerRequest(this).execute(map);
+
+                if(isNetworkAvailable()){
+                    new ServerRequest(this).execute(map);
+                }else {
+                    Intent intent = new Intent(this, NetworkIssuesActivity.class);
+                    startActivity(intent);
+                }
                 //submit to api
 
                 Toast.makeText(this, "Logging in as "+selectedItem, Toast.LENGTH_SHORT).show();
@@ -337,7 +357,8 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
 
     @Override
     public void onTaskFailed() {
-
+        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        startActivity(intent);
     }
 
     @Override

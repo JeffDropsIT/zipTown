@@ -22,7 +22,7 @@
 
         <activity
             android:name=".activities.MainActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask" />
         <activity android:name=".activities.UserProfileActivity" />
         <activity android:name=".activities.CurrentUserActivity" />
         <activity android:name=".activities.AddGenericPostActivity" />
@@ -36,7 +36,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SearchResults"></activity>
+        <activity android:name=".activities.SearchResults" />
+        <activity android:launchMode="singleTask" android:name=".activities.NetworkIssuesActivity"></activity>
     </application>
 
 </manifest>

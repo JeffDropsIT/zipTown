@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 import static com.example.developer.ziptown.activities.LandingPageActivity.preferences;
 
 public class MainActivity extends AppCompatActivity implements ServerRequest.OnTaskCompleted, TimePickerFragment.TimePickedListener,SearchFragment.DialogFragmentInteface {
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (!isNetworkAvailable() ) {
+            startErrorActivity();
+        }
 
 
         viewPager =  findViewById(R.id.viewpager);
@@ -58,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
 
     }
 
+    private void startErrorActivity() {
+        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        startActivity(intent);
+    }
 
     public boolean getBoolean(String key) {
         return preferences.getBoolean(key, false);
@@ -205,7 +213,8 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
 
     @Override
     public void onTaskFailed() {
-
+        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        startActivity(intent);
     }
 
     @Override
