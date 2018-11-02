@@ -1,6 +1,7 @@
 package com.example.developer.ziptown.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
@@ -33,6 +34,7 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
     private TextView ttvUsername, ttvUserType, ttvCity, ttvContact;
+    private AsyncTask serverRequest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,7 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
     protected void onResume() {
         Map<String, Object> map = new HashMap<>();
         map.put("type", "GetUser");
-        new ServerRequest(this).execute(map);
+        serverRequest = new ServerRequest(this).execute(map);
         super.onResume();
     }
 
@@ -117,6 +119,10 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.signout:
+                serverRequest.cancel(true);
+                this.finishAffinity();
                 break;
         }
 

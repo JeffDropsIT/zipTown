@@ -210,6 +210,9 @@ public class SearchFragment  extends DialogFragment implements View.OnClickListe
 
     @Override
     public void onDataFetched(Map<String, Object> object) {
+        if(getActivity() == null){
+            return;
+        }
         Log.i("WSX", "onDataFetched: "+object.get("object"));
         Log.i("WSX", "onDataFetched: "+object.get("response"));
         listener.onCompleteListener();

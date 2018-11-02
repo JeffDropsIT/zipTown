@@ -112,6 +112,9 @@ public class OffersFragment extends Fragment implements View.OnClickListener, Se
 
     @Override
     public void onDataFetched(Map<String, Object> object) {
+        if(getActivity() == null){
+            return;
+        }
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
