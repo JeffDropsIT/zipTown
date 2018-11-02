@@ -30,6 +30,7 @@ public class SearchResults extends AppCompatActivity {
     private RecyclerView recyclerView;
     private OfferAdapter mOfferAdapter;
     TextView ttvNoPosts;
+    String tableName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,7 @@ public class SearchResults extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent != null){
             int optionId = intent.getIntExtra("table", 0);
-            String tableName;
+
             if(optionId == 0){
                 tableName = ZipCache.OFFERS_SEARCH;
             }else {
@@ -57,6 +58,15 @@ public class SearchResults extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(tableName != null){
+            ZipCache.getInstance().clearTable(tableName);
+        }
+
+        super.onDestroy();
     }
 
     private void prepareOffersData(String table) {
@@ -103,6 +113,7 @@ public class SearchResults extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 onBackPressed();
+                finish();
                 break;
         }
         return true;

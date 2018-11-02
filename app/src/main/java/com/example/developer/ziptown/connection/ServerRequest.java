@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.developer.ziptown.activities.MainActivity;
+import com.example.developer.ziptown.cache.ZipCache;
 import com.example.developer.ziptown.models.forms.CreateCustomSearch;
 import com.example.developer.ziptown.models.forms.CreateOffer;
 import com.example.developer.ziptown.models.forms.CreateRequest;
@@ -246,10 +247,12 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
     }
 
     private void cacheUserData(UserSignInAndLoginResponse response) {
+        zipCache.clearTable(ZipCache.USER_DATA);
         zipCache.addUserData(zipCache.toContentValues(response.getUserMap()));
     }
 
     private void cacheUserOffers(UserSignInAndLoginResponse response) {
+        zipCache.clearTable(ZipCache.USER_OFFERS);
         Map<String, Object> offersMap = response.getOffersMap();
         ArrayList<Integer> idList = response.getOffersIdSet();
 
@@ -260,6 +263,7 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
 
     }
     private void cacheUserRequests(UserSignInAndLoginResponse response) {
+        zipCache.clearTable(ZipCache.USER_REQUESTS);
         Map<String, Object> requestsMap = response.getRequestsMap();
         ArrayList<Integer> idList = response.getRequestIdSet();
 
@@ -319,8 +323,10 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
             for (int i = 0; i < response.length; i ++){
                 Log.i("WSX", "type "+map.get("postType").toString()+" getPost: "+response[i].ObjectToMap(response[i]));
                 if(map.get("postType").toString().equals("offers")){
+                    zipCache.clearTable(ZipCache.OFFERS);
                     zipCache.addOffers(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
                 }else {
+                    zipCache.clearTable(ZipCache.REQUESTS);
                     zipCache.addRequests(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
                 }
 

@@ -32,8 +32,8 @@ public class ZipCache {
         this.mDatabase = db;
         postKeys = new ArrayList<>();
     }
-    public static void clearTable(String table){
-        mDatabase.execSQL("DELETE FROM "+ table);
+    public void clearTable(String table){
+        mDatabase.delete(table, null, null);
     }
 
     private static void createUserDataTable(){
