@@ -85,8 +85,8 @@ public class OffersFragment extends Fragment implements ServerRequest.OnTaskComp
         Offer offer;
 
 
-        Log.i("WSX", "prepareOffersData: offers: "+offers);
-        Log.i("WSX", "prepareOffersData: user: "+user);
+        Log.i("WSX", "prepareOffersData: ALL offers: "+offers);
+        Log.i("WSX", "prepareOffersData:  ALL user: "+user);
 
         for (String key : offers.keySet()) {
             Map<String, Object> offerTmp = offers.get(key);
@@ -110,6 +110,7 @@ public class OffersFragment extends Fragment implements ServerRequest.OnTaskComp
         map.put("postType", "offers");
         map.put("type", "GetPost");
         map.put("city", MainActivity.getString("city"));
+
 
         if(isNetworkAvailable()){
             new ServerRequest(this).execute(map);

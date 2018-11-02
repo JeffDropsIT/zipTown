@@ -33,6 +33,11 @@ public class ZipCache {
         postKeys = new ArrayList<>();
     }
     public void clearTable(String table){
+;
+        createUserDataTable();
+        createUserOffersTable();
+        createUserRequestsTable();
+
         mDatabase.delete(table, null, null);
     }
 

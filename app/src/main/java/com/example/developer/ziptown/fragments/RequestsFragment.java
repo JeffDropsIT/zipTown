@@ -78,8 +78,8 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
 
 
 
-        Log.i("WSX", "prepareOffersData: requests: "+offers);
-        Log.i("WSX", "prepareOffersData: user: "+user);
+        Log.i("WSX", "prepareOffersData:  ALL requests: "+offers);
+        Log.i("WSX", "prepareOffersData:  ALL user: "+user);
 
         for (String key : offers.keySet()) {
             Map<String, Object> offerTmp = offers.get(key);
@@ -87,7 +87,7 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
             offersList.add(offer);
         }
         if(offers.keySet().size() == 0){
-            Log.i("WSX", "prepareOffersData: empty data");
+            Log.i("WSX", "prepareOffersData: ALL empty data");
             ttvNoPosts.setVisibility(View.VISIBLE);
 
         }else {

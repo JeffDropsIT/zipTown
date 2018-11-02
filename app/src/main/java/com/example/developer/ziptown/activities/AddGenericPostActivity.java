@@ -55,10 +55,7 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_add_generic_post);
 
 
-        if(isNetworkAvailable()){
-            Intent intent = new Intent(this, NetworkIssuesActivity.class);
-            startActivity(intent);
-        }
+
 
         type = getIntent().getStringExtra("type");
 
@@ -296,6 +293,7 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
         if(object.get("response").toString().contains("error")){
             Log.i("WSX", "onDataFetched: error "+object.get("response"));
         }else {
+            finish();
             Log.i("WSX", "onDataFetched: success "+object.get("response"));
         }
     }

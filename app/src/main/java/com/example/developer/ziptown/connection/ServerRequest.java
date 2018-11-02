@@ -25,10 +25,14 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
 
 public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >{
@@ -48,9 +52,15 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
         Object response;
         try {
-            response = chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
+            if(hasInternetAccess()){
+                response = chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
+            }else {
+                response = new GenericErrorResponse("Service Unavailable", 503);
+                listener.onTaskFailed();
+            }
+
         }catch (Exception e){
-            response = new GenericErrorResponse("Something went wrong", 500);
+            response = new GenericErrorResponse("Service Unavailable", 503);
             listener.onTaskFailed();
         }
         return  response;
@@ -315,7 +325,7 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
     }
     private Object[] getPost(Map<String, Object> map, RestTemplate restTemplate){
 
-        String url = BASE_PATH + "/app/"+map.get("postType").toString()+"?city="+map.get("city").toString();
+        String url = BASE_PATH + "/app/"+map.get("postType").toString()+"?city="+map.get("city").toString().split(",")[0];
         Log.i("WSX", "URL: "+url);
         Offers[] response = restTemplate.getForObject(url, Offers[].class);
         if (response.length == 0){
@@ -325,13 +335,16 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         }else {
             //sendResponseToActivity(response, "success");
             Log.i("WSX", "doInBackground: message: "+response.length);
+            if(map.get("postType").toString().equals("offers")){
+                //zipCache.clearTable(ZipCache.OFFERS);
+            }else {
+                //zipCache.clearTable(ZipCache.REQUESTS);
+            }
             for (int i = 0; i < response.length; i ++){
                 Log.i("WSX", "type "+map.get("postType").toString()+" getPost: "+response[i].ObjectToMap(response[i]));
                 if(map.get("postType").toString().equals("offers")){
-                    zipCache.clearTable(ZipCache.OFFERS);
                     zipCache.addOffers(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
                 }else {
-                    zipCache.clearTable(ZipCache.REQUESTS);
                     zipCache.addRequests(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
                 }
 
@@ -363,5 +376,29 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         void onTaskCompleted();
         void onDataFetched(Map<String, Object> object);
         void onTaskFailed();
+    }
+
+    private boolean hasInternetAccess(){
+        boolean connection = false;
+        try {
+            if (isNetworkAvailable()) {
+                HttpURLConnection urlc = (HttpURLConnection)
+                        (new URL("https://www.google.com/") //ping google
+                                .openConnection());
+                urlc.setConnectTimeout(10000);
+                urlc.connect();
+                connection = (urlc.getResponseCode() == 200);
+                return connection;
+            } else {
+
+                return connection;
+            }
+
+
+        } catch (IOException e) {
+            Log.e("WSX", "Error checking internet connection", e);
+            return connection;
+        }
+
     }
 }
