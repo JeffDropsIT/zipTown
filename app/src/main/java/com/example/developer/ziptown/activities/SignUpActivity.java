@@ -38,6 +38,8 @@ import java.util.Map;
 
 import static com.example.developer.ziptown.activities.AddGenericPostActivity.LAT_LNG_BOUNDS;
 import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
+import static com.example.developer.ziptown.activities.LoginActivity.dismissProgress;
+import static com.example.developer.ziptown.activities.LoginActivity.showProgress;
 
 public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, ServerRequest.OnTaskCompleted, VerificationCodeFragment.DialogCompleteListener {
     private AutoCompleteTextView mSearchCity;
@@ -225,6 +227,7 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
             map.put("contact", number);
             map.put("type", "VerifyContact");
             if(isNetworkAvailable()){
+                showProgress("Verification", "Verifying", SignUpActivity.this);
                 new ServerRequest(this).execute(map);
             }else {
                 Intent intent = new Intent(this, NetworkIssuesActivity.class);
@@ -263,15 +266,20 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
                 map.put("model", createUser);
 
 
-                if(isNetworkAvailable()){
-                    new ServerRequest(this).execute(map);
+                if(verified){
+                    if(isNetworkAvailable()){
+                        showProgress("Sign up", "Signing up User", SignUpActivity.this);
+                        new ServerRequest(this).execute(map);
+                    }else {
+                        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+                        startActivity(intent);
+                    }
                 }else {
-                    Intent intent = new Intent(this, NetworkIssuesActivity.class);
-                    startActivity(intent);
+                    Toast.makeText(this, "Please Verify number", Toast.LENGTH_SHORT).show();
                 }
                 //submit to api
 
-                Toast.makeText(this, "Logging in as "+selectedItem, Toast.LENGTH_SHORT).show();
+
                 //su
             }else{
                 //throw error pass
@@ -311,6 +319,7 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onTaskCompleted() {
         Log.i("WSX", "onTaskCompleted: created user");
+        dismissProgress();
         //goHomeActivity();
     }
 
@@ -347,16 +356,22 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
 
     }
 
-
+    @Override
+    protected void onPause() {
+        dismissProgress();
+        super.onPause();
+    }
 
     @Override
     protected void onDestroy() {
+        dismissProgress();
         unregisterReceiver(receiver);
         super.onDestroy();
     }
 
     @Override
     public void onTaskFailed() {
+
         Intent intent = new Intent(this, NetworkIssuesActivity.class);
         startActivity(intent);
     }

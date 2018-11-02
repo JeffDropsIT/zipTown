@@ -104,7 +104,7 @@ public class OffersFragment extends Fragment implements View.OnClickListener, Se
         Map<String, Object> map = new HashMap<>();
         map.put("type", "GetUser");
         if(isNetworkAvailable()){
-            new ServerRequest(this).execute(map);
+            new ServerRequest(this, getContext()).execute(map);
         }else {
             Intent intent = new Intent(getContext(), NetworkIssuesActivity.class);
             startActivity(intent);

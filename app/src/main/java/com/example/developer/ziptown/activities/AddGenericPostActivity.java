@@ -274,7 +274,7 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
             }
 
             if(isNetworkAvailable()){
-                new ServerRequest(this).execute(map);
+                new ServerRequest(this, getApplicationContext()).execute(map);
             }else {
                 Intent intent = new Intent(this, NetworkIssuesActivity.class);
                 startActivity(intent);

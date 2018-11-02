@@ -73,7 +73,7 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
 
 
         if(isNetworkAvailable()){
-            serverRequest = new ServerRequest(this).execute(map);
+            new ServerRequest(this, getApplicationContext()).execute(map);
         }else {
             Intent intent = new Intent(this, NetworkIssuesActivity.class);
             startActivity(intent);

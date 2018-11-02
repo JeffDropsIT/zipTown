@@ -175,7 +175,7 @@ public class SearchFragment  extends DialogFragment implements View.OnClickListe
 
 
             if(isNetworkAvailable()){
-                new ServerRequest(this).execute(map);
+                new ServerRequest(this, context).execute(map);
             }else {
                 Intent intent = new Intent(context, NetworkIssuesActivity.class);
                 startActivity(intent);

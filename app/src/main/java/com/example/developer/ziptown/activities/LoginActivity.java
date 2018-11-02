@@ -1,11 +1,15 @@
 package com.example.developer.ziptown.activities;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +19,10 @@ import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.connection.ServerRequest;
+import com.example.developer.ziptown.fragments.SearchFragment;
+import com.example.developer.ziptown.fragments.VerificationCodeFragment;
 import com.example.developer.ziptown.models.forms.UserLogin;
+import com.example.developer.ziptown.models.responses.GenericErrorResponse;
 import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse;
 
 import java.util.HashMap;
@@ -26,6 +33,7 @@ import static com.example.developer.ziptown.activities.LandingPageActivity.isNet
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ServerRequest.OnTaskCompleted {
     private Button btnLogin;
     private EditText edtPassword, edtContact;
+    public static ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +57,42 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(intent);
     }
 
+    public static void showProgress(String title, String msg, Context context) {
+        if(progressDialog == null){
+            View parent = LayoutInflater.from(context).inflate(R.layout.progress_bar_layout, null, false);
+            TextView ttvTitle = parent.findViewById(R.id.ttv_title), ttvMsg = parent.findViewById(R.id.ttv_msg);
+            ttvTitle.setText(title);
+            ttvMsg.setText(msg);
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+            progressDialog.setContentView(parent);
 
+        }else {
+            dismissProgress();
+            showProgress(title, msg, context);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        dismissProgress();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        dismissProgress();
+        super.onDestroy();
+    }
+
+    public static void dismissProgress(){
+        if(progressDialog != null){
+            progressDialog.dismiss();
+            progressDialog  = null;
+        }
+    }
     private void verifyPasswordAndContact(){
         String password = edtPassword.getText().toString();
         String contact = edtContact.getText().toString();
@@ -65,7 +108,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             map.put("model", userLogin);
 
             if(isNetworkAvailable()){
-                new ServerRequest(this).execute(map);
+                showProgress("Sign In", "Signing In User", LoginActivity.this);
+                new ServerRequest(this, getApplicationContext()).execute(map);
             }else {
                 Intent intent = new Intent(this, NetworkIssuesActivity.class);
                 startActivity(intent);
@@ -120,14 +164,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onTaskCompleted() {
         Log.i("WSX", "onTaskCompleted: logged in");
-
+        dismissProgress();
     }
 
     @Override
     public void onDataFetched(Map<String, Object> object) {
 
         if(object.get("response").toString().contains("error")){
-            Log.i("WSX", "onDataFetched: error "+object.get("response"));
+            final GenericErrorResponse error = (GenericErrorResponse)object.get("object");
+            Log.i("WSX", "onDataFetched: error "+error.toString());
+            LoginActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView textView = findViewById(R.id.ttv_error);
+                    textView.setVisibility(View.VISIBLE);
+                }
+            });
+
         }else {
             UserSignInAndLoginResponse res = (UserSignInAndLoginResponse) object.get("object");
             Log.i("WSX", "onDataFetched: res: "+res+" resType: "+object.get("response"));
@@ -140,6 +193,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onTaskFailed() {
         Intent intent = new Intent(this, NetworkIssuesActivity.class);
-        startActivity(intent);
+        //startActivity(intent);
     }
 }

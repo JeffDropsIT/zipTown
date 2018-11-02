@@ -73,7 +73,6 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
 
         Map<String, Object> user = zipCache.getLocalUserData();
         Map<String,  Map<String, Object>> offers = zipCache.getLocalPost(ZipCache.REQUESTS);
-        Publisher publisher = new Publisher(user.get("fullName").toString(), user.get("contact").toString(), Integer.valueOf(user.get("id").toString()));
         Offer offer;
 
 
@@ -83,6 +82,7 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
 
         for (String key : offers.keySet()) {
             Map<String, Object> offerTmp = offers.get(key);
+            Publisher publisher = new Publisher(offerTmp.get("publisher").toString(), offerTmp.get("contact").toString(), Integer.valueOf(offerTmp.get("publisherId").toString()));
             offer = new Offer(offerTmp.get("origin").toString(), offerTmp.get("destination").toString(), offerTmp.get("depatureTime").toString()+" To "+offerTmp.get("returnTime").toString(), offerTmp.get("days").toString(), offerTmp.get("city").toString(), offerTmp.get("created").toString(), publisher);
             offersList.add(offer);
         }
@@ -103,7 +103,7 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
         map.put("city", MainActivity.getString("city"));
 
         if(isNetworkAvailable()){
-            new ServerRequest(this).execute(map);
+            new ServerRequest(this, getContext()).execute(map);
         }else {
             Intent intent = new Intent(getContext(), NetworkIssuesActivity.class);
             startActivity(intent);
