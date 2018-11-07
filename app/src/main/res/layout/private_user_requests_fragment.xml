@@ -7,6 +7,8 @@
     <android.support.v7.widget.RecyclerView android:id="@+id/rcl_offers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="100dp"
+        android:clipToPadding="false"
         android:scrollbars="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android">
 

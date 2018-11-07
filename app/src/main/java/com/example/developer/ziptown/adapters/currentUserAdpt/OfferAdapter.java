@@ -11,12 +11,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
+import com.example.developer.ziptown.activities.LoginActivity;
 import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.models.mockerClasses.Offer;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.developer.ziptown.activities.LoginActivity.dismissProgress;
+import static com.example.developer.ziptown.activities.LoginActivity.showProgress;
 
 public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHolder> implements ServerRequest.OnTaskCompleted {
     private final Context context;
@@ -47,9 +51,8 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
                 map.put("type", "DeletePost");
                 map.put("postType", offer.getPostType());
                 map.put("id", offer.getPostId());
-
+                showProgress("Delete", "Deleting post "+offer.getPostId().toString()+" from server", context);
                 new ServerRequest(OfferAdapter.this).execute(map);
-                Toast.makeText(context, "Post Deleted", Toast.LENGTH_SHORT).show();
                 notifyDataSetChanged();
             }
         });
@@ -63,6 +66,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
 
     @Override
     public void onTaskCompleted() {
+        dismissProgress();
         notifyDataSetChanged();
     }
 

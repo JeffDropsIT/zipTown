@@ -1,6 +1,5 @@
 package com.example.developer.ziptown.activities;
 
-import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

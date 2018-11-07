@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:background="#FFF"
         android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/nav_temp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     <include
         android:layout_width="match_parent"

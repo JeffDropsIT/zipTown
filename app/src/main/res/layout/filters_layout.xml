@@ -51,7 +51,7 @@
                     android:id="@+id/edt_depart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="departure (default)"
+                    android:hint="departure"
                     android:textSize="15sp"
                     android:paddingLeft="5sp"
                     android:layout_margin="0dp"
@@ -66,7 +66,7 @@
                     android:id="@+id/edt_pickup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="return (default)"
+                    android:hint="return "
                     android:textSize="15sp"
                     android:layout_margin="0dp"
                     android:layout_weight="1"
@@ -117,7 +117,7 @@
                 android:paddingTop="8dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:hint="add days here (default everyday)"
+                android:hint="add days here"
                 android:layout_gravity="center"
                 android:layout_marginBottom="5dp"
                 android:padding="5dp"/>
@@ -265,7 +265,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#57646c"
                     android:textSize="15sp"
-                    android:hint="Enter origin here (default any)"/>
+                    android:hint="Enter origin here "/>
 
 
                 <AutoCompleteTextView
@@ -274,76 +274,32 @@
                     android:layout_height="wrap_content"
                     android:textColor="#57646c"
                     android:textSize="15sp"
-                    android:hint="Enter destination here (default any)"/>
+                    android:hint="Enter destination here "/>
                 <AutoCompleteTextView
                     android:id="@+id/edt_city"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:textColor="#57646c"
                     android:textSize="15sp"
-                    android:hint="Enter city here (default any)"/>
-            </LinearLayout>
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        app:cardBackgroundColor="#ffffff"
-        android:layout_marginBottom="5dp"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="4dp"
-        app:cardPreventCornerOverlap="false"
-        app:contentPadding="0dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:paddingTop="8dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:src="@drawable/ic_user"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#57646c"
-                    android:textSize="20sp"
-
-                    android:text="Type: "/>
-                <Spinner
-                    android:id="@+id/spinner"
-                    android:layout_width="wrap_content"
-                    android:theme="@style/AppTheme"
-                    android:layout_height="wrap_content">
-                </Spinner>
+                    android:hint="Enter city here "/>
                 <Button
                     android:id="@+id/btn_apply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:layout_marginTop="10dp"
                     android:text="apply"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/shape"
                     android:textColor="#ffff"
 
                     />
             </LinearLayout>
 
-
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
+
 
 
 

@@ -27,6 +27,7 @@ import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.fragments.VerificationCodeFragment;
 import com.example.developer.ziptown.models.forms.CreateUser;
 import com.example.developer.ziptown.models.responses.ContactVerificationSuccessResponse;
+import com.example.developer.ziptown.models.responses.GenericErrorResponse;
 import com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -99,6 +100,8 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
             }
         }
     };
+    private GenericDialog dialogFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,9 +134,6 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         startActivity(intent);
     }
 
-    private void verifyContact(){
-
-    }
     private String getCurrentCountry(){
         String locale = this.getResources().getConfiguration().locale.getCountry();
         Log.i("WSX", "getCurrentCountry: code: "+locale);
@@ -324,7 +324,7 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
     }
 
     @Override
-    public void onDataFetched(Map<String, Object> object) {
+    public void onDataFetched(final Map<String, Object> object) {
         if(object.get("response").equals("code")){
             final ContactVerificationSuccessResponse codeObj = (ContactVerificationSuccessResponse)object.get("object");
 
@@ -348,7 +348,14 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         }else {
             this.runOnUiThread(new Runnable() {
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "Error getting code", Toast.LENGTH_SHORT).show();
+
+                    GenericErrorResponse res = (GenericErrorResponse) object.get("object");
+                    Log.i("WSX", "onDataFetched: res: "+res.getError()+" resType: "+object.get("response"));
+                    dialogFragment = new GenericDialog();
+                    dialogFragment.setActivity(SignUpActivity.this);
+                    dialogFragment.show(getFragmentManager(), "SignUpDialog");
+                    dialogFragment.setError(res.getError());
+                    Toast.makeText(getApplicationContext(), ""+res.getError(), Toast.LENGTH_SHORT).show();
 
                 }
             });

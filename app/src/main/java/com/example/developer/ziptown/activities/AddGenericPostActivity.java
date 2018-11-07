@@ -13,12 +13,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.adapters.PlaceAutocompleteAdapter;
 import com.example.developer.ziptown.connection.ServerRequest;
+import com.example.developer.ziptown.fragments.SearchFragment;
 import com.example.developer.ziptown.fragments.TimePickerFragment;
 import com.example.developer.ziptown.models.forms.CreateOffer;
 import com.example.developer.ziptown.models.forms.CreateRequest;
@@ -36,6 +38,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
+import static com.example.developer.ziptown.activities.LoginActivity.dismissProgress;
+import static com.example.developer.ziptown.activities.LoginActivity.progressDialog;
+import static com.example.developer.ziptown.activities.LoginActivity.showProgress;
 
 public class AddGenericPostActivity extends AppCompatActivity implements View.OnClickListener, TimePickerFragment.TimePickedListener, GoogleApiClient.OnConnectionFailedListener, ServerRequest.OnTaskCompleted {
     private static final String TAG = "WSX";
@@ -49,6 +54,8 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
             new LatLng(-40, -168), new LatLng(71, 136));
     private GoogleApiClient mGoogleApiClient;
     String pickedPickUpTime, pickedDepartTime, type, allSelectedDays, city, origin, destination;
+    private GenericDialog dialogFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -261,19 +268,23 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
             ttvSelectedDays.setError("select days required");
         }else {
             Map<String, Object> map = new HashMap<>();
+            String title = "";
             if(type.contains("offer")){
                 CreateOffer offer = new CreateOffer(city, MainActivity.getString("contact").toString(),type, Integer.parseInt(MainActivity.getString("userId").trim()), MainActivity.getString("username").toString(),
                         pickedPickUpTime,destination, allSelectedDays,origin, pickedDepartTime );
                 map.put("model",offer);
+                title = "Offer";
                 map.put("type","CreateOffer");
             }else {
                 CreateRequest request = new CreateRequest(city, MainActivity.getString("contact").toString(),type, Integer.parseInt(MainActivity.getString("userId").trim()),MainActivity.getString("username"),
                         pickedPickUpTime,destination, allSelectedDays,origin, pickedDepartTime );
+                title = "Request";
                 map.put("model",request);
                 map.put("type","CreateRequest");
             }
 
             if(isNetworkAvailable()){
+                showProgress(title, "Submitting "+title+" To The Server", this);
                 new ServerRequest(this, getApplicationContext()).execute(map);
             }else {
                 Intent intent = new Intent(this, NetworkIssuesActivity.class);
@@ -284,18 +295,40 @@ public class AddGenericPostActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onTaskCompleted() {
-
+        dismissProgress();
+    }
+    @Override
+    protected void onPause() {
+        dismissProgress();
+        super.onPause();
     }
 
     @Override
-    public void onDataFetched(Map<String, Object> object) {
-        Object res = object.get("object");
-        if(object.get("response").toString().contains("error")){
-            Log.i("WSX", "onDataFetched: error "+object.get("response"));
-        }else {
-            finish();
-            Log.i("WSX", "onDataFetched: success "+object.get("response"));
-        }
+    protected void onDestroy() {
+        dismissProgress();
+        super.onDestroy();
+    }
+    @Override
+    public void onDataFetched(final Map<String, Object> object) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Object res = object.get("object");
+                if(object.get("response").toString().contains("error")){
+                    Log.i("WSX", "onDataFetched: error "+object.get("response"));
+                    dialogFragment = new GenericDialog();
+                    dialogFragment.setActivity(AddGenericPostActivity.this);
+                    dialogFragment.show(getFragmentManager(), "AlertDialog");
+                    dialogFragment.setError(object.get("response").toString());
+                }else {
+                    dialogFragment = new GenericDialog();
+                    dialogFragment.setActivity(AddGenericPostActivity.this);
+                    dialogFragment.show(getFragmentManager(), "AlertDialog");
+
+                    Log.i("WSX", "onDataFetched: success "+object.get("response"));
+                }
+            }
+        });
     }
 
     @Override
