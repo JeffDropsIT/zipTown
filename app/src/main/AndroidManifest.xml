@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.developer.ziptown">
+    package="com.devdesign.developer.ziptown">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -21,23 +21,23 @@
             android:value="AIzaSyChzL_RETVgMiVI4poAZDP9OUDltyyweKU" />
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.devdesign.developer.ziptown.activities.MainActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".activities.UserProfileActivity" />
-        <activity android:name=".activities.CurrentUserActivity" />
-        <activity android:name=".activities.AddGenericPostActivity" />
-        <activity android:name=".activities.SettingsActivity" />
-        <activity android:name=".activities.SignUpActivity" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.LandingPageActivity">
+        <activity android:name="com.devdesign.developer.ziptown.activities.UserProfileActivity" />
+        <activity android:name="com.devdesign.developer.ziptown.activities.CurrentUserActivity" />
+        <activity android:name="com.devdesign.developer.ziptown.activities.AddGenericPostActivity" />
+        <activity android:name="com.devdesign.developer.ziptown.activities.SettingsActivity" />
+        <activity android:name="com.devdesign.developer.ziptown.activities.SignUpActivity" />
+        <activity android:name="com.devdesign.developer.ziptown.activities.LoginActivity" />
+        <activity android:name="com.devdesign.developer.ziptown.activities.LandingPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SearchResults" />
-        <activity android:launchMode="singleTask" android:name=".activities.NetworkIssuesActivity"></activity>
+        <activity android:name="com.devdesign.developer.ziptown.activities.SearchResults" />
+        <activity android:launchMode="singleTask" android:name="com.devdesign.developer.ziptown.activities.NetworkIssuesActivity"></activity>
     </application>
 
 </manifest>
