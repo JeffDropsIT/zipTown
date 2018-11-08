@@ -161,6 +161,7 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         }else {
             //sendResponseToActivity(response, "success");
             Log.i("WSX", "doInBackground: message: "+response.length);
+            zipCache.clearTable(zipCache.OFFERS_SEARCH);
             for (int i = 0; i < response.length; i ++){
                zipCache.addOffersSearch(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
 
@@ -183,6 +184,7 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
         }else {
             //sendResponseToActivity(response, "success");
             Log.i("WSX", "doInBackground: message: "+response.length);
+            zipCache.clearTable(zipCache.OFFERS_SEARCH);
             for (int i = 0; i < response.length; i ++){
                 zipCache.addRequestsSearch(zipCache.toContentValues(response[i].ObjectToMap(response[i])));
 
@@ -346,20 +348,40 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
     }
     private Object[] getPost(Map<String, Object> map, RestTemplate restTemplate){
 
-        String url = BASE_PATH + "/app/"+map.get("postType").toString()+"?city="+map.get("city").toString().split(",")[0];
+        String url = BASE_PATH + "/app/"+map.get("postType").toString()+"?city="+map.get("city").toString().replace(" ", ",").split(",")[0];
         Log.i("WSX", "URL: "+url);
         Offers[] response = restTemplate.getForObject(url, Offers[].class);
         if (response.length == 0){
+            String url2 = BASE_PATH + "/app/"+map.get("postType").toString()+"?city=p&fallback=true";
+            Offers[] responseAll = restTemplate.getForObject(url2, Offers[].class);
 
-            sendResponseToActivity(new GenericErrorResponse("No data Found", 404), "error");
-            Log.i("WSX", "doInBackground: message: "+"error on getPost");
+            if(responseAll.length == 0){
+                sendResponseToActivity(new GenericErrorResponse("No data Found", 404), "error");
+                Log.i("WSX", "doInBackground: message: "+"error on getPost");
+            }else {
+                if(map.get("postType").toString().equals("offers")){
+                    zipCache.clearTable(ZipCache.OFFERS);
+                }else {
+                    zipCache.clearTable(ZipCache.REQUESTS);
+                }
+                for (int i = 0; i < responseAll.length; i ++){
+                    Log.i("WSX", "type "+map.get("postType").toString()+" getPost: "+responseAll[i].ObjectToMap(responseAll[i]));
+                    if(map.get("postType").toString().equals("offers")){
+                        zipCache.addOffers(zipCache.toContentValues(responseAll[i].ObjectToMap(responseAll[i])));
+                    }else {
+                        zipCache.addRequests(zipCache.toContentValues(responseAll[i].ObjectToMap(responseAll[i])));
+                    }
+
+                }
+            }
+
         }else {
             //sendResponseToActivity(response, "success");
             Log.i("WSX", "doInBackground: message: "+response.length);
             if(map.get("postType").toString().equals("offers")){
-                //zipCache.clearTable(ZipCache.OFFERS);
+                zipCache.clearTable(ZipCache.OFFERS);
             }else {
-                //zipCache.clearTable(ZipCache.REQUESTS);
+                zipCache.clearTable(ZipCache.REQUESTS);
             }
             for (int i = 0; i < response.length; i ++){
                 Log.i("WSX", "type "+map.get("postType").toString()+" getPost: "+response[i].ObjectToMap(response[i]));

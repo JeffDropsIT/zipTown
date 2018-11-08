@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.developer.ziptown.activities.CurrentUserActivity.titleCase;
 import static com.example.developer.ziptown.activities.LoginActivity.dismissProgress;
 import static com.example.developer.ziptown.activities.LoginActivity.showProgress;
 
@@ -35,14 +36,14 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
     @Override
     public void onBindViewHolder(@NonNull OfferViewHolder holder, final int position) {
         final Offer offer = offersList.get(position);
-        holder.ttvCity.setText("City: "+offer.getCity());
-        holder.ttvContact.setText("Contact: "+offer.getContact());
-        holder.ttvCreated.setText("Posted on: "+offer.getCreated());
-        holder.ttvDays.setText("Days: "+offer.getDays());
-        holder.ttvOrigin.setText("Origin: "+offer.getOrigin());
-        holder.ttvDestination.setText("Destination: "+offer.getDestination());
-        holder.ttvPublisher.setText("Published by: "+offer.getPublisher());
-        holder.ttvTime.setText("Time: "+offer.getTime());
+        holder.ttvCity.setText("City: " + titleCase(offer.getCity()));
+        holder.ttvContact.setText("Contact: " + titleCase(offer.getContact()));
+        holder.ttvCreated.setText("Posted on: " + titleCase(offer.getCreated()).split("T")[0]);
+        holder.ttvDays.setText("Days: " + titleCase(offer.getDays()));
+        holder.ttvOrigin.setText("Origin: " + titleCase(offer.getOrigin()));
+        holder.ttvDestination.setText("Destination: " + titleCase(offer.getDestination()));
+        holder.ttvPublisher.setText("Published by: " + titleCase(offer.getPublisher()));
+        holder.ttvTime.setText("Time: " + offer.getTime().toUpperCase());
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

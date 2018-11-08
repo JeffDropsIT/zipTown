@@ -28,6 +28,7 @@ import java.util.Map;
 
 import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
+import static com.example.developer.ziptown.activities.MainActivity.clearSecret;
 
 
 public class CurrentUserActivity extends AppCompatActivity implements ServerRequest.OnTaskCompleted {
@@ -90,6 +91,7 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
             MainActivity.putString("contact",user.get("contact").toString());
             MainActivity.putString("userType",titleCase(user.get("userType").toString()));
             MainActivity.putString("userId",user.get("id").toString());
+            MainActivity.putString("password",user.get("password").toString());
             ttvUsername.setText(titleCase(user.get("fullName").toString()));
             ttvUserType.setText(titleCase(user.get("userType").toString()));
             ttvCity.setText(titleCase(user.get("city").toString()));
@@ -137,7 +139,9 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
                 startActivity(intent);
                 break;
             case R.id.signout:
+                clearSecret();
                 if(serverRequest == null){
+                    this.finishAffinity();
                     break;
                 }
                 serverRequest.cancel(true);

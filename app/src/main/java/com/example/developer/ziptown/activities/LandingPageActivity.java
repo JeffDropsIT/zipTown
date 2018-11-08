@@ -39,12 +39,21 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null;
     }
+
+    private void userCached(){
+        if(MainActivity.getString("password").toString().contains("secret password")){
+            Intent intentSignIn = new Intent(this, CurrentUserActivity.class);
+            startActivity(intentSignIn);
+        }else {
+            Intent intentSignIn = new Intent(this, LoginActivity.class);
+            startActivity(intentSignIn);
+        }
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_sign_in:
-                Intent intentSignIn = new Intent(this, LoginActivity.class);
-                startActivity(intentSignIn);
+                userCached();
                 break;
             case R.id.btn_sign_up:
                 Intent intentSignUp = new Intent(this, SignUpActivity.class);

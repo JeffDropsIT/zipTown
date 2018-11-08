@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
     public static void putString(String key, String value) {
         preferences.edit().putString(key, value).apply();
     }
+    public static void clearSecret(){
+        preferences.edit().remove("password").commit();
+    }
 
 
     private void addOnPageChangeListener(ViewPager viewPager){

@@ -9,13 +9,20 @@ import java.util.Map;
 import static com.example.developer.ziptown.models.responses.UserSignInAndLoginResponse.oMapper;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable {
-    private String  fullName, city, contact, created, userType;
+    private String  fullName, city, contact, created, userType, password;
     private int id;
 
     public User(){
 
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getContact() {
         return contact;

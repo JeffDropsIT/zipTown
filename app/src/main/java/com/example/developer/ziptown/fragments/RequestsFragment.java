@@ -79,7 +79,8 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
 
         Log.i("WSX", "prepareOffersData:  ALL requests: "+offers);
         Log.i("WSX", "prepareOffersData:  ALL user: "+user);
-
+        if(offers.keySet().size() > 0)
+            offersList.clear();
         for (String key : offers.keySet()) {
             Map<String, Object> offerTmp = offers.get(key);
             Publisher publisher = new Publisher(offerTmp.get("publisher").toString(), offerTmp.get("contact").toString(), Integer.valueOf(offerTmp.get("publisherId").toString()));

@@ -33,7 +33,12 @@ public class ZipCache {
         postKeys = new ArrayList<>();
     }
     public void clearTable(String table){
-;
+
+        createRequestsTable();
+        createOffersTable();
+        createOffersSearchTable();
+        createRequestsSearchTable();
+
         createUserDataTable();
         createUserOffersTable();
         createUserRequestsTable();
@@ -47,6 +52,7 @@ public class ZipCache {
                 "\tid int  PRIMARY KEY,\n" +
                 "\tfullName varchar(200) , \n" +
                 "\tcity  varchar(200),\n" +
+                "\tpassword  varchar(200),\n" +
                 "\tuserType  varchar(200), \n" +
                 "\tcontact varchar(200) \n, " +
                 "\tcreated varchar(200) \n" +
@@ -241,7 +247,7 @@ public class ZipCache {
     }
     public String[] getColumnNames(int index) {
         List<String[]> columns = new ArrayList<>();
-        String[] userColumn = {"id", "fullName", "city", "contact", "userType", "created"};
+        String[] userColumn = {"id", "fullName", "city", "contact", "userType", "created", "password"};
         columns.add(userColumn);
         String[] post = {"id", "publisherId", "depatureTime", "returnTime", "days", "publisher", "contact", "postType", "city","origin","destination", "created"};
         columns.add(post);
@@ -277,6 +283,9 @@ public class ZipCache {
                             break;
                         case "userType":
                             data.put("userType", colContent);
+                            break;
+                        case "password":
+                            data.put("password", colContent);
                             break;
 
                     }
