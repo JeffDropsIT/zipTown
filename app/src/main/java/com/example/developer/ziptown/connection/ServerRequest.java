@@ -70,7 +70,7 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
                 new MappingJackson2HttpMessageConverter());
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
         Object response;
-//        try {
+        try {
             if(hasInternetAccess()){
                 response = chooseMethod(maps[0].get("type").toString(), maps[0], restTemplate);
             }else {
@@ -79,11 +79,11 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
                 listener.onTaskFailed();
             }
 
-//        }catch (Exception e){
-//            Log.i("WSX", "doInBackground: error on catch "+e.getMessage()+" stacktrace: "+e.getStackTrace());
-//            response = new GenericErrorResponse("Service Unavailable", 503);
-//            listener.onTaskFailed();
-//        }
+        }catch (Exception e){
+            Log.i("WSX", "doInBackground: error on catch "+e.getMessage()+" stacktrace: "+e.getStackTrace());
+            response = new GenericErrorResponse("Service Unavailable", 503);
+            listener.onTaskFailed();
+        }
         return  response;
     }
 

@@ -122,7 +122,7 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
         actionbar.setDisplayShowTitleEnabled(false);
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeButtonEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_home_home);
 
     }
     @Override
