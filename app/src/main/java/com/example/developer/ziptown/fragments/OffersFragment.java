@@ -1,6 +1,8 @@
 package com.example.developer.ziptown.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,6 +35,7 @@ import java.util.Map;
 
 import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
+import static com.example.developer.ziptown.adapters.OfferAdapter.MY_PERMISSIONS_REQUEST_CALL_PHONE;
 
 public class OffersFragment extends Fragment implements ServerRequest.OnTaskCompleted {
     private List<Offer> offersList = new ArrayList<>();
@@ -74,6 +77,27 @@ public class OffersFragment extends Fragment implements ServerRequest.OnTaskComp
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+                if (permissions[0].equalsIgnoreCase
+                        (Manifest.permission.CALL_PHONE)
+                        && grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted.
+                    Log.d("WSX", "grant granted");
+
+                } else {
+                    // Permission denied. Stop the app.
+                    Log.d("WSX", "failed to get permission");
+                    Toast.makeText(getContext(), "call denied", Toast.LENGTH_SHORT).show();
+                    // Disable the call button
+
+                }
+            }
+        }
+    }
 
     private void prepareOffersData() {
 

@@ -43,7 +43,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
         holder.ttvOrigin.setText("Origin: " + titleCase(offer.getOrigin()));
         holder.ttvDestination.setText("Destination: " + titleCase(offer.getDestination()));
         holder.ttvPublisher.setText("Published by: " + titleCase(offer.getPublisher()));
-        holder.ttvTime.setText("Time: " + offer.getTime().toUpperCase());
+        holder.ttvTime.setText("Time: " + offer.getTime().toLowerCase());
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

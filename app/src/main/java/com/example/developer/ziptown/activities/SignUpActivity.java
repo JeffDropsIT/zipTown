@@ -1,10 +1,14 @@
 package com.example.developer.ziptown.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,8 +45,10 @@ import static com.example.developer.ziptown.activities.AddGenericPostActivity.LA
 import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 import static com.example.developer.ziptown.activities.LoginActivity.dismissProgress;
 import static com.example.developer.ziptown.activities.LoginActivity.showProgress;
+import static com.example.developer.ziptown.adapters.OfferAdapter.MY_PERMISSIONS_REQUEST_CALL_PHONE;
 
 public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, ServerRequest.OnTaskCompleted, VerificationCodeFragment.DialogCompleteListener {
+    private static final int MY_PERMISSIONS_REQUEST_SMS = 121;
     private AutoCompleteTextView mSearchCity;
     private PlaceAutocompleteAdapter placeAutocompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
@@ -209,7 +215,12 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
                 collectAndVerify();
                 break;
             case R.id.btn_verify:
-                validateContact();
+                //validateContact();
+                if(edtContact.getText().toString().replace(" ", "").isEmpty()){
+                    edtContact.setError("number required");
+                }else {
+                    checkForPhonePermission();
+                }
                 break;
         }
     }
@@ -220,6 +231,7 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         if(contact.isEmpty()){
             edtContact.setError("number required");
         }else {
+
             btnVerify.setEnabled(false);
             number = ccp.getSelectedCountryCode();
             number += contact;
@@ -308,6 +320,42 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_SMS: {
+                if (permissions[0].equalsIgnoreCase
+                        (Manifest.permission.RECEIVE_SMS)
+                        && grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted.
+                    Log.d("WSX", "grant granted sms");
+                    validateContact();
+                    Toast.makeText(this, "sms permission granted", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    // Permission denied. Stop the app.
+                    Log.d("WSX", "failed to get permission");
+                    Toast.makeText(this, "sms denied", Toast.LENGTH_SHORT).show();
+                    // Disable the call button
+
+                }
+            }
+        }
+    }
+    private void checkForPhonePermission() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.RECEIVE_SMS) !=
+                PackageManager.PERMISSION_GRANTED) {
+            // Permission not yet granted. Use requestPermissions().
+            Log.d("WSX", "grant permission");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECEIVE_SMS},
+                    MY_PERMISSIONS_REQUEST_SMS);
+        }else {
+            validateContact();
+        }
+    }
     private boolean checkPasswordMatch(String password, String passwordConfirm) {
         return password.equals(passwordConfirm);
     }

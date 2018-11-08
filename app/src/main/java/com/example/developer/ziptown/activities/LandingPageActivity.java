@@ -36,9 +36,12 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
         btnSignUp.setOnClickListener(this);
     }
     public static boolean isNetworkAvailable() {
+        if(connectivityManager == null){
+            return true;
+        }
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null;
-    }
+   }
 
     private void userCached(){
         if(MainActivity.getString("password").toString().contains("secret password")){

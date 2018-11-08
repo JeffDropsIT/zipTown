@@ -1,7 +1,9 @@
 package com.example.developer.ziptown.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -34,6 +36,8 @@ import java.util.Map;
 
 import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 import static com.example.developer.ziptown.activities.LandingPageActivity.preferences;
+import static com.example.developer.ziptown.adapters.OfferAdapter.MY_PERMISSIONS_REQUEST_CALL_PHONE;
+
 
 public class MainActivity extends AppCompatActivity implements ServerRequest.OnTaskCompleted, TimePickerFragment.TimePickedListener,SearchFragment.DialogFragmentInteface {
 
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
         if (!isNetworkAvailable() ) {
             startErrorActivity();
         }
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         viewPager =  findViewById(R.id.viewpager);
         //Initializing the bottomNavigationView
@@ -62,6 +66,29 @@ public class MainActivity extends AppCompatActivity implements ServerRequest.OnT
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+                if (permissions[0].equalsIgnoreCase
+                        (Manifest.permission.CALL_PHONE)
+                        && grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted.
+                    Log.d("WSX", "grant granted");
+
+                    Toast.makeText(this, "call permission granted", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    // Permission denied. Stop the app.
+                    Log.d("WSX", "failed to get permission");
+                    Toast.makeText(this, "call denied", Toast.LENGTH_SHORT).show();
+                    // Disable the call button
+
+                }
+            }
+        }
+    }
     private void startErrorActivity() {
         Intent intent = new Intent(this, NetworkIssuesActivity.class);
         startActivity(intent);

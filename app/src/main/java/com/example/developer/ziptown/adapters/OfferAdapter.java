@@ -1,6 +1,7 @@
 package com.example.developer.ziptown.adapters;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,6 +30,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
     private List<Offer> offersList;
     private Context context;
 
+    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
     @NonNull
     @Override
     public OfferViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,32 +53,37 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
             @Override
             public void onClick(View v) {
                 Log.i("WSX", "onClick: on btn call");
-//                Intent intent = new Intent(context, UserProfileActivity.class);
-//                context.startActivity(intent);
                 Intent intent = new Intent(Intent.ACTION_CALL);
-
                 intent.setData(Uri.parse("tel:+" + offer.getContact()));
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                context.startActivity(intent);
+                makeTheCall(intent);
             }
         });
 
     }
 
+
+    private void makeTheCall(Intent intent){
+        checkForPhonePermission(intent);
+
+    }
     @Override
     public int getItemCount() {
         return offersList.size();
     }
+    private void checkForPhonePermission(Intent intent) {
+        if (ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.CALL_PHONE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            // Permission not yet granted. Use requestPermissions().
+            Log.d("WSX", "grant permission");
+            ActivityCompat.requestPermissions((Activity) context,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+        }else {
 
+            context.startActivity(intent);
+        }
+    }
     public class OfferViewHolder extends RecyclerView.ViewHolder {
         public TextView ttvPublisher, ttvContact, ttvCreated, ttvDays, ttvTime, ttvCity, ttvDestination, ttvOrigin;
         public CardView crdView;

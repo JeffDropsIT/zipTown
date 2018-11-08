@@ -1,6 +1,8 @@
 package com.example.developer.ziptown.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,13 +20,11 @@ import android.widget.Toast;
 import com.example.developer.ziptown.R;
 import com.example.developer.ziptown.activities.MainActivity;
 import com.example.developer.ziptown.activities.NetworkIssuesActivity;
-import com.example.developer.ziptown.activities.UserProfileActivity;
 import com.example.developer.ziptown.adapters.OfferAdapter;
 import com.example.developer.ziptown.cache.ZipCache;
 import com.example.developer.ziptown.connection.ServerRequest;
 import com.example.developer.ziptown.models.mockerClasses.Offer;
 import com.example.developer.ziptown.models.mockerClasses.Publisher;
-import com.example.developer.ziptown.recylcler.RecyclerTouchListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +33,8 @@ import java.util.Map;
 
 import static com.example.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 import static com.example.developer.ziptown.activities.LandingPageActivity.zipCache;
+import static com.example.developer.ziptown.adapters.OfferAdapter.MY_PERMISSIONS_REQUEST_CALL_PHONE;
+
 
 public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCompleted {
     private List<Offer> offersList = new ArrayList<>();
@@ -68,6 +70,26 @@ public class RequestsFragment extends Fragment implements ServerRequest.OnTaskCo
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+                if (permissions[0].equalsIgnoreCase
+                        (Manifest.permission.CALL_PHONE)
+                        && grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted.
+                    Log.d("WSX", "grant granted");
+                } else {
+                    // Permission denied. Stop the app.
+                    Log.d("WSX", "failed to get permission");
+                    Toast.makeText(getContext(), "call denied", Toast.LENGTH_SHORT).show();
+                    // Disable the call button
+
+                }
+            }
+        }
+    }
     private void prepareOffersData() {
 
 
