@@ -1,9 +1,9 @@
 <android.support.v7.widget.Toolbar android:id="@+id/toolbar_sign_up"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    app:titleTextColor="#FFF"
+    app:titleTextColor="#504037"
     android:theme="@style/CustomStyleSignUp"
-    android:elevation="4dp"
+    android:elevation="0dp"
     app:popupTheme="@style/CustomStylePopUp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" />

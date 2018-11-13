@@ -5,14 +5,25 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.devdesign.developer.ziptown.activities.signupActivities.NumberActivity;
+import com.devdesign.developer.ziptown.activities.signupActivities.SignUpActivity;
+import com.devdesign.developer.ziptown.adapters.SliderAdapter;
 import com.devdesign.developer.ziptown.cache.ZipCache;
 import com.devdesign.developer.ziptown.R;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class LandingPageActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String DATABASE_NAME = "ZipTownDB";
@@ -20,6 +31,14 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
     private static ConnectivityManager connectivityManager;
     private Button btnSignUp, btnSignIn;
     public static ZipCache zipCache;
+
+
+    List<String> colorName;
+
+    ViewPager viewPager;
+    TabLayout indicator;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +53,22 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
 
         btnSignIn.setOnClickListener(this);
         btnSignUp.setOnClickListener(this);
+
+        viewPager =  findViewById(R.id.viewPager);
+        indicator = findViewById(R.id.indicator);
+
+
+        colorName = new ArrayList<>();
+        colorName.add("A Smart Way To Travel, With Lift Clubs.");
+        colorName.add("ZipTown Is Safe Free, And Easy To Use Even Your Grandma Can Use It.");
+        colorName.add("In Fact Share ZipTown With Her And All Your Friends.");
+
+        viewPager.setAdapter(new SliderAdapter(this, colorName));
+        indicator.setupWithViewPager(viewPager, true);
+
+        Timer timer = new Timer();
+
+        timer.scheduleAtFixedRate(new SliderTimer(), 2000, 4000);
     }
     public static boolean isNetworkAvailable() {
         if(connectivityManager == null){
@@ -59,9 +94,59 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
                 userCached();
                 break;
             case R.id.btn_sign_up:
-                Intent intentSignUp = new Intent(this, SignUpActivity.class);
+                Intent intentSignUp = new Intent(this, NumberActivity.class);
                 startActivity(intentSignUp);
                 break;
         }
     }
+
+
+    private class SliderTimer extends TimerTask {
+
+        private Handler handler = new Handler();
+        private Runnable runnable;
+        private void reverseSlider(){
+            if (viewPager.getCurrentItem() > 0){
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+            }else{
+                viewPager.setCurrentItem(0);
+            }
+
+
+        }
+        @Override
+        public void run() {
+            LandingPageActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (viewPager.getCurrentItem() < colorName.size() - 1) {
+
+                        handler.removeCallbacks(runnable);
+                        handler.removeMessages(0);
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                    } else {
+
+                        handler.postDelayed( runnable = new Runnable() {
+                            public void run() {
+                                reverseSlider();
+                                handler.postDelayed(runnable, 500);
+                            }
+                        }, 500);
+
+                    }
+
+                }
+
+            });
+        }
+    }
+
+
+
+
+
+
+
+
+
 }

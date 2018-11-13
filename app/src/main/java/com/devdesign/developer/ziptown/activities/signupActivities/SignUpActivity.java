@@ -1,4 +1,4 @@
-package com.devdesign.developer.ziptown.activities;
+package com.devdesign.developer.ziptown.activities.signupActivities;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -24,6 +24,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.devdesign.developer.ziptown.activities.AddGenericPostActivity;
+import com.devdesign.developer.ziptown.activities.CurrentUserActivity;
+import com.devdesign.developer.ziptown.activities.GenericDialog;
+import com.devdesign.developer.ziptown.activities.LandingPageActivity;
+import com.devdesign.developer.ziptown.activities.LoginActivity;
+import com.devdesign.developer.ziptown.activities.NetworkIssuesActivity;
 import com.devdesign.developer.ziptown.adapters.PlaceAutocompleteAdapter;
 import com.devdesign.developer.ziptown.connection.ServerRequest;
 import com.devdesign.developer.ziptown.models.forms.CreateUser;

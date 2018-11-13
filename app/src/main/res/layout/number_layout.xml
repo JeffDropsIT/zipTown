@@ -57,7 +57,8 @@
                 android:paddingBottom="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
-                android:inputType="number"
+                android:digits="0123456789+"
+                android:inputType="phone"
                 android:hint="071 008 1125"/>
 
 

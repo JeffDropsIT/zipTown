@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/architects_daughter</item>
+        <item>@font/kumar_one</item>
+        <item>@font/neuton_extralight</item>
+        <item>@font/press_start_2p</item>
+        <item>@font/rock_salt</item>
+    </array>
+</resources>

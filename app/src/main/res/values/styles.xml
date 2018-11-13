@@ -24,6 +24,7 @@
         <item name="android:background">#FFFF</item>
         <item name="colorControlNormal">#FFFF</item>
         <item name="actionMenuTextColor">#FFFF</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_back_arrow_btn</item>
 
     </style>
     <style name="CustomSpinnerStyle">
