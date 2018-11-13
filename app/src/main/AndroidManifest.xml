@@ -49,7 +49,8 @@
         <activity android:name=".activities.signupActivities.FullNameActivity" />
         <activity android:name=".activities.signupActivities.CityActivity" />
         <activity android:name=".activities.signupActivities.DriverOrPassengerActivity" />
-        <activity android:name=".activities.signupActivities.TermsAndConditionsActivity"></activity>
+        <activity android:name=".activities.signupActivities.TermsAndConditionsActivity" />
+        <activity android:name=".activities.HomeActivity"></activity>
     </application>
 
 </manifest>

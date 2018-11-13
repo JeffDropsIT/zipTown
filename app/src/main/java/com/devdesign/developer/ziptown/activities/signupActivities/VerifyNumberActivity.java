@@ -342,7 +342,9 @@ public class VerifyNumberActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onTaskFailed() {
-
+        LoginActivity.dismissProgress();
+        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        startActivity(intent);
     }
 
     @Override

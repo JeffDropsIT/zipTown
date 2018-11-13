@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >{
     public static final String WSX = "WSX";
-    private final String BASE_PATH = "http://18.188.245.160/ziptown";
+    private final String BASE_PATH = "http://ec2-18-188-245-160.us-east-2.compute.amazonaws.com/ziptown";
     private OnTaskCompleted listener;
     private Context context;
     private ProgressBar progressBar;

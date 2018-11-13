@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/id_group1">
+       <item android:id="@+id/id_home"
+           android:title="Home"
+           android:icon="@drawable/ic_home_nav"/>
+        <item android:id="@+id/id_profile"
+            android:title="Profile"
+            android:icon="@drawable/ic_profile_nav"/>
+
+        <item android:id="@+id/id_notifications"
+            android:title="Notifications"
+            android:icon="@drawable/ic_notification_nav"/>
+
+
+    </group>
+    <group android:id="@+id/id_group2" android:checkableBehavior="single">
+        <item android:id="@+id/id_trips"
+            android:title="Road trips"
+            android:icon="@drawable/ic_road_trip_nav"/>
+        <item android:id="@+id/id_payment"
+            android:title="Payment"
+            android:icon="@drawable/ic_payment_nav"/>
+
+        <item android:id="@+id/id_settings"
+            android:title="Settiings"
+            android:icon="@drawable/ic_settings_nav"/>
+
+    </group>
+    <group android:id="@+id/id_group3" android:checkableBehavior="single">
+        <item android:id="@+id/id_safety"
+            android:title="Safety &amp; security"
+            android:icon="@drawable/ic_security_nav"/>
+        <item android:id="@+id/id_help"
+            android:title="Help"
+            android:icon="@drawable/ic_help_nav"/>
+
+        <item android:id="@+id/id_about"
+            android:title="About"
+            android:icon="@drawable/ic_about_nav"
+            />
+    </group>
+</menu>
