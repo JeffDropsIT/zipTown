@@ -19,6 +19,7 @@ import com.devdesign.developer.ziptown.activities.signupActivities.SignUpActivit
 import com.devdesign.developer.ziptown.adapters.SliderAdapter;
 import com.devdesign.developer.ziptown.cache.ZipCache;
 import com.devdesign.developer.ziptown.R;
+import com.jaeger.library.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,12 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
+
+
+
+        StatusBarUtil.setTransparent(this);
+
+
         zipCache = ZipCache.getInstance();
         zipCache.init(openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null));
         connectivityManager
