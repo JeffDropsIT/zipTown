@@ -36,8 +36,8 @@
         app:menu="@menu/drawer_menu"
         app:headerLayout="@layout/nav_header"
         android:theme="@style/NavigationView"
-        app:itemIconTint="@color/colorDarkGrey"
-        app:itemTextColor="@color/colorDarkGrey"
+        app:itemIconTint="@drawable/selected_drawer_item"
+        app:itemTextColor="@drawable/selected_drawer_item"
         android:layout_gravity="start"
         android:fitsSystemWindows="true">
 
