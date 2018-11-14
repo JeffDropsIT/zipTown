@@ -1,5 +1,6 @@
 package com.devdesign.developer.ziptown.activities;
 
+import android.app.Activity;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.devdesign.developer.ziptown.R;
+import com.jaeger.library.StatusBarUtil;
 
 public class HomeActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -17,7 +19,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
 
-
+        StatusBarUtil.setTransparent(this);
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
