@@ -4,8 +4,8 @@
     android:layout_gravity="center"
     android:background="#FFF"
     app:itemBackground="@android:color/transparent"
-    app:itemIconTint="#000"
-    app:itemTextColor="#646464"
+    app:itemIconTint="@drawable/selected_nav_item"
+    app:itemTextColor="@drawable/selected_nav_item"
     app:menu="@menu/nav_items"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
