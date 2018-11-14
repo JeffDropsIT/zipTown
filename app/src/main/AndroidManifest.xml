@@ -19,25 +19,38 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyChzL_RETVgMiVI4poAZDP9OUDltyyweKU" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name="com.devdesign.developer.ziptown.activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:launchMode="singleTask" />
-        <activity android:name="com.devdesign.developer.ziptown.activities.UserProfileActivity" />
-        <activity android:name="com.devdesign.developer.ziptown.activities.CurrentUserActivity" />
-        <activity android:name="com.devdesign.developer.ziptown.activities.AddGenericPostActivity" />
-        <activity android:name="com.devdesign.developer.ziptown.activities.SettingsActivity" />
-        <activity android:name="com.devdesign.developer.ziptown.activities.SignUpActivity" />
-        <activity android:name="com.devdesign.developer.ziptown.activities.LoginActivity" />
-        <activity android:name="com.devdesign.developer.ziptown.activities.LandingPageActivity">
+        <activity android:name=".activities.UserProfileActivity" />
+        <activity android:name=".activities.CurrentUserActivity" />
+        <activity android:name=".activities.AddGenericPostActivity" />
+        <activity android:name=".activities.SettingsActivity" />
+        <activity android:name=".activities.signupActivities.SignUpActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.LandingPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.devdesign.developer.ziptown.activities.SearchResults" />
-        <activity android:launchMode="singleTask" android:name="com.devdesign.developer.ziptown.activities.NetworkIssuesActivity"></activity>
+        <activity android:name=".activities.SearchResults" />
+        <activity
+            android:name=".activities.NetworkIssuesActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".activities.signupActivities.NumberActivity" />
+        <activity android:name=".activities.signupActivities.VerifyNumberActivity" />
+        <activity android:name=".activities.signupActivities.PasswordActivity" />
+        <activity android:name=".activities.signupActivities.FullNameActivity" />
+        <activity android:name=".activities.signupActivities.CityActivity" />
+        <activity android:name=".activities.signupActivities.DriverOrPassengerActivity" />
+        <activity android:name=".activities.signupActivities.TermsAndConditionsActivity" />
+        <activity android:name=".activities.HomeActivity"></activity>
     </application>
 
 </manifest>

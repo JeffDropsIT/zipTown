@@ -150,7 +150,7 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
     }
 
     private void goHomeActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
     @Override

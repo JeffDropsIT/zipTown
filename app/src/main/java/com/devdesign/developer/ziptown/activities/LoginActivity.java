@@ -3,14 +3,19 @@ package com.devdesign.developer.ziptown.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,32 +26,57 @@ import com.devdesign.developer.ziptown.models.responses.GenericErrorResponse;
 import com.devdesign.developer.ziptown.models.responses.UserSignInAndLoginResponse;
 import com.devdesign.developer.ziptown.R;
 import com.devdesign.developer.ziptown.connection.ServerRequest;
+import com.google.i18n.phonenumbers.AsYouTypeFormatter;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
+import com.rilixtech.CountryCodePicker;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.devdesign.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ServerRequest.OnTaskCompleted {
-    private Button btnLogin;
+    public static final String TAG = "WSX";
+    private FloatingActionButton fabLogin;
     private EditText edtPassword, edtContact;
     public static ProgressDialog progressDialog;
+    private CountryCodePicker ccp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
+        setContentView(R.layout.new_sign_in_layout);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         if (!isNetworkAvailable() ) {
             startErrorActivity();
         }
-
-        btnLogin = findViewById(R.id.btn_login);
+        ccp =  findViewById(R.id.ccp);
+        setDefaultCountry();
+        fabLogin = findViewById(R.id.fab_next);
         edtContact = findViewById(R.id.edt_contact);
         edtPassword = findViewById(R.id.edt_password);
-        btnLogin.setOnClickListener(this);
+        fabLogin.setOnClickListener(this);
         setToolBar();
 
+    }
+
+    private void setDefaultCountry(){
+        ccp.setDefaultCountryUsingNameCode(getCurrentCountry());
+    }
+    private String getCurrentCountry(){
+        String locale = this.getResources().getConfiguration().locale.getCountry();
+        Log.i("WSX", "getCurrentCountry: code: "+locale);
+        return locale;
+    }
+    private String checkNumber(String string){
+
+        if('0' == string.charAt(0)){
+            return string.substring(1);
+        }
+        return string;
     }
 
     private void startErrorActivity() {
@@ -90,6 +120,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             progressDialog  = null;
         }
     }
+    private void validateNumber(String contact, String password){
+        String number;
+        number = ccp.getSelectedCountryCode();
+        number += checkNumber(contact);
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        Phonenumber.PhoneNumber numberProto = null;
+        try {
+            numberProto = phoneUtil.parse(contact, ccp.getDefaultCountryNameCode());
+        } catch (NumberParseException e) {
+            Log.i(TAG, "validateContact error: "+e.getMessage());
+        }
+        if(numberProto != null){
+            if(phoneUtil.isValidNumber(numberProto)){
+                UserLogin userLogin = new UserLogin(number, password);
+                Map<String, Object> map = new HashMap<>();
+                map.put("type", new String("UserLogin"));
+                map.put("model", userLogin);
+
+                if(isNetworkAvailable()){
+                    showProgress("Sign In", "Signing In User", LoginActivity.this);
+                    new ServerRequest(this, getApplicationContext()).execute(map);
+                }else {
+                    Intent intent = new Intent(this, NetworkIssuesActivity.class);
+                    startActivity(intent);
+                }
+
+
+                Toast.makeText(this, "Logging in", Toast.LENGTH_SHORT).show();
+            }else {
+                edtContact.setError("invalid number");
+            }
+        }else {
+            edtContact.setError("invalid number");
+        }
+    }
     private void verifyPasswordAndContact(){
         String password = edtPassword.getText().toString();
         String contact = edtContact.getText().toString();
@@ -99,21 +164,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             edtContact.setError("Contact number required");
         }else {
             //call api to verify password
-            UserLogin userLogin = new UserLogin(contact, password);
-            Map<String, Object> map = new HashMap<>();
-            map.put("type", new String("UserLogin"));
-            map.put("model", userLogin);
-
-            if(isNetworkAvailable()){
-                showProgress("Sign In", "Signing In User", LoginActivity.this);
-                new ServerRequest(this, getApplicationContext()).execute(map);
-            }else {
-                Intent intent = new Intent(this, NetworkIssuesActivity.class);
-                startActivity(intent);
-            }
-
-
-            Toast.makeText(this, "Logging in", Toast.LENGTH_SHORT).show();
+            validateNumber(contact, password);
         }
 
     }
@@ -126,11 +177,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         finish();
     }
     private void setToolBar() {
-        Toolbar toolbar = findViewById(R.id.toolbar_container);
+        Toolbar toolbar = findViewById(R.id.toolbar_sign_up);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle("Sign In");
+        //actionbar.setTitle("Log in");
         actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setDisplayShowTitleEnabled(false);
         actionbar.setHomeButtonEnabled(true);
 
     }
@@ -152,7 +204,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btn_login:
+            case R.id.fab_next:
                 verifyPasswordAndContact();
                 break;
         }
