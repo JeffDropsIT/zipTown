@@ -5,17 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:id="@+id/toolbar">
-
-    </include>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="185dp"
         android:paddingTop="10dp"
         android:background="@color/colorPrimary">
         <de.hdodenhof.circleimageview.CircleImageView
@@ -32,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FFFF"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:gravity="center"
             android:layout_centerInParent="true"
             android:paddingTop="5dp"
@@ -44,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FFFF"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:gravity="center"
             android:layout_centerInParent="true"
             android:paddingTop="2dp"
@@ -56,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FFFF"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:gravity="center"
             android:layout_centerInParent="true"
             android:paddingTop="2dp"
@@ -69,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FFFF"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:gravity="center"
             android:layout_centerInParent="true"
             android:paddingTop="2dp"
