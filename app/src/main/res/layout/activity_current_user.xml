@@ -8,6 +8,7 @@
     <include layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:id="@+id/toolbar">
 
     </include>
@@ -16,13 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:paddingTop="10dp"
-        android:background="#000">
+        android:background="@color/colorPrimary">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_profile"
             android:layout_width="70dp"
             android:layout_height="70dp"
 
-            android:src="@drawable/ic_user"
+            android:src="@drawable/ic_profile"
             android:layout_centerHorizontal="true"
             app:civ_circle_background_color="#FFFF"
             />

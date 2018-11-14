@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="192dp"
+    android:layout_height="140dp"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
 
@@ -11,9 +11,9 @@
         android:id="@+id/img_profile"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginTop="15dp"
-        android:layout_weight="1"
-        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="start"
         android:src="@drawable/ic_profile"
         />
     <TextView
@@ -22,10 +22,11 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="16sp"
-        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="start"
         android:textStyle="bold"
-        android:layout_weight="1"
-        android:textColor="#c4c4c4"
+        android:textColor="#FFFF"
         android:text="Phumzile C Mathonsi"
         />
 </LinearLayout>
