@@ -51,6 +51,7 @@
         <activity android:name=".activities.signupActivities.DriverOrPassengerActivity" />
         <activity android:name=".activities.signupActivities.TermsAndConditionsActivity" />
         <activity android:name=".activities.HomeActivity"></activity>
+        <activity android:name=".activities.profileActivities.MessengerActivity"></activity>
     </application>
 
 </manifest>

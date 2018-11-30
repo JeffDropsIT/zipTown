@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.devdesign.developer.ziptown.activities.profileActivities.MessengerActivity;
 import com.devdesign.developer.ziptown.activities.signupActivities.NumberActivity;
 import com.devdesign.developer.ziptown.activities.signupActivities.SignUpActivity;
 import com.devdesign.developer.ziptown.adapters.SliderAdapter;
@@ -87,7 +88,7 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
 
     private void userCached(){
         if(MainActivity.getString("password").toString().contains("secret password")){
-            Intent intentSignIn = new Intent(this, CurrentUserActivity.class);
+            Intent intentSignIn = new Intent(this, MessengerActivity.class);
             startActivity(intentSignIn);
         }else {
             Intent intentSignIn = new Intent(this, LoginActivity.class);

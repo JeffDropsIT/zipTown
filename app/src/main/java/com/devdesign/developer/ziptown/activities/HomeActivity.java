@@ -13,7 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.devdesign.developer.ziptown.R;
-import com.devdesign.developer.ziptown.fragments.drawerFragments.CurrentUserFragment;
+//import com.devdesign.developer.ziptown.fragments.drawerFragments.CurrentUserFragment;
 import com.jaeger.library.StatusBarUtil;
 
 public class HomeActivity extends AppCompatActivity {
@@ -39,8 +39,8 @@ public class HomeActivity extends AppCompatActivity {
 
                         switch (menuItem.getItemId()){
                             case R.id.id_profile:
-                                CurrentUserFragment currentUserFragment = new CurrentUserFragment();
-                                setFragment(currentUserFragment);
+//                                CurrentUserFragment currentUserFragment = new CurrentUserFragment();
+//                                setFragment(currentUserFragment);
                                 break;
                         }
                         // Add code here to update the UI based on the item selected
