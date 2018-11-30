@@ -4,16 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
+    android:foreground="?android:attr/selectableItemBackground"
     tools:context=".activities.HomeActivity">
 
 
-    <FrameLayout
-        android:id="@+id/content_layout"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <include layout="@layout/toolbar"/>
-    </FrameLayout>
+        <include layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <FrameLayout
+            android:layout_below="@+id/toolbar"
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
+    </RelativeLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -22,6 +36,8 @@
         app:menu="@menu/drawer_menu"
         app:headerLayout="@layout/nav_header"
         android:theme="@style/NavigationView"
+        app:itemIconTint="@drawable/selected_drawer_item"
+        app:itemTextColor="@drawable/selected_drawer_item"
         android:layout_gravity="start"
         android:fitsSystemWindows="true">
 

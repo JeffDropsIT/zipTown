@@ -37,6 +37,6 @@ dependencies {
 
     api 'io.michaelrocks:libphonenumber-android:8.8.5'
     api 'com.github.joielechong:countrycodepicker:2.1.8'
-
+    api 'com.jaeger.statusbarutil:library:1.4.0'
     api group: 'com.googlecode.libphonenumber', name: 'libphonenumber', version: '8.9.16'
 }

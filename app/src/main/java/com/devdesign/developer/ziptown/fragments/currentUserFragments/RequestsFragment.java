@@ -56,7 +56,7 @@ public class RequestsFragment extends Fragment implements View.OnClickListener, 
         ttvNoPosts = view.findViewById(R.id.ttv_no_post);
         view.findViewById(R.id.fab_booking).setOnClickListener(this);
 
-        prepareOffersData();
+        //prepareOffersData();
         return view;
     }
 
@@ -105,7 +105,7 @@ public class RequestsFragment extends Fragment implements View.OnClickListener, 
         Map<String, Object> map = new HashMap<>();
         map.put("type", "GetUser");
         if(isNetworkAvailable()){
-            new ServerRequest(this, getContext()).execute(map);
+           // new ServerRequest(this, getContext()).execute(map);
         }else {
             Intent intent = new Intent(getContext(), NetworkIssuesActivity.class);
             startActivity(intent);

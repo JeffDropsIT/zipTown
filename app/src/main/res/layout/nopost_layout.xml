@@ -9,7 +9,6 @@
         android:textSize="40sp"
         android:gravity="center"
         android:visibility="gone"
-        android:textColor="#000"
-        android:background="#fff"
+        android:textColor="@color/colorPrimaryDark"
         android:text="NO POSTS YET"/>
 </LinearLayout>

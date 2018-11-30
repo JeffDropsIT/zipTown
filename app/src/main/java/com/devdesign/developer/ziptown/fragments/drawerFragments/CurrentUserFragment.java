@@ -1,21 +1,30 @@
-package com.devdesign.developer.ziptown.activities;
+package com.devdesign.developer.ziptown.fragments.drawerFragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Menu;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devdesign.developer.ziptown.R;
+import com.devdesign.developer.ziptown.activities.HomeActivity;
+import com.devdesign.developer.ziptown.activities.MainActivity;
+import com.devdesign.developer.ziptown.activities.NetworkIssuesActivity;
 import com.devdesign.developer.ziptown.adapters.ViewPagerAdapter;
 import com.devdesign.developer.ziptown.connection.ServerRequest;
 import com.devdesign.developer.ziptown.fragments.currentUserFragments.OffersFragment;
@@ -27,58 +36,44 @@ import java.util.Map;
 import static com.devdesign.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
 import static com.devdesign.developer.ziptown.activities.LandingPageActivity.zipCache;
 
-
-public class CurrentUserActivity extends AppCompatActivity implements ServerRequest.OnTaskCompleted {
+public class CurrentUserFragment extends Fragment implements ServerRequest.OnTaskCompleted {
     MenuItem prevMenuItem;
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
     private TextView ttvUsername, ttvUserType, ttvCity, ttvContact;
     private AsyncTask serverRequest;
+    View view;
+    public CurrentUserFragment(){
+
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_current_user);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.activity_current_user, container, false);
         if (!isNetworkAvailable() ) {
-            startErrorActivity();
+            //startErrorActivity();
         }
 
-        ttvUsername = findViewById(R.id.ttv_username);
-        ttvUserType = findViewById(R.id.ttv_tittle);
-        ttvCity = findViewById(R.id.ttv_user_city);
-        ttvContact = findViewById(R.id.ttv_user_contact);
+        ttvUsername = view.findViewById(R.id.ttv_username);
+        ttvUserType = view.findViewById(R.id.ttv_tittle);
+        ttvCity = view.findViewById(R.id.ttv_user_city);
+        ttvContact = view.findViewById(R.id.ttv_user_contact);
 
         updateUserData();
 
         Log.i("WSX", "UserProfileActivity: received");
-        viewPager =  findViewById(R.id.vpg_viewpager);
+        viewPager =  view.findViewById(R.id.vpg_viewpager);
         //Initializing the bottomNavigationView
         setOnNavigationItemSelectedListener();
         addOnPageChangeListener(viewPager);
         setupViewPager(viewPager);
-        setToolBar();
-
+        return view;
     }
-
-    private void startErrorActivity() {
-        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+    private void goHomeActivity(){
+        Intent intent = new Intent(getContext(), HomeActivity.class);
         startActivity(intent);
     }
-
-    @Override
-    protected void onResume() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("type", "GetUser");
-
-
-        if(isNetworkAvailable()){
-            new ServerRequest(this, getApplicationContext()).execute(map);
-        }else {
-            Intent intent = new Intent(this, NetworkIssuesActivity.class);
-            startActivity(intent);
-        }
-        super.onResume();
-    }
-
     private void updateUserData(){
         Map<String, Object> user = zipCache.getLocalUserData();
         if(user != null){
@@ -93,13 +88,29 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
             ttvUserType.setText(titleCase(user.get("userType").toString()));
             ttvCity.setText(titleCase(user.get("city").toString()));
             ttvContact.setText(user.get("contact").toString());
-            Toast.makeText(this, " user  " +user.get("contact").toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), " user  " +user.get("contact").toString(), Toast.LENGTH_SHORT).show();
 
         }else {
             //get data from the cache
 
         }
     }
+
+    @Override
+    public void onResume() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("type", "GetUser");
+
+
+        if(isNetworkAvailable()){
+            new ServerRequest(this, getContext()).execute(map);
+        }else {
+            Intent intent = new Intent(getContext(), NetworkIssuesActivity.class);
+            startActivity(intent);
+        }
+        super.onResume();
+    }
+
     public static String titleCase(String string){
         String[] charArr = string.split(" ");
         for (int i = 0; i < charArr.length; i++){
@@ -112,55 +123,8 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
         return out;
     }
 
-    private void setToolBar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayShowTitleEnabled(false);
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeButtonEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_hamburger);
-
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch(id){
-            case android.R.id.home:
-                goHomeActivity();
-                break;
-            case R.id.settings:
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.signout:
-                MainActivity.clearSecret();
-                if(serverRequest == null){
-                    this.finishAffinity();
-                    break;
-                }
-                serverRequest.cancel(true);
-                this.finishAffinity();
-                break;
-        }
-
-        return true;
-    }
-
-    private void goHomeActivity(){
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.tool_bar_menu, menu);
-        return true;
-    }
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         OffersFragment offers = new OffersFragment();
         RequestsFragment requests = new RequestsFragment();
         adapter.addFragment(offers);
@@ -195,7 +159,7 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
         });
     }
     public void setOnNavigationItemSelectedListener() {
-        bottomNavigationView = findViewById(R.id.nav_temp);
+        bottomNavigationView = view.findViewById(R.id.nav_temp);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -222,10 +186,10 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
     @Override
     public void onDataFetched(Map<String, Object> object) {
 
-        this.runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             public void run() {
                 updateUserData();
-                Toast.makeText(getApplicationContext(), "refreshing...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "refreshing...", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -233,7 +197,7 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
 
     @Override
     public void onTaskFailed() {
-        Intent intent = new Intent(this, NetworkIssuesActivity.class);
+        Intent intent = new Intent(getContext(), NetworkIssuesActivity.class);
         startActivity(intent);
     }
 }

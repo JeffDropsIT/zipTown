@@ -25,7 +25,7 @@
             android:icon="@drawable/ic_payment_nav"/>
 
         <item android:id="@+id/id_settings"
-            android:title="Settiings"
+            android:title="Settings"
             android:icon="@drawable/ic_settings_nav"/>
 
     </group>
