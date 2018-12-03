@@ -1,33 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFF"
-    tools:context=".activities.profileActivities.MessengerActivity">
-
-    <include layout="@layout/toolbar"/>
-    <include layout="@layout/second_nav"/>
-    <android.support.v7.widget.RecyclerView android:id="@+id/rcl_messages"
+    xmlns:tools="http://schemas.android.com/tools" >
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:orientation="vertical"
+        android:background="#FFF"
+        tools:context=".activities.profileActivities.MessengerActivity">
 
-    </android.support.v7.widget.RecyclerView>
 
-    <EditText
-        android:id="@+id/edt_type_box"
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/toolbar"/>
+            <include layout="@layout/second_nav"/>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcl_messages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:layout_gravity="center"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:padding="10dp"
-        android:layout_margin="15dp"
-        android:layout_gravity="bottom"
-
-        android:background="@drawable/shape_trans_textbox"
-        android:hint="Type your message..."/>
-
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/edt_type_box"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:padding="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_trans_textbox"
+            android:hint="Type your message..."/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_send"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:padding="10dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@drawable/shape_send"
+            android:src="@drawable/ic_send"
+            />
+    </LinearLayout>
 </LinearLayout>

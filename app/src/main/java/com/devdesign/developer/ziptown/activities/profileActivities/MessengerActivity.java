@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -17,12 +20,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.devdesign.developer.ziptown.R;
+import com.devdesign.developer.ziptown.adapters.MessageAdapter;
+import com.devdesign.developer.ziptown.models.Message;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
-public class MessengerActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.ArrayList;
+import java.util.List;
 
+public class MessengerActivity extends AppCompatActivity implements View.OnClickListener {
+    private List<Message> messageList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private MessageAdapter messageAdapter;
     public static final String TAG = "WSX";
 
     @Override
@@ -30,9 +40,37 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messanger);
         setToolBar();
-        typeBoxEffects();
-        findViewById(R.id.edt_type_box).setOnClickListener(this);
+
+        recyclerView = findViewById(R.id.rcl_messages);
+        messageAdapter = new MessageAdapter(messageList, getApplicationContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(messageAdapter);
+
+
+        generateMessages();
+        //typeBoxEffects();
+        //findViewById(R.id.edt_type_box).setOnClickListener(this);
     }
+
+    private void generateMessages() {
+        boolean isSender;
+        for(int i = 0; i < 30;  i++){
+            if(i % 2 == 0)
+            {
+                isSender = true;
+            }else {
+                isSender = false;
+            }
+            Message message = new Message(String.valueOf(i), String.valueOf(i), "15:35", "Hi man, :) "+i,"read", "http://wilkinsonschool.org/wp-content/uploads/2018/10/user-default-grey.png", isSender);
+            messageList.add(message);
+            Log.i(TAG, "generateMessages: "+i);
+        }
+
+        messageAdapter.notifyDataSetChanged();
+    }
+
     private void setToolBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,7 +122,7 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
     }
     private void setMargin(int left, int top, int right, int bottom) {
         EditText editText = findViewById(R.id.edt_type_box);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, convertDpIntoPx(getApplicationContext(), 46) );
         lp.setMargins(left, top, right, bottom);
         editText.setLayoutParams(lp);
         Log.i(TAG, "removeMargin: ");

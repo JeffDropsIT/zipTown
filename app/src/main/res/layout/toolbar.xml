@@ -4,6 +4,7 @@
     app:titleTextColor="#FFF"
     android:theme="@style/CustomStyle"
     android:elevation="0dp"
+    app:layout_scrollFlags="scroll|enterAlways|snap"
     app:popupTheme="@style/CustomStylePopUp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" />
