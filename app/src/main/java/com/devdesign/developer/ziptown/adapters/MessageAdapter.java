@@ -36,13 +36,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        final Message message = messageList.get(position);
+        Message message = messageList.get(position);
         if(message.isSender()){
             holder.receive.setVisibility(View.GONE);
+            holder.sent.setVisibility(View.VISIBLE);
             holder.ttvSentMessage.setText(message.getPayload());
             holder.ttvSentStatus.setText(message.getStatus());
             holder.ttvSentTime.setText(message.getCreated());
         }else {
+            holder.receive.setVisibility(View.VISIBLE);
             holder.sent.setVisibility(View.GONE);
             holder.ttvReceivedMessage.setText(message.getPayload());
             holder.ttvReceivedStatus.setText(message.getStatus());
