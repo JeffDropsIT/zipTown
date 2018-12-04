@@ -22,7 +22,12 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_launcher" />
         <activity
             android:name=".activities.MainActivity"
             android:launchMode="singleTask" />
@@ -52,6 +57,17 @@
         <activity android:name=".activities.signupActivities.TermsAndConditionsActivity" />
         <activity android:name=".activities.HomeActivity"></activity>
         <activity android:name=".activities.profileActivities.MessengerActivity"></activity>
+
+        <service android:name=".services.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <receiver android:name=".broadcast.FCMBroadcastReceiver">
+            <intent-filter>
+                <action android:name="ziptown.action.newToken"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

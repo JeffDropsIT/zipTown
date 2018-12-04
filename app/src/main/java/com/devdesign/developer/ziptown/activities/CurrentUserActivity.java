@@ -15,11 +15,17 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.devdesign.developer.ziptown.models.forms.CreateClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.devdesign.developer.ziptown.R;
 import com.devdesign.developer.ziptown.adapters.ViewPagerAdapter;
 import com.devdesign.developer.ziptown.connection.ServerRequest;
 import com.devdesign.developer.ziptown.fragments.currentUserFragments.OffersFragment;
 import com.devdesign.developer.ziptown.fragments.currentUserFragments.RequestsFragment;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +35,7 @@ import static com.devdesign.developer.ziptown.activities.LandingPageActivity.zip
 
 
 public class CurrentUserActivity extends AppCompatActivity implements ServerRequest.OnTaskCompleted {
+    private static final String TAG = "WSX";
     MenuItem prevMenuItem;
     private ViewPager viewPager;
     private BottomNavigationView bottomNavigationView;
@@ -56,6 +63,7 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
         addOnPageChangeListener(viewPager);
         setupViewPager(viewPager);
         setToolBar();
+        regsiterToken();
 
     }
 
@@ -78,10 +86,37 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
         }
         super.onResume();
     }
+    private void getToken(final int userId){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (!task.isSuccessful()) {
+                    Log.i(TAG, "getInstanceId failed", task.getException());
+                    return;
+                }
 
+                // Get new Instance ID token
+                String token = task.getResult().getToken();
+
+                // Log and toast
+                String msg = "InstanceID Token: " + token;
+                Log.i(TAG, msg);
+                if(isNetworkAvailable()){
+                    CreateClient client = new CreateClient(token, userId);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("type", "CreateClient");
+                    map.put("model", client);
+                    new ServerRequest(CurrentUserActivity.this, getApplicationContext()).execute(map);
+                }
+
+                Toast.makeText(getApplicationContext(), "got token for userId: "+userId, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void updateUserData(){
         Map<String, Object> user = zipCache.getLocalUserData();
         if(user != null){
+
 
             MainActivity.putString("username",titleCase(user.get("fullName").toString()));
             MainActivity.putString("city",(titleCase(user.get("city").toString())));
@@ -99,6 +134,13 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
             //get data from the cache
 
         }
+    }
+
+    private void regsiterToken(){
+        if(!MainActivity.getString("userId").equals("0")){
+            getToken(Integer.valueOf(MainActivity.getString("userId")));
+        }
+
     }
     public static String titleCase(String string){
         String[] charArr = string.split(" ");

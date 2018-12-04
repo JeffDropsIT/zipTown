@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 import com.devdesign.developer.ziptown.activities.LandingPageActivity;
 import com.devdesign.developer.ziptown.activities.MainActivity;
 import com.devdesign.developer.ziptown.cache.ZipCache;
+import com.devdesign.developer.ziptown.models.forms.CreateClient;
 import com.devdesign.developer.ziptown.models.forms.CreateOffer;
 import com.devdesign.developer.ziptown.models.forms.CreateRequest;
 import com.devdesign.developer.ziptown.models.forms.CreateUser;
@@ -39,9 +40,11 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
     private Context context;
     private ProgressBar progressBar;
 
+
+    public ServerRequest(){
+    }
     public ServerRequest(OnTaskCompleted listener){
         this.listener = listener;
-
     }
     public ServerRequest(OnTaskCompleted listener, Context context){
         this.listener = listener;
@@ -94,6 +97,9 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
             case "CreateOffer":
                 Log.i("WSX", "3 chooseMethod: CreateOffer");
                 return createOffer(map, restTemplate);
+            case "CreateClient":
+                Log.i("WSX", "3 chooseMethod: CreateClient");
+                return createClient(map, restTemplate);
             case "CreateRequest":
                 Log.i("WSX", "4 chooseMethod: CreateRequest");
                 return createRequest(map, restTemplate);
@@ -124,6 +130,25 @@ public class ServerRequest extends AsyncTask<Map<String, Object>, Void, Object >
                 Log.i("WSX", "last chooseMethod: " + new GenericErrorResponse("Ops Something went wrong", 500).toString());
                 return new GenericErrorResponse("Ops Something went wrong", 500);
         }
+    }
+
+    private Object createClient(Map<String, Object> map, RestTemplate restTemplate) {
+
+        CreateClient client = (CreateClient) map.get("model");
+        Log.i("WSX", "name: "+client.getToken());
+        String url = BASE_PATH + client.getURL();
+        Log.i("WSX", "URL: "+url);
+
+        GenericSuccessResponse response = restTemplate.postForObject(url, client, GenericSuccessResponse.class);
+        if (response.getResponse() != 200){
+            GenericErrorResponse responseError = restTemplate.postForObject(url, client, GenericErrorResponse.class);
+            sendResponseToActivity(responseError, "error");
+            Log.i("WSX", "doInBackground: message: "+responseError.toString());
+        }else {
+            sendResponseToActivity(response, "success");
+            Log.i("WSX", "doInBackground: message: "+response.toString());
+        }
+        return response;
     }
 
     private Object updateUser(Map<String, Object> map, RestTemplate restTemplate){

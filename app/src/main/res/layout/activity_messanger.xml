@@ -43,15 +43,18 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/edt_type_box"
             android:layout_width="match_parent"
             android:layout_height="46dp"
-            android:padding="10dp"
+            android:paddingLeft="10dp"
             android:layout_marginLeft="15dp"
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
+            android:inputType="textMultiLine"
             android:background="@drawable/shape_trans_textbox"
             android:hint="Type your message..."/>
         <de.hdodenhof.circleimageview.CircleImageView

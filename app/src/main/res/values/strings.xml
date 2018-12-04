@@ -4,6 +4,8 @@
     <string name="hide_alert">Click here to hide password reset</string>
     <string name="show_alert">Click here to renew your current password</string>
     <string name="error_message">"Something went wrong. &#xD; Please check your connection."</string>
+    <string name="channel_name">notifications</string>
+    <string name="channel_description">ziptown</string>
     <string-array name="states_array">
         <item>Both</item>
         <item>Driver</item>

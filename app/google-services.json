@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "263036057856",
+    "firebase_url": "https://ziptown-project.firebaseio.com",
+    "project_id": "ziptown-project",
+    "storage_bucket": "ziptown-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263036057856:android:09604ce8c66082bf",
+        "android_client_info": {
+          "package_name": "com.devdesign.developer.ziptown"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "263036057856-18ougss1rppm15he40u7u318urimjv4m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devdesign.developer.ziptown",
+            "certificate_hash": "d1e2663d6f76ede4b5a3d39b224a893fe932604f"
+          }
+        },
+        {
+          "client_id": "263036057856-n97dkg17f55jjkvos0sbj8prutrcg14c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDE4ofKw-GBkNGdhhjLTVM280R8f_z93aA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "263036057856-n97dkg17f55jjkvos0sbj8prutrcg14c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

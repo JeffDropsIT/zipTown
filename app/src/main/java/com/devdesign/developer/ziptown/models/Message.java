@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import java.net.URL;
 
 public class Message {
-    private String messageId, senderId, created, payload, status, url;
+    private String pMessageId, userId, timeSent, message, status, url;
     private boolean isSender;
 
 
@@ -19,45 +19,45 @@ public class Message {
         this.isSender = isSender;
     }
 
-    public Message(String messageId, String senderId, String created, String payload, String status, String url, boolean isSender){
+    public Message(String senderId, String created, String payload, String status, String url, boolean isSender){
         this.url = url;
         this.isSender = isSender;
-        this.created = created;
-        this.payload = payload;
+        this.timeSent = created;
+        this.message = payload;
         this.status = status;
-        this.messageId = messageId;
-        this.senderId = senderId;
+        this.userId = senderId;
     }
 
-    public String getCreated() {
-        return created;
+
+    public String getTimeSent() {
+        return timeSent;
     }
 
-    public String getMessageId() {
-        return messageId;
+    public String getpMessageId() {
+        return pMessageId;
     }
-    public String getPayload() {
-        return payload;
-    }
-
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
+    public String getMessage() {
+        return message;
     }
 
-    public void setPayload(String payload) {
-        this.payload = payload;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
+    public void setpMessageId(String pMessageId) {
+        this.pMessageId = pMessageId;
     }
 
-    public String getSenderId() {
-        return senderId;
+    public void setTimeSent(String timeSent) {
+        this.timeSent = timeSent;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public void setStatus(String status) {

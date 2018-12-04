@@ -16,10 +16,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.devdesign.developer.ziptown.R;
+import com.devdesign.developer.ziptown.activities.MainActivity;
 import com.devdesign.developer.ziptown.adapters.MessageAdapter;
 import com.devdesign.developer.ziptown.models.Message;
 
@@ -27,13 +30,19 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessengerActivity extends AppCompatActivity implements View.OnClickListener {
     private List<Message> messageList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MessageAdapter messageAdapter;
     public static final String TAG = "WSX";
+    EditText edtTypeBox;
+    CircleImageView btnSend;
+    public static boolean exceeded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,9 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_messanger);
         setToolBar();
 
+        btnSend = findViewById(R.id.btn_send);
+        btnSend.setOnClickListener(this);
+        edtTypeBox = findViewById(R.id.edt_type_box);
         recyclerView = findViewById(R.id.rcl_messages);
         messageAdapter = new MessageAdapter(messageList, getApplicationContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -49,7 +61,7 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
         recyclerView.setAdapter(messageAdapter);
 
 
-        generateMessages();
+        //generateMessages();
         //typeBoxEffects();
         //findViewById(R.id.edt_type_box).setOnClickListener(this);
     }
@@ -63,7 +75,7 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
             }else {
                 isSender = false;
             }
-            Message message = new Message(String.valueOf(i), String.valueOf(i), "15:35", "Hi man, :) "+i,"read", "http://wilkinsonschool.org/wp-content/uploads/2018/10/user-default-grey.png", isSender);
+            Message message = new Message(String.valueOf(i), "15:35", "Hi man, :) "+i,"read", "http://wilkinsonschool.org/wp-content/uploads/2018/10/user-default-grey.png", isSender);
             messageList.add(message);
             Log.i(TAG, "generateMessages: "+i);
         }
@@ -109,8 +121,31 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
             case R.id.edt_type_box:
                 //setMargin();
                 break;
+            case R.id.btn_send:
+                Log.i(TAG, "onClick: pressed");
+                sendMessage();
+                break;
         }
     }
+
+    private void sendMessage() {
+        String time = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+ ":"+Calendar.getInstance().get(Calendar.MINUTE);
+        if(edtTypeBox.getText().toString().trim().isEmpty())
+            return;
+        Log.i(TAG, "onClick: pressed message");
+        Message message = new Message(MainActivity.getString("userId"),time , edtTypeBox.getText().toString(),"sent", "http://wilkinsonschool.org/wp-content/uploads/2018/10/user-default-grey.png", true);
+        messageList.add(message);
+        messageAdapter.notifyDataSetChanged();
+        clearTypeBox();
+    }
+
+    private void clearTypeBox() {
+        edtTypeBox.getText().clear();
+        edtTypeBox.clearFocus();
+        InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
     private int convertDpIntoPx(Context mContext, float yourdpmeasure) {
         if (mContext == null) {
             return 0;

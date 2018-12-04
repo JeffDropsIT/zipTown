@@ -1,13 +1,15 @@
 package com.devdesign.developer.ziptown.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,6 +19,9 @@ import com.devdesign.developer.ziptown.models.Message;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.devdesign.developer.ziptown.activities.profileActivities.MessengerActivity.TAG;
+import static com.devdesign.developer.ziptown.activities.profileActivities.MessengerActivity.exceeded;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
     private List<Message> messageList;
@@ -34,21 +39,56 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return new MessageAdapter.MessageViewHolder(view);
     }
 
+    private void formatTTV(TextView textView){
+        if (textView.getText().toString().split(" ").length > 10){
+            Log.i(TAG, "formatTTV: "+textView.getText().toString().length());
+            exceeded = true;
+        }else {
+            exceeded = false;
+        }
+        if(exceeded){
+            Log.i(TAG, "formatTTV: true ");
+            textView.setBackground(context.getResources().getDrawable(R.drawable.messenger_textview_shape_more));
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) textView.getLayoutParams();
+            params.width = convertDpIntoPx(context, 250);
+            textView.setLayoutParams(params);
+        }else {
+            Log.i(TAG, "formatTTV: false");
+            textView.setBackground(context.getResources().getDrawable(R.drawable.messenger_textview_shape));
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) textView.getLayoutParams();
+            params.width = params.WRAP_CONTENT;
+            textView.setLayoutParams(params);
+        }
+    }
+    private int convertDpIntoPx(Context mContext, float yourdpmeasure) {
+        if (mContext == null) {
+            return 0;
+        }
+        Resources r = mContext.getResources();
+        int px = (int) TypedValue
+                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, yourdpmeasure, r.getDisplayMetrics());
+        return px;
+    }
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message message = messageList.get(position);
+
         if(message.isSender()){
             holder.receive.setVisibility(View.GONE);
             holder.sent.setVisibility(View.VISIBLE);
-            holder.ttvSentMessage.setText(message.getPayload());
+
+            holder.ttvSentMessage.setText(message.getMessage());
             holder.ttvSentStatus.setText(message.getStatus());
-            holder.ttvSentTime.setText(message.getCreated());
+            holder.ttvSentTime.setText(message.getTimeSent());
+            formatTTV(holder.ttvSentMessage);
         }else {
             holder.receive.setVisibility(View.VISIBLE);
             holder.sent.setVisibility(View.GONE);
-            holder.ttvReceivedMessage.setText(message.getPayload());
+
+            holder.ttvReceivedMessage.setText(message.getMessage());
             holder.ttvReceivedStatus.setText(message.getStatus());
-            holder.ttvReceivedTime.setText(message.getCreated());
+            holder.ttvReceivedTime.setText(message.getTimeSent());
+            formatTTV(holder.ttvReceivedMessage);
 //            if(message.getProfileBitmap() != null){
 //                holder.profileImage.setImageBitmap(message.getProfileBitmap());
 //            }
