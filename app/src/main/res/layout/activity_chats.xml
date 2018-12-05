@@ -23,11 +23,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <include layout="@layout/toolbar"/>
-            <include layout="@layout/second_nav"/>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rcl_messages"
+            android:id="@+id/rcl_chats"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
@@ -40,32 +39,5 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_marginTop="4dp"
-        android:background="@android:color/transparent"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/edt_type_box"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:paddingLeft="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_weight="1"
-            android:inputType="textMultiLine"
-            android:background="@drawable/shape_trans_textbox"
-            android:hint="Type your message..."/>
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/btn_send"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:padding="10dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:background="@drawable/shape_send"
-            android:src="@drawable/ic_send"
-            />
-    </LinearLayout>
+
 </LinearLayout>

@@ -12,6 +12,5 @@ public class FCMBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "onReceive: received broadcast: "+intent.getAction());
 
-
     }
 }

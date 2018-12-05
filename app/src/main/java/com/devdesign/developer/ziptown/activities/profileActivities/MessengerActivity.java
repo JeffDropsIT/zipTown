@@ -61,7 +61,7 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
         recyclerView.setAdapter(messageAdapter);
 
 
-        //generateMessages();
+        generateMessages();
         //typeBoxEffects();
         //findViewById(R.id.edt_type_box).setOnClickListener(this);
     }
@@ -75,7 +75,9 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
             }else {
                 isSender = false;
             }
-            Message message = new Message(String.valueOf(i), "15:35", "Hi man, :) "+i,"read", "http://wilkinsonschool.org/wp-content/uploads/2018/10/user-default-grey.png", isSender);
+
+            Message message = new Message(MainActivity.getString("userId"), MainActivity.getString("userId") , "15:35" , getResources().getString(R.string.dummy_text),"sent", "http://wilkinsonschool.org/wp-content/uploads/2018/10/user-default-grey.png", MainActivity.getString("token"), isSender);
+
             messageList.add(message);
             Log.i(TAG, "generateMessages: "+i);
         }
@@ -133,10 +135,11 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
         if(edtTypeBox.getText().toString().trim().isEmpty())
             return;
         Log.i(TAG, "onClick: pressed message");
-        Message message = new Message(MainActivity.getString("userId"),time , edtTypeBox.getText().toString(),"sent", "http://wilkinsonschool.org/wp-content/uploads/2018/10/user-default-grey.png", true);
+        Message message = new Message(MainActivity.getString("userId"), MainActivity.getString("userId") , time , edtTypeBox.getText().toString(),"sent", "http://wilkinsonschool.org/wp-content/uploads/2018/10/user-default-grey.png", MainActivity.getString("token"), true);
         messageList.add(message);
         messageAdapter.notifyDataSetChanged();
         clearTypeBox();
+        recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
     }
 
     private void clearTypeBox() {

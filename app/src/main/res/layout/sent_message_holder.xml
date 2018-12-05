@@ -6,7 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
-
+    <TextView
+        android:id="@+id/ttv_time_sent"
+        android:text="15:38"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:paddingRight="4dp"
+        android:layout_toLeftOf="@+id/content_layout"
+        android:textColor="#bfbaba"
+        android:layout_marginTop="4dp"/>
+    <TextView
+        android:id="@+id/ttv_read_status_sent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ttv_time_sent"
+        android:layout_toLeftOf="@+id/content_layout"
+        android:textSize="12dp"
+        android:paddingRight="4.5dp"
+        android:text="sent"/>
     <LinearLayout
         android:id="@+id/content_layout"
         android:orientation="horizontal"
@@ -16,36 +35,23 @@
 
         <TextView
             android:id="@+id/ttv_message_sent"
-            android:text="hi man, how are you?"
+            android:text="Hi there."
             android:background="@drawable/messenger_textview_shape"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:padding="6dp"
+            android:padding="10dp"
             android:textAlignment="textStart"
             android:textColor="#ffffff"
             android:layout_marginTop="4dp"/>
-        <TextView
-            android:id="@+id/ttv_time_sent"
-            android:text="15:38"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:layout_gravity="top"
-            android:padding="4dp"
-            android:textColor="#bfbaba"
-            android:layout_marginTop="4dp"/>
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_profile"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:visibility="invisible"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/ic_profile"/>
     </LinearLayout>
-    <TextView
 
-        android:id="@+id/ttv_read_status_sent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:padding="2dp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/content_layout"
-        android:text="read"/>
 </RelativeLayout>

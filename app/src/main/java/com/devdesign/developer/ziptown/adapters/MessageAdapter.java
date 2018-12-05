@@ -39,8 +39,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return new MessageAdapter.MessageViewHolder(view);
     }
 
-    private void formatTTV(TextView textView){
-        if (textView.getText().toString().split(" ").length > 10){
+    private void formatTTV(TextView textView, int drawable, int drawableRenew){
+        if (textView.getText().toString().split(" ").length >= 7 || textView.getText().toString().length() >= 35){
             Log.i(TAG, "formatTTV: "+textView.getText().toString().length());
             exceeded = true;
         }else {
@@ -48,13 +48,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
         if(exceeded){
             Log.i(TAG, "formatTTV: true ");
-            textView.setBackground(context.getResources().getDrawable(R.drawable.messenger_textview_shape_more));
+            textView.setBackground(context.getResources().getDrawable(drawable));
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) textView.getLayoutParams();
             params.width = convertDpIntoPx(context, 250);
             textView.setLayoutParams(params);
         }else {
             Log.i(TAG, "formatTTV: false");
-            textView.setBackground(context.getResources().getDrawable(R.drawable.messenger_textview_shape));
+            textView.setBackground(context.getResources().getDrawable(drawableRenew));
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) textView.getLayoutParams();
             params.width = params.WRAP_CONTENT;
             textView.setLayoutParams(params);
@@ -80,15 +80,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.ttvSentMessage.setText(message.getMessage());
             holder.ttvSentStatus.setText(message.getStatus());
             holder.ttvSentTime.setText(message.getTimeSent());
-            formatTTV(holder.ttvSentMessage);
+            formatTTV(holder.ttvSentMessage, R.drawable.messenger_textview_shape_more, R.drawable.messenger_textview_shape);
+            //formatTTV(holder.ttvReceivedMessage, R.drawable.messenger_textview_received_shape,  R.drawable.messenger_textview_received_shape_more );
         }else {
             holder.receive.setVisibility(View.VISIBLE);
             holder.sent.setVisibility(View.GONE);
-
+            //formatTTV(holder.ttvSentMessage, R.drawable.messenger_textview_shape, R.drawable.messenger_textview_shape_more);
             holder.ttvReceivedMessage.setText(message.getMessage());
             holder.ttvReceivedStatus.setText(message.getStatus());
             holder.ttvReceivedTime.setText(message.getTimeSent());
-            formatTTV(holder.ttvReceivedMessage);
+            formatTTV(holder.ttvReceivedMessage, R.drawable.messenger_textview_received_shape_more,  R.drawable.messenger_textview_received_shape );
 //            if(message.getProfileBitmap() != null){
 //                holder.profileImage.setImageBitmap(message.getProfileBitmap());
 //            }
@@ -96,6 +97,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
 
     }
+
 
     @Override
     public int getItemCount() {

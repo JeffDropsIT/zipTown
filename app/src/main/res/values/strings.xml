@@ -1,5 +1,33 @@
 <resources>
     <string name="app_name">ZipTown</string>
+    <string name="dummy_text">IKM
+
+Our records show that you recently began - but did not complete - the skills assessment shown below. This may be due to a network connectivity problem, test suspension or other system interruption. If you would like to complete the assessment, point your browser to the URL shown below, and enter the password shown below when prompted. The test will continue where it left off. If you have any questions, you can contact your test administrator at the telephone number or email address indicated below.
+
+You must take the test by Dec 11, 2018 13:50 PM SAST. After this time, the password will no longer work.
+
+Good Luck!
+
+Incomplete Test
+Test
+ANDROID APPLICATION PROGRAMMING
+URL
+https://online.ikmnet.com/salogin.jsp?id=89536084751
+Password
+28DZ21
+
+
+Test Administrator
+Administrator
+Arethe Prinsloo
+Company
+Communicate Personnel
+Phone
+Email
+APrinsloo@communicate.co.za
+
+
+IKM Assessment Administration</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
     <string name="hide_alert">Click here to hide password reset</string>
     <string name="show_alert">Click here to renew your current password</string>

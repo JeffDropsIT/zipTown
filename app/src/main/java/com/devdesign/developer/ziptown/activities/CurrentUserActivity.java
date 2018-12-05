@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.devdesign.developer.ziptown.activities.LandingPageActivity.isNetworkAvailable;
+import static com.devdesign.developer.ziptown.activities.LandingPageActivity.preferences;
 import static com.devdesign.developer.ziptown.activities.LandingPageActivity.zipCache;
 
 
@@ -97,7 +98,7 @@ public class CurrentUserActivity extends AppCompatActivity implements ServerRequ
 
                 // Get new Instance ID token
                 String token = task.getResult().getToken();
-
+                MainActivity.putString("token", token);
                 // Log and toast
                 String msg = "InstanceID Token: " + token;
                 Log.i(TAG, msg);

@@ -3,29 +3,37 @@ package com.devdesign.developer.ziptown.models;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.devdesign.developer.ziptown.activities.MainActivity;
+
 import java.net.URL;
 
 public class Message {
-    private String pMessageId, userId, timeSent, message, status, url;
+    private int to, from;
+    private String username;
+    private String token;
+    private String pMessageId, timeSent, message, status, url;
     private boolean isSender;
 
 
 
     public boolean isSender() {
-        return isSender;
+        return  isSender;//from == Integer.valueOf(MainActivity.getString("userId"));
     }
 
     public void setIsSender(boolean isSender) {
         this.isSender = isSender;
     }
 
-    public Message(String senderId, String created, String payload, String status, String url, boolean isSender){
+    public Message(String senderId, String to, String created, String payload, String status, String url, String token, boolean isSender){
         this.url = url;
-        this.isSender = isSender;
+        this.username = MainActivity.getString("username");
         this.timeSent = created;
         this.message = payload;
         this.status = status;
-        this.userId = senderId;
+        this.token = token;
+        this.isSender = isSender;
+        this.to = Integer.valueOf(to) ;
+        this.from = Integer.valueOf(senderId);
     }
 
 
@@ -40,8 +48,8 @@ public class Message {
         return message;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setFrom(int from) {
+        this.from = from;
     }
 
     public void setMessage(String message) {
@@ -56,8 +64,8 @@ public class Message {
         this.timeSent = timeSent;
     }
 
-    public String getUserId() {
-        return userId;
+    public int getFrom() {
+        return from;
     }
 
     public void setStatus(String status) {

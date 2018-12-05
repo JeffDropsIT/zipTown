@@ -14,9 +14,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.devdesign.developer.ziptown.activities.profileActivities.ChatsActivity;
 import com.devdesign.developer.ziptown.activities.profileActivities.MessengerActivity;
 import com.devdesign.developer.ziptown.activities.signupActivities.NumberActivity;
-import com.devdesign.developer.ziptown.activities.signupActivities.SignUpActivity;
 import com.devdesign.developer.ziptown.adapters.SliderAdapter;
 import com.devdesign.developer.ziptown.cache.ZipCache;
 import com.devdesign.developer.ziptown.R;
@@ -102,7 +102,7 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
                 userCached();
                 break;
             case R.id.btn_sign_up:
-                Intent intentSignUp = new Intent(this, NumberActivity.class);
+                Intent intentSignUp = new Intent(this, ChatsActivity.class);
                 startActivity(intentSignUp);
                 break;
         }
